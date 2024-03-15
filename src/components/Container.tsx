@@ -9,6 +9,7 @@ export default function Container({ children, ...rest }) {
       transition={{ duration: 0.5 }}
       variants={pageEffect}
       {...rest}
+      style={{ width: "100%" }}
     >
       {children}
     </motion.div>

@@ -5,11 +5,12 @@ import lineIcon from "../assets/line.svg";
 import circleIcon from "../assets/circle.svg";
 import shopIcon from "../assets/shop.svg";
 import tempIcon from "../assets/tmp1.png";
+import { useEffect, useState } from "react";
 
 const PcBox = styled.div`
   width: 100vw;
   height: 100vh;
-  overflow: auto;
+  overflow: scroll;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -23,6 +24,8 @@ const Header = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  position: absolute;
+  top: -30px;
 `;
 
 const Col = styled.div`
@@ -88,6 +91,10 @@ const Body = styled.div`
   flex-direction: column;
   align-items: center;
   padding-top: 10vh;
+  overflow: auto;
+
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 `;
 
 const Title = styled.div`
@@ -206,36 +213,92 @@ const BlogItemBox = styled.div`
 `;
 
 export default function Pc() {
+  const [hideHeader, setHideHeader] = useState(false);
+
+  const handleScroll = () => {
+    if (document?.getElementById("test")?.scrollTop > 200) {
+      setHideHeader(true);
+    } else {
+      setHideHeader(false);
+    }
+  };
+  useEffect(() => {
+    document?.getElementById("test")?.addEventListener("scroll", handleScroll);
+    return () => {
+      document
+        ?.getElementById("test")
+        ?.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   return (
     <Container>
       <PcBox>
-        <Header>
-          <Col>
-            <Row>
-              <Left>
-                <Logo>
-                  <img src={logoIcon} />
-                </Logo>
-                <Text1>
-                  <p>K-Blog</p>
-                  <p>Hope Happiness</p>
-                </Text1>
-              </Left>
-              <Right>
-                <span>Home</span>
-                <span>Blog</span>
-                <span>Login</span>
-              </Right>
-            </Row>
-          </Col>
-        </Header>
-        <Body>
+        {!hideHeader && (
+          <Container>
+            <Header>
+              <Col>
+                <Row>
+                  <Left>
+                    <Logo>
+                      <img src={logoIcon} />
+                    </Logo>
+                    <Text1>
+                      <p>K-Blog</p>
+                      <p>Hope Happiness</p>
+                    </Text1>
+                  </Left>
+                  <Right>
+                    <span>Home</span>
+                    <span>Blog</span>
+                    <span>Login</span>
+                  </Right>
+                </Row>
+              </Col>
+            </Header>
+          </Container>
+        )}
+        <Body id="test">
           <Title>
             <Line1 src={lineIcon} />
             <Line2 src={circleIcon} />
             <p>Slow down</p>
             <p>and Enjoy life</p>
           </Title>
+          <BlogTitleBox>
+            <BlogTitleRow>
+              <ShopIcon src={shopIcon} />
+              <BlogTitleName>
+                <span>Fitness</span>
+              </BlogTitleName>
+            </BlogTitleRow>
+            <BlogTitleRow2>
+              <span>My secret workout plan</span>
+              <div>
+                <span>Read More</span>
+              </div>
+            </BlogTitleRow2>
+          </BlogTitleBox>
+          <BlogContentRow>
+            <BlogItemBox>
+              <img src={tempIcon} />
+              <div>
+                <span>six simple high intensity workouts test</span>
+              </div>
+            </BlogItemBox>
+            <BlogItemBox>
+              <img src={tempIcon} />
+              <div>
+                <span>six simple high intensity workouts test</span>
+              </div>
+            </BlogItemBox>
+            <BlogItemBox>
+              <img src={tempIcon} />
+              <div>
+                <span>six simple high intensity workouts test</span>
+              </div>
+            </BlogItemBox>{" "}
+          </BlogContentRow>
           <BlogTitleBox>
             <BlogTitleRow>
               <ShopIcon src={shopIcon} />
