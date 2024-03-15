@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 import styled from "styled-components";
 
-import logoIcon from "../assets/logo.png";
-import Home from "../components/home/Home";
-import Blog from "../components/home/Blog";
+import logoIcon from "../../assets/logo.png";
+import Home from "../../components/Home";
+import Blog from "../../components/Blog";
+import { useDisplayStore } from "../../stores/display.store";
 
 const PcBox = styled.div`
   overflow: scroll;
@@ -85,17 +85,13 @@ const Text1 = styled.div`
 `;
 
 export default function Main() {
-  const [hideHeader, setHideHeader] = useState(false);
-  const navigate = useNavigate();
-
-  const [o, seto] = useState(false);
-  const [t, sett] = useState(false);
+  const displayStore = useDisplayStore();
 
   const handleScroll = () => {
     if (document?.getElementById("test")?.scrollTop > 200) {
-      setHideHeader(true);
+      displayStore.setHeaderState(false);
     } else {
-      setHideHeader(false);
+      displayStore.setHeaderState(true);
     }
     console.log(12);
   };
@@ -110,7 +106,7 @@ export default function Main() {
 
   return (
     <PcBox>
-      {!hideHeader && (
+      {displayStore.headerState && (
         <Header>
           <Col>
             <Row>
@@ -124,16 +120,20 @@ export default function Main() {
                 </Text1>
               </Left>
               <Right>
-                <span onClick={() => seto((prev) => !prev)}>Home</span>
-                <span onClick={() => sett((prev) => !prev)}>Blog</span>
+                <span onClick={() => displayStore.setSelectedTab("home")}>
+                  Home
+                </span>
+                <span onClick={() => displayStore.setSelectedTab("blog")}>
+                  Blog
+                </span>
                 <span>Login</span>
               </Right>
             </Row>
           </Col>
         </Header>
       )}
-      {o && <Home />}
-      {t && <Blog />}
+      {displayStore.selectedTab === "home" && <Home />}
+      {displayStore.selectedTab === "blog" && <Blog />}
     </PcBox>
   );
 }

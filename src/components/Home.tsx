@@ -1,9 +1,9 @@
 import styled from "styled-components";
 
-import lineIcon from "../../assets/line.svg";
-import circleIcon from "../../assets/circle.svg";
-import shopIcon from "../../assets/shop.svg";
-import tempIcon from "../../assets/tmp1.png";
+import lineIcon from "../assets/line.svg";
+import circleIcon from "../assets/circle.svg";
+import shopIcon from "../assets/shop.svg";
+import tempIcon from "../assets/tmp1.png";
 
 const BodyContainer = styled.div`
   width: 100%;
