@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 
 import logoIcon from "../../assets/logo.png";
 import Home from "../../components/Home";
@@ -84,28 +84,47 @@ const Text1 = styled.div`
   }
 `;
 
+const BodyContainer = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+`;
+
+const fadeInAnimation = keyframes`
+  from {
+    opacity: 0.2;
+  }
+  to {
+    opacity: 1;
+  }
+`;
+
+const StyledElement = styled.div`
+  animation: ${fadeInAnimation} 0.2s ease-in;
+  width: 100%;
+`;
+
 export default function Main() {
   const displayStore = useDisplayStore();
 
   const handleScroll = () => {
-    if (document?.getElementById("test")?.scrollTop > 200) {
+    if ((document?.getElementById("sc")?.scrollTop as number) > 200) {
       displayStore.setHeaderState(false);
     } else {
       displayStore.setHeaderState(true);
     }
-    console.log(12);
   };
   useEffect(() => {
-    document?.getElementById("test")?.addEventListener("scroll", handleScroll);
+    document?.getElementById("sc")?.addEventListener("scroll", handleScroll);
     return () => {
       document
-        ?.getElementById("test")
+        ?.getElementById("sc")
         ?.removeEventListener("scroll", handleScroll);
     };
   }, []);
 
   return (
-    <PcBox>
+    <PcBox id="sc">
       {displayStore.headerState && (
         <Header>
           <Col>
@@ -132,8 +151,20 @@ export default function Main() {
           </Col>
         </Header>
       )}
-      {displayStore.selectedTab === "home" && <Home />}
-      {displayStore.selectedTab === "blog" && <Blog />}
+      {displayStore.selectedTab === "home" && (
+        <StyledElement>
+          <BodyContainer>
+            <Home />
+          </BodyContainer>
+        </StyledElement>
+      )}
+      {displayStore.selectedTab === "blog" && (
+        <StyledElement>
+          <BodyContainer>
+            <Blog />
+          </BodyContainer>
+        </StyledElement>
+      )}
     </PcBox>
   );
 }

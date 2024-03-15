@@ -1,6 +1,7 @@
 import { createBrowserRouter, useLocation, useOutlet } from "react-router-dom";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
 import { createRef } from "react";
+
 import Main from "./pages/Main";
 
 const routes = [

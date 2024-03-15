@@ -5,18 +5,13 @@ import circleIcon from "../assets/circle.svg";
 import shopIcon from "../assets/shop.svg";
 import tempIcon from "../assets/tmp1.png";
 
-const BodyContainer = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: center;
-`;
-
 const Body = styled.div`
-  width: 60%;
+  width: 50%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 10vh;
+  padding-top: 15vh;
+  padding-bottom: 20px;
   overflow: auto;
 
   -ms-overflow-style: none;
@@ -25,9 +20,11 @@ const Body = styled.div`
 
 const Title = styled.div`
   position: relative;
+  align-self: flex-start;
+
   & > p {
     font-size: 70px;
-    font-weight: 00;
+    font-weight: 900;
     line-height: 1.1;
   }
   margin-bottom: 10vh;
@@ -69,6 +66,7 @@ const BlogTitleRow = styled.div`
 const ShopIcon = styled.img`
   width: 5%;
   height: 100%;
+  min-width: 60px;
   background-color: black;
 `;
 
@@ -97,6 +95,7 @@ const BlogTitleRow2 = styled(BlogTitleRow)`
     align-self: flex-end;
     width: 12%;
     min-height: 50px;
+    min-width: 118px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -119,7 +118,8 @@ const BlogContentRow = styled.div`
   padding: 30px 0;
   display: flex;
   align-items: center;
-  justify-content: space-around;
+  justify-content: space-between;
+  gap: 30px;
 `;
 
 const BlogItemBox = styled.div`
@@ -140,83 +140,81 @@ const BlogItemBox = styled.div`
 
 export default function Home() {
   return (
-    <BodyContainer>
-      <Body id="test">
-        <Title>
-          <Line1 src={lineIcon} />
-          <Line2 src={circleIcon} />
-          <p>Slow down</p>
-          <p>and Enjoy life</p>
-        </Title>
-        <BlogTitleBox>
-          <BlogTitleRow>
-            <ShopIcon src={shopIcon} />
-            <BlogTitleName>
-              <span>Fitness</span>
-            </BlogTitleName>
-          </BlogTitleRow>
-          <BlogTitleRow2>
-            <span>My secret workout plan</span>
-            <div>
-              <span>Read More</span>
-            </div>
-          </BlogTitleRow2>
-        </BlogTitleBox>
-        <BlogContentRow>
-          <BlogItemBox>
-            <img src={tempIcon} />
-            <div>
-              <span>six simple high intensity workouts test</span>
-            </div>
-          </BlogItemBox>
-          <BlogItemBox>
-            <img src={tempIcon} />
-            <div>
-              <span>six simple high intensity workouts test</span>
-            </div>
-          </BlogItemBox>
-          <BlogItemBox>
-            <img src={tempIcon} />
-            <div>
-              <span>six simple high intensity workouts test</span>
-            </div>
-          </BlogItemBox>{" "}
-        </BlogContentRow>
-        <BlogTitleBox>
-          <BlogTitleRow>
-            <ShopIcon src={shopIcon} />
-            <BlogTitleName>
-              <span>Fitness</span>
-            </BlogTitleName>
-          </BlogTitleRow>
-          <BlogTitleRow2>
-            <span>My secret workout plan</span>
-            <div>
-              <span>Read More</span>
-            </div>
-          </BlogTitleRow2>
-        </BlogTitleBox>
-        <BlogContentRow>
-          <BlogItemBox>
-            <img src={tempIcon} />
-            <div>
-              <span>six simple high intensity workouts test</span>
-            </div>
-          </BlogItemBox>
-          <BlogItemBox>
-            <img src={tempIcon} />
-            <div>
-              <span>six simple high intensity workouts test</span>
-            </div>
-          </BlogItemBox>
-          <BlogItemBox>
-            <img src={tempIcon} />
-            <div>
-              <span>six simple high intensity workouts test</span>
-            </div>
-          </BlogItemBox>{" "}
-        </BlogContentRow>
-      </Body>
-    </BodyContainer>
+    <Body>
+      <Title>
+        <Line1 src={lineIcon} />
+        <Line2 src={circleIcon} />
+        <p>Slow down</p>
+        <p>and Enjoy life</p>
+      </Title>
+      <BlogTitleBox>
+        <BlogTitleRow>
+          <ShopIcon src={shopIcon} />
+          <BlogTitleName>
+            <span>Fitness</span>
+          </BlogTitleName>
+        </BlogTitleRow>
+        <BlogTitleRow2>
+          <span>My secret workout plan</span>
+          <div>
+            <span>Read More</span>
+          </div>
+        </BlogTitleRow2>
+      </BlogTitleBox>
+      <BlogContentRow>
+        <BlogItemBox>
+          <img src={tempIcon} />
+          <div>
+            <span>six simple high intensity workouts test</span>
+          </div>
+        </BlogItemBox>
+        <BlogItemBox>
+          <img src={tempIcon} />
+          <div>
+            <span>six simple high intensity workouts test</span>
+          </div>
+        </BlogItemBox>
+        <BlogItemBox>
+          <img src={tempIcon} />
+          <div>
+            <span>six simple high intensity workouts test</span>
+          </div>
+        </BlogItemBox>{" "}
+      </BlogContentRow>
+      <BlogTitleBox>
+        <BlogTitleRow>
+          <ShopIcon src={shopIcon} />
+          <BlogTitleName>
+            <span>Fitness</span>
+          </BlogTitleName>
+        </BlogTitleRow>
+        <BlogTitleRow2>
+          <span>My secret workout plan</span>
+          <div>
+            <span>Read More</span>
+          </div>
+        </BlogTitleRow2>
+      </BlogTitleBox>
+      <BlogContentRow>
+        <BlogItemBox>
+          <img src={tempIcon} />
+          <div>
+            <span>six simple high intensity workouts test</span>
+          </div>
+        </BlogItemBox>
+        <BlogItemBox>
+          <img src={tempIcon} />
+          <div>
+            <span>six simple high intensity workouts test</span>
+          </div>
+        </BlogItemBox>
+        <BlogItemBox>
+          <img src={tempIcon} />
+          <div>
+            <span>six simple high intensity workouts test</span>
+          </div>
+        </BlogItemBox>{" "}
+      </BlogContentRow>
+    </Body>
   );
 }
