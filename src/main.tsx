@@ -1,10 +1,10 @@
 import ReactDOM from "react-dom/client";
 import "./index.css";
-import { RouterProvider } from "react-router-dom";
-import { router } from "./router.tsx";
+import { isDesktop } from "react-device-detect";
+import Pc from "./desktop/pages/Pc.tsx";
+import Mobile from "./desktop/pages/Mobile.tsx";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  <>
-    <RouterProvider router={router} />
-  </>
+  // <>{isDesktop ? <Pc /> : <Mobile />}</>
+  <Pc />
 );

@@ -138,7 +138,7 @@ const BlogItemBox = styled.div`
   }
 `;
 
-export default function Blog() {
+export default function Home() {
   return (
     <BodyContainer>
       <Body id="test">

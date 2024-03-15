@@ -15,3 +15,4 @@ https://www.flaticon.com/kr/free-icons
 
 - 회원가입, 로그인
 - 게시글 공개, 비공개
+- 다크모드, 라이트모드

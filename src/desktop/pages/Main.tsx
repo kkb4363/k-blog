@@ -1,9 +1,10 @@
-import styled from "styled-components";
-import logoIcon from "../assets/logo.png";
-import Container from "../components/Container";
-
 import { useEffect, useState } from "react";
-import { Outlet, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
+
+import logoIcon from "../assets/logo.png";
+import Home from "../components/home/Home";
+import Blog from "../components/home/Blog";
 
 const PcBox = styled.div`
   overflow: scroll;
@@ -83,9 +84,12 @@ const Text1 = styled.div`
   }
 `;
 
-export default function Pc() {
-  const navigate = useNavigate();
+export default function Main() {
   const [hideHeader, setHideHeader] = useState(false);
+  const navigate = useNavigate();
+
+  const [o, seto] = useState(false);
+  const [t, sett] = useState(false);
 
   const handleScroll = () => {
     if (document?.getElementById("test")?.scrollTop > 200) {
@@ -107,30 +111,29 @@ export default function Pc() {
   return (
     <PcBox>
       {!hideHeader && (
-        <Container>
-          <Header>
-            <Col>
-              <Row>
-                <Left>
-                  <Logo>
-                    <img src={logoIcon} />
-                  </Logo>
-                  <Text1>
-                    <p>K-Blog</p>
-                    <p>Hope Happiness</p>
-                  </Text1>
-                </Left>
-                <Right>
-                  <span onClick={() => navigate("")}>Home</span>
-                  <span onClick={() => navigate("blogs")}>Blog</span>
-                  <span>Login</span>
-                </Right>
-              </Row>
-            </Col>
-          </Header>
-        </Container>
+        <Header>
+          <Col>
+            <Row>
+              <Left>
+                <Logo>
+                  <img src={logoIcon} />
+                </Logo>
+                <Text1>
+                  <p>K-Blog</p>
+                  <p>Hope Happiness</p>
+                </Text1>
+              </Left>
+              <Right>
+                <span onClick={() => seto((prev) => !prev)}>Home</span>
+                <span onClick={() => sett((prev) => !prev)}>Blog</span>
+                <span>Login</span>
+              </Right>
+            </Row>
+          </Col>
+        </Header>
       )}
-      <Outlet />
+      {o && <Home />}
+      {t && <Blog />}
     </PcBox>
   );
 }
