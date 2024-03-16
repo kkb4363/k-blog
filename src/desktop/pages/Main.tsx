@@ -1,10 +1,12 @@
 import styled, { keyframes } from "styled-components";
+import { useDisplayStore } from "../../stores/display.store";
 import { useEffect } from "react";
-
 import Home from "../../components/Home";
 import Blog from "../../components/Blog";
-import { useDisplayStore } from "../../stores/display.store";
 import Header from "../../components/Header";
+
+import twiterIcon from "../../assets/twitter.svg";
+import instagramIcon from "../../assets/instagram.svg";
 
 const PcBox = styled.div`
   overflow: scroll;
@@ -38,6 +40,51 @@ const StyledElement = styled.div`
 const HeaderStyledElement = styled(StyledElement)`
   animation: ${fadeInAnimation} 0.2s ease-in;
 `;
+
+const BottomBox = styled.div`
+  width: 100%;
+  box-sizing: border-box;
+  border-bottom: 1px solid #000000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const Bottom = styled.div`
+  width: 50%;
+  padding: 20px 0 30px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  & > span {
+    width: 20%;
+    font-weight: 500;
+  }
+`;
+
+const SocialRow = styled.div`
+  display: flex;
+  width: 8%;
+  justify-content: space-around;
+
+  & > a {
+    & > img {
+      width: 24px;
+      height: 24px;
+      object-fit: cover;
+    }
+  }
+`;
+
+const Copy = styled.div`
+  width: 50%;
+  padding: 10px;
+  & > p {
+    font-size: 14px;
+  }
+`;
+
 export default function Main() {
   const displayStore = useDisplayStore();
   const handleScroll = () => {
@@ -77,6 +124,22 @@ export default function Main() {
           </BodyContainer>
         </StyledElement>
       )}
+      <BottomBox>
+        <Bottom>
+          <span>kkb4363@naver.com</span>
+          <SocialRow>
+            <a href="https://www.instagram.com/gibeom__0/" target="_blank">
+              <img src={instagramIcon} />
+            </a>
+            <a href="https://twitter.com/gimgibe55865136" target="_blank">
+              <img src={twiterIcon} />
+            </a>
+          </SocialRow>
+        </Bottom>
+      </BottomBox>
+      <Copy>
+        <p>© 2024 by Developer kkb. Powered and secured by Wix</p>
+      </Copy>
     </PcBox>
   );
 }
