@@ -73,6 +73,14 @@ const Text1 = styled.div`
 `;
 export default function Header() {
   const displayStore = useDisplayStore();
+  const handleSelectedTab = (tab: string) => {
+    return displayStore.selectedTab === tab ? "rgb(195, 255, 91)" : "#ffffff";
+  };
+
+  const goBlogPage = () => {
+    displayStore.setSelectedTab("blog");
+    displayStore.setPostCategory("all");
+  };
 
   return (
     <HeaderContainer>
@@ -88,10 +96,20 @@ export default function Header() {
             </Text1>
           </Left>
           <Right>
-            <span onClick={() => displayStore.setSelectedTab("home")}>
+            <span
+              style={{
+                color: handleSelectedTab("home"),
+              }}
+              onClick={() => displayStore.setSelectedTab("home")}
+            >
               Home
             </span>
-            <span onClick={() => displayStore.setSelectedTab("blog")}>
+            <span
+              style={{
+                color: handleSelectedTab("blog"),
+              }}
+              onClick={goBlogPage}
+            >
               Blog
             </span>
             <span>Login</span>

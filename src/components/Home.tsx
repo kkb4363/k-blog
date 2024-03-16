@@ -177,6 +177,7 @@ export default function Home() {
           </div>
         </BlogItemBox>{" "}
       </BlogContentRow>
+
       <BlogTitleBox>
         <BlogTitleRow>
           <ShopIcon src={shopIcon} />

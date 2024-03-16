@@ -1,11 +1,12 @@
 import styled from "styled-components";
 import { useDisplayStore } from "../stores/display.store";
 import AllPost from "./AllPost";
+import { StyledElement } from "../desktop/pages/Main";
 
 import circleIcon from "../assets/circle.svg";
 import checkIcon from "../assets/check.svg";
 import searchIcon from "../assets/search.svg";
-import { StyledElement } from "../desktop/pages/Main";
+
 const Body = styled.div`
   width: 50%;
   display: flex;
@@ -138,6 +139,11 @@ const LoginBox = styled.div`
 
 export default function Blog() {
   const displayStore = useDisplayStore();
+  const handleCurrentCategory = (category: string) => {
+    return displayStore.currentPostCategory === category
+      ? "rgb(75, 107, 19)"
+      : "#000000";
+  };
 
   return (
     <Body>
@@ -157,17 +163,34 @@ export default function Blog() {
       </SubTitle>
       <CategoryRow>
         <Categories>
-          <span onClick={() => displayStore.setPostCategory("all")}>
+          <span
+            style={{ color: handleCurrentCategory("all") }}
+            onClick={() => displayStore.setPostCategory("all")}
+          >
             All Posts
           </span>
-          <span onClick={() => displayStore.setPostCategory("featured")}>
+          <span
+            style={{ color: handleCurrentCategory("featured") }}
+            onClick={() => displayStore.setPostCategory("featured")}
+          >
             Featured
           </span>
-          <span onClick={() => displayStore.setPostCategory("fitness")}>
+          <span
+            style={{ color: handleCurrentCategory("fitness") }}
+            onClick={() => displayStore.setPostCategory("fitness")}
+          >
             Fitness
           </span>
-          <span onClick={() => displayStore.setPostCategory("diet")}>Diet</span>
-          <span onClick={() => displayStore.setPostCategory("invest")}>
+          <span
+            style={{ color: handleCurrentCategory("diet") }}
+            onClick={() => displayStore.setPostCategory("diet")}
+          >
+            Diet
+          </span>
+          <span
+            style={{ color: handleCurrentCategory("invest") }}
+            onClick={() => displayStore.setPostCategory("invest")}
+          >
             Invest
           </span>
         </Categories>
@@ -178,7 +201,7 @@ export default function Blog() {
             <input placeholder="Search" />
           </SearchInput>
           <LoginBox>
-            <span>Log in / Sign up</span>
+            <span>Write a blog</span>
           </LoginBox>
         </SearchAndLoginBox>
       </CategoryRow>

@@ -1,10 +1,13 @@
-import styled, { keyframes } from "styled-components";
+import styled, { css, keyframes } from "styled-components";
+import Select from "react-select";
+
 import { useDisplayStore } from "../../stores/display.store";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Home from "../../components/Home";
 import Blog from "../../components/Blog";
 import Header from "../../components/Header";
 
+import logoIcon from "../../assets/logo.png";
 import twiterIcon from "../../assets/twitter.svg";
 import instagramIcon from "../../assets/instagram.svg";
 
@@ -46,7 +49,7 @@ const HeaderStyledElement = styled(StyledElement)`
 `;
 
 const Footer = styled.div`
-  width: 100%;
+  width: 90%;
   height: 120px;
   display: flex;
   justify-content: center;
@@ -99,8 +102,191 @@ const Copy = styled.div`
   }
 `;
 
+const WriteBox = styled.div`
+  width: 90%;
+  height: 500px;
+  background-color: #000000;
+  display: flex;
+`;
+
+const ModalTitle = styled.div`
+  width: 50%;
+  height: 100%;
+  box-sizing: border-box;
+  padding: 70px 40px 0 200px;
+  color: white;
+  & > p {
+    font-size: 60px;
+    font-weight: 800;
+    line-height: 1.1;
+  }
+  & > p:nth-child(2) {
+    padding-left: 45px;
+  }
+  & > span {
+    font-size: 25px;
+    line-height: 2;
+    padding-left: 45px;
+  }
+`;
+
+const ModalText = styled.div`
+  width: 50%;
+  height: 100%;
+  box-sizing: border-box;
+  padding: 70px 0 0 100px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+`;
+
+const InputBorderStyle = css`
+  border: 2px solid white;
+  height: 100%;
+  width: 350px;
+  &:hover {
+    border: 2px solid #c3ff5b;
+  }
+`;
+
+const SubmitBox = styled.div`
+  width: 70%;
+  height: 45px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+
+  & > div {
+    cursor: pointer;
+    color: #c3ff5b;
+    border: 2px solid #c3ff5b;
+    width: 200px;
+    height: 90%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px;
+    font-weight: 600;
+
+    &:hover {
+      background-color: #c3ff5b;
+      color: #000000;
+    }
+  }
+`;
+
+const InputBox = styled.div`
+  width: 70%;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  & > span {
+    font-size: 20px;
+    font-weight: 500;
+    color: #ffffff;
+  }
+
+  & > div {
+    ${InputBorderStyle};
+
+    & > input {
+      height: 100%;
+      width: 100%;
+      border: none;
+      background-color: transparent;
+      color: white;
+      box-sizing: border-box;
+      padding: 0 10px;
+      font-size: 20px;
+      &:focus {
+        outline: none;
+      }
+    }
+  }
+`;
+
+const TextAreaBox = styled.div`
+  width: 70%;
+  height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  & > span {
+    font-size: 20px;
+    font-weight: 500;
+    color: #ffffff;
+  }
+
+  & > div {
+    ${InputBorderStyle}
+
+    & > textarea {
+      width: 100%;
+      height: 100%;
+      background-color: transparent;
+      color: white;
+      box-sizing: border-box;
+      padding: 10px;
+      font-size: 20px;
+      font-weight: 600;
+      resize: none;
+
+      &::placeholder {
+        font-size: 20px;
+        font-weight: 600;
+      }
+    }
+  }
+`;
+
+const categories = [
+  { value: "all", label: "all" },
+  { value: "featured", label: "featured" },
+  { value: "fitness", label: "fitness" },
+  { value: "diet", label: "diet" },
+  { value: "invest", label: "invest" },
+];
+
+const selectStyle = {
+  control: (style: any, { isFocused }: any) => ({
+    //current
+    ...style,
+    boxShadow: "none",
+    backgroundColor: "transparent",
+    outline: "none",
+    border: "none",
+    color: "#ebebeb",
+    width: "100%",
+  }),
+  option: (style: any, { isFocused }: any) => {
+    //option
+    return {
+      ...style,
+      backgroundColor: isFocused ? "#DDCEF5" : null,
+      color: "#333333",
+      width: "100%",
+      fontWeight: "500",
+      fontSize: "20px",
+    };
+  },
+  singleValue: (base: any) => ({
+    ...base,
+    color: "#ebebeb",
+    fontSize: "20px",
+    fontWeight: "500",
+  }),
+};
+
 export default function Main() {
   const displayStore = useDisplayStore();
+  const [selectedCategory, setSelectedCategory] = useState(categories[0]);
+  const handleSelectedCategory = (e: any) => {
+    setSelectedCategory(e.value);
+  };
+
   const handleScroll = () => {
     if ((window.scrollY as number) > 200) {
       displayStore.setHeaderState(false);
@@ -136,6 +322,59 @@ export default function Main() {
           </BodyContainer>
         </StyledElement>
       )}
+
+      <WriteBox>
+        <ModalTitle>
+          <p>
+            {/* 얘 클릭하면 위로 스크롤 */}
+            <img
+              style={{ marginRight: "5px", cursor: "pointer" }}
+              width={"40px"}
+              height={"40px"}
+              src={logoIcon}
+            />
+            K-Blog
+          </p>
+          <p>Write a blog post</p>
+          <span>by Gibeom Kim</span>
+        </ModalTitle>
+        <ModalText>
+          <InputBox>
+            <span>Title</span>
+            <div>
+              <input placeholder="Title" />
+            </div>
+          </InputBox>
+          <TextAreaBox>
+            <span>Detail</span>
+            <div>
+              <textarea placeholder="Detail" />
+            </div>
+          </TextAreaBox>
+          <InputBox>
+            <span>Category</span>
+            <div>
+              <Select
+                onChange={handleSelectedCategory}
+                defaultValue={selectedCategory}
+                isClearable={false}
+                isSearchable={false}
+                options={categories}
+                styles={selectStyle}
+              />
+            </div>
+          </InputBox>
+          <InputBox>
+            <span>Image</span>
+            <span>이미지는 서버 구현 후 개발 예정입니다.</span>
+          </InputBox>
+          <SubmitBox>
+            <div>
+              <span>Upload</span>
+            </div>
+          </SubmitBox>
+        </ModalText>
+      </WriteBox>
       <Footer>
         <BottomBox>
           <Bottom>
