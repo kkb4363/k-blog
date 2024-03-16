@@ -4,15 +4,18 @@ import moreIcon from "../assets/more.svg";
 
 const BlogGrid = styled.div`
   width: 100%;
+  box-sizing: border-box;
   padding-top: 20px;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   grid-row-gap: 20px;
   place-items: center;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 
   /* grid-template-columns: repeat(auto-fill, 300px);
-  grid-auto-rows: 20px;
-  grid-row-gap: 10px;
+grid-auto-rows: 20px;
+grid-row-gap: 10px;
   grid-column-gap: 16px; */
 `;
 

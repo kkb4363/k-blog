@@ -9,21 +9,24 @@ import twiterIcon from "../../assets/twitter.svg";
 import instagramIcon from "../../assets/instagram.svg";
 
 const PcBox = styled.div`
-  overflow: auto;
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100%;
-  min-height: calc(100vh - 120px);
+  width: 100vw;
 `;
 
 const BodyContainer = styled.div`
   width: 100%;
+  height: 100%;
+  min-height: calc(100vh - 120px);
   display: flex;
   justify-content: center;
+  overflow-y: scroll;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 `;
 
-const fadeInAnimation = keyframes`
+export const fadeInAnimation = keyframes`
   from {
     opacity: 0.2;
   }
@@ -32,9 +35,10 @@ const fadeInAnimation = keyframes`
   }
 `;
 
-const StyledElement = styled.div`
+export const StyledElement = styled.div`
   animation: ${fadeInAnimation} 0.5s ease-in;
   width: 100%;
+  height: 100%;
 `;
 
 const HeaderStyledElement = styled(StyledElement)`
@@ -98,44 +102,40 @@ const Copy = styled.div`
 export default function Main() {
   const displayStore = useDisplayStore();
   const handleScroll = () => {
-    if ((document?.getElementById("sc")?.scrollTop as number) > 200) {
+    if ((window.scrollY as number) > 200) {
       displayStore.setHeaderState(false);
     } else {
       displayStore.setHeaderState(true);
     }
   };
   useEffect(() => {
-    document?.getElementById("sc")?.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll);
     return () => {
-      document
-        ?.getElementById("sc")
-        ?.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("scroll", handleScroll);
     };
   }, []);
 
   return (
-    <>
-      <PcBox id="sc">
-        {displayStore.headerState && (
-          <HeaderStyledElement>
-            <Header />
-          </HeaderStyledElement>
-        )}
-        {displayStore.selectedTab === "home" && (
-          <StyledElement>
-            <BodyContainer>
-              <Home />
-            </BodyContainer>
-          </StyledElement>
-        )}
-        {displayStore.selectedTab === "blog" && (
-          <StyledElement>
-            <BodyContainer>
-              <Blog />
-            </BodyContainer>
-          </StyledElement>
-        )}
-      </PcBox>
+    <PcBox>
+      {displayStore.headerState && (
+        <HeaderStyledElement>
+          <Header />
+        </HeaderStyledElement>
+      )}
+      {displayStore.selectedTab === "home" && (
+        <StyledElement>
+          <BodyContainer>
+            <Home />
+          </BodyContainer>
+        </StyledElement>
+      )}
+      {displayStore.selectedTab === "blog" && (
+        <StyledElement>
+          <BodyContainer>
+            <Blog />
+          </BodyContainer>
+        </StyledElement>
+      )}
       <Footer>
         <BottomBox>
           <Bottom>
@@ -154,6 +154,6 @@ export default function Main() {
           <p>© 2024 by Developer kkb. Powered and secured by Wix</p>
         </Copy>
       </Footer>
-    </>
+    </PcBox>
   );
 }

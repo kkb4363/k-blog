@@ -1,23 +1,19 @@
 import styled from "styled-components";
+import { useDisplayStore } from "../stores/display.store";
+import AllPost from "./AllPost";
 
 import circleIcon from "../assets/circle.svg";
 import checkIcon from "../assets/check.svg";
 import searchIcon from "../assets/search.svg";
-
-import { useDisplayStore } from "../stores/display.store";
-import AllPost from "./AllPost";
-
+import { StyledElement } from "../desktop/pages/Main";
 const Body = styled.div`
   width: 50%;
   display: flex;
   flex-direction: column;
   align-items: center;
   padding-top: 15vh;
-  overflow: auto;
   padding-bottom: 20px;
-
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+  box-sizing: border-box;
 `;
 
 const Title = styled.div`
@@ -186,7 +182,11 @@ export default function Blog() {
           </LoginBox>
         </SearchAndLoginBox>
       </CategoryRow>
-      {displayStore.currentPostCategory === "all" && <AllPost />}
+      {displayStore.currentPostCategory === "all" && (
+        <StyledElement>
+          <AllPost />
+        </StyledElement>
+      )}
     </Body>
   );
 }

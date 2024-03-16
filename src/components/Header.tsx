@@ -6,12 +6,12 @@ import logoIcon from "../assets/logo.png";
 const HeaderContainer = styled.div`
   box-sizing: border-box;
   width: 100%;
-  height: 12%;
+  height: 120px;
   padding: 50px 50px 0 50px;
   display: flex;
   justify-content: center;
   align-items: center;
-  position: absolute;
+  position: fixed;
   top: -30px;
 `;
 
