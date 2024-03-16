@@ -1,11 +1,13 @@
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 
-export type Tabs = "home" | "blog";
+type Tabs = "home" | "blog";
+type Categories = "all" | "featured" | "fitness" | "diet" | "invest";
 
 interface DisplayState {
   selectedTab: Tabs;
   headerState: boolean;
+  currentPostCategory: Categories;
 }
 
 interface Action {
@@ -13,11 +15,14 @@ interface Action {
   getSelectedTab: () => any;
   setHeaderState: (state: boolean) => void;
   getHeaderState: () => any;
+  setPostCategory: (category: Categories) => void;
+  getPostCategory: () => any;
 }
 
 const initData: DisplayState = {
   selectedTab: "home",
   headerState: true,
+  currentPostCategory: "all",
 };
 
 export const useDisplayStore = create<DisplayState & Action>()(
@@ -35,6 +40,12 @@ export const useDisplayStore = create<DisplayState & Action>()(
       },
       getHeaderState: () => {
         return get().headerState;
+      },
+      setPostCategory: (category: Categories) => {
+        return set({ currentPostCategory: category });
+      },
+      getPostCategory: () => {
+        return get().currentPostCategory;
       },
       clear: () => {
         return set({ ...initData });

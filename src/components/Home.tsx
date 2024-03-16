@@ -12,10 +12,6 @@ const Body = styled.div`
   align-items: center;
   padding-top: 15vh;
   padding-bottom: 20px;
-  overflow: auto;
-
-  -ms-overflow-style: none;
-  scrollbar-width: none;
 `;
 
 const Title = styled.div`

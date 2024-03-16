@@ -9,12 +9,12 @@ import twiterIcon from "../../assets/twitter.svg";
 import instagramIcon from "../../assets/instagram.svg";
 
 const PcBox = styled.div`
-  overflow: scroll;
+  overflow: auto;
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  min-height: calc(100vh - 120px);
 `;
 
 const BodyContainer = styled.div`
@@ -39,6 +39,15 @@ const StyledElement = styled.div`
 
 const HeaderStyledElement = styled(StyledElement)`
   animation: ${fadeInAnimation} 0.2s ease-in;
+`;
+
+const Footer = styled.div`
+  width: 100%;
+  height: 120px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
 `;
 
 const BottomBox = styled.div`
@@ -79,7 +88,8 @@ const SocialRow = styled.div`
 
 const Copy = styled.div`
   width: 50%;
-  padding: 10px;
+
+  padding: 10px 0;
   & > p {
     font-size: 14px;
   }
@@ -104,42 +114,46 @@ export default function Main() {
   }, []);
 
   return (
-    <PcBox id="sc">
-      {displayStore.headerState && (
-        <HeaderStyledElement>
-          <Header />
-        </HeaderStyledElement>
-      )}
-      {displayStore.selectedTab === "home" && (
-        <StyledElement>
-          <BodyContainer>
-            <Home />
-          </BodyContainer>
-        </StyledElement>
-      )}
-      {displayStore.selectedTab === "blog" && (
-        <StyledElement>
-          <BodyContainer>
-            <Blog />
-          </BodyContainer>
-        </StyledElement>
-      )}
-      <BottomBox>
-        <Bottom>
-          <span>kkb4363@naver.com</span>
-          <SocialRow>
-            <a href="https://www.instagram.com/gibeom__0/" target="_blank">
-              <img src={instagramIcon} />
-            </a>
-            <a href="https://twitter.com/gimgibe55865136" target="_blank">
-              <img src={twiterIcon} />
-            </a>
-          </SocialRow>
-        </Bottom>
-      </BottomBox>
-      <Copy>
-        <p>© 2024 by Developer kkb. Powered and secured by Wix</p>
-      </Copy>
-    </PcBox>
+    <>
+      <PcBox id="sc">
+        {displayStore.headerState && (
+          <HeaderStyledElement>
+            <Header />
+          </HeaderStyledElement>
+        )}
+        {displayStore.selectedTab === "home" && (
+          <StyledElement>
+            <BodyContainer>
+              <Home />
+            </BodyContainer>
+          </StyledElement>
+        )}
+        {displayStore.selectedTab === "blog" && (
+          <StyledElement>
+            <BodyContainer>
+              <Blog />
+            </BodyContainer>
+          </StyledElement>
+        )}
+      </PcBox>
+      <Footer>
+        <BottomBox>
+          <Bottom>
+            <span>kkb4363@naver.com</span>
+            <SocialRow>
+              <a href="https://www.instagram.com/gibeom__0/" target="_blank">
+                <img src={instagramIcon} />
+              </a>
+              <a href="https://twitter.com/gimgibe55865136" target="_blank">
+                <img src={twiterIcon} />
+              </a>
+            </SocialRow>
+          </Bottom>
+        </BottomBox>
+        <Copy>
+          <p>© 2024 by Developer kkb. Powered and secured by Wix</p>
+        </Copy>
+      </Footer>
+    </>
   );
 }
