@@ -100,8 +100,12 @@ const fadeInAnimation = keyframes`
 `;
 
 const StyledElement = styled.div`
-  animation: ${fadeInAnimation} 0.2s ease-in;
+  animation: ${fadeInAnimation} 0.5s ease-in;
   width: 100%;
+`;
+
+const HeaderStyledElement = styled(StyledElement)`
+  animation: ${fadeInAnimation} 0.2s ease-in;
 `;
 
 export default function Main() {
@@ -126,30 +130,32 @@ export default function Main() {
   return (
     <PcBox id="sc">
       {displayStore.headerState && (
-        <Header>
-          <Col>
-            <Row>
-              <Left>
-                <Logo>
-                  <img src={logoIcon} />
-                </Logo>
-                <Text1>
-                  <p>K-Blog</p>
-                  <p>Hope Happiness</p>
-                </Text1>
-              </Left>
-              <Right>
-                <span onClick={() => displayStore.setSelectedTab("home")}>
-                  Home
-                </span>
-                <span onClick={() => displayStore.setSelectedTab("blog")}>
-                  Blog
-                </span>
-                <span>Login</span>
-              </Right>
-            </Row>
-          </Col>
-        </Header>
+        <HeaderStyledElement>
+          <Header>
+            <Col>
+              <Row>
+                <Left>
+                  <Logo>
+                    <img src={logoIcon} />
+                  </Logo>
+                  <Text1>
+                    <p>K-Blog</p>
+                    <p>Hope Happiness</p>
+                  </Text1>
+                </Left>
+                <Right>
+                  <span onClick={() => displayStore.setSelectedTab("home")}>
+                    Home
+                  </span>
+                  <span onClick={() => displayStore.setSelectedTab("blog")}>
+                    Blog
+                  </span>
+                  <span>Login</span>
+                </Right>
+              </Row>
+            </Col>
+          </Header>
+        </HeaderStyledElement>
       )}
       {displayStore.selectedTab === "home" && (
         <StyledElement>
