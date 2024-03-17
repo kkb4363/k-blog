@@ -6,6 +6,7 @@ import { StyledElement } from "../desktop/pages/Main";
 import circleIcon from "../assets/circle.svg";
 import checkIcon from "../assets/check.svg";
 import searchIcon from "../assets/search.svg";
+import { useEffect, useState } from "react";
 
 const Body = styled.div`
   width: 50%;
@@ -140,9 +141,7 @@ const LoginBox = styled.div`
 export default function Blog() {
   const displayStore = useDisplayStore();
   const handleCurrentCategory = (category: string) => {
-    return displayStore.currentPostCategory === category
-      ? "rgb(75, 107, 19)"
-      : "#000000";
+    return displayStore.currentPostCategory === category ? "rgb(75, 107, 19)" : "#000000";
   };
 
   return (
@@ -205,7 +204,29 @@ export default function Blog() {
           </LoginBox>
         </SearchAndLoginBox>
       </CategoryRow>
+
       {displayStore.currentPostCategory === "all" && (
+        <StyledElement>
+          <AllPost />
+        </StyledElement>
+      )}
+
+      {displayStore.currentPostCategory === "featured" && (
+        <StyledElement>
+          <AllPost />
+        </StyledElement>
+      )}
+      {displayStore.currentPostCategory === "fitness" && (
+        <StyledElement>
+          <AllPost />
+        </StyledElement>
+      )}
+      {displayStore.currentPostCategory === "diet" && (
+        <StyledElement>
+          <AllPost />
+        </StyledElement>
+      )}
+      {displayStore.currentPostCategory === "invest" && (
         <StyledElement>
           <AllPost />
         </StyledElement>

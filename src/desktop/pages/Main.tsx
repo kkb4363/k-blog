@@ -289,18 +289,18 @@ export default function Main() {
   };
 
   const handleScroll = () => {
-    if ((window.scrollY as number) > 200) {
-      displayStore.setHeaderState(false);
-    } else {
-      displayStore.setHeaderState(true);
+    const shouldBeVisible = window.scrollY < 200;
+    if (displayStore.headerState !== shouldBeVisible) {
+      displayStore.setHeaderState(shouldBeVisible);
     }
   };
+
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-  }, []);
+  }, [displayStore.headerState]);
 
   const titleRef = useRef<HTMLInputElement>(null);
   const detailRef = useRef<HTMLTextAreaElement>(null);

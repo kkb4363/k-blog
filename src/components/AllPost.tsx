@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import tmp from "../assets/tmp1.png";
 import moreIcon from "../assets/more.svg";
+import { Post, useDisplayStore } from "../stores/display.store";
+import { useEffect, useState } from "react";
 
 const BlogGrid = styled.div`
   width: 100%;
@@ -98,74 +100,42 @@ const PostBody = styled.div`
 `;
 
 export default function AllPost() {
+  const displayStore = useDisplayStore();
+  const currentCategory = displayStore.getPostCategory();
+
+  const getPostList = () => {
+    if (currentCategory === "all") {
+      return displayStore.getPostList();
+    } else {
+      return displayStore
+        .getPostList()
+        .filter((item: Post) => item.category === currentCategory);
+    }
+  };
+
+  console.log(getPostList());
+
   return (
     <BlogGrid>
-      <PostBox>
-        <PostImg src={tmp} />
-        <PostText>
-          <PostTitleRow>
-            <PostTitle>
-              <span>Admin</span>
-              <span>Mar 22, 2023 . 1 min</span>
-            </PostTitle>
-            <img src={moreIcon} />
-          </PostTitleRow>
-          <PostTitle2>
-            <h2>5 Superfood you shouldn' skip</h2>
-          </PostTitle2>
-          <PostBody>
-            <span>
-              Create a blog post subtitle that summarizes your post in a
-              fewhort, punchy sentences and entices your audience to
-              continuereading....
-            </span>
-          </PostBody>
-        </PostText>
-      </PostBox>
-      <PostBox>
-        <PostImg src={tmp} />
-        <PostText>
-          <PostTitleRow>
-            <PostTitle>
-              <span>Admin</span>
-              <span>Mar 22, 2023 . 1 min</span>
-            </PostTitle>
-            <img src={moreIcon} />
-          </PostTitleRow>
-          <PostTitle2>
-            <h2>5 Superfood you shouldn' skip</h2>
-          </PostTitle2>
-          <PostBody>
-            <span>
-              Create a blog post subtitle that summarizes your post in a
-              fewhort, punchy sentences and entices your audience to
-              continuereading....
-            </span>
-          </PostBody>
-        </PostText>
-      </PostBox>
-      <PostBox>
-        <PostImg src={tmp} />
-        <PostText>
-          <PostTitleRow>
-            <PostTitle>
-              <span>Admin</span>
-              <span>Mar 22, 2023 . 1 min</span>
-            </PostTitle>
-            <img src={moreIcon} />
-          </PostTitleRow>
-          <PostTitle2>
-            <h2>5 Superfood you shouldn' skip</h2>
-          </PostTitle2>
-          <PostBody>
-            <span>
-              Create a blog post subtitle that summarizes your post in a
-              fewhort, punchy sentences and entices your audience to
-              continuereading....
-            </span>
-          </PostBody>
-        </PostText>
-      </PostBox>
+      {getPostList()?.map((item: Post) => (
+        <PostBox key={item.date}>
+          <PostText>
+            <PostTitleRow>
+              <PostTitle>
+                <span>{item.name}</span>
+                <span>{item.date} min</span>
+              </PostTitle>
+              <img src={moreIcon} />
+            </PostTitleRow>
+            <PostTitle2>
+              <h2>{item.title}</h2>
+            </PostTitle2>
+            <PostBody>
+              <span>{item.detail}</span>
+            </PostBody>
+          </PostText>
+        </PostBox>
+      ))}
     </BlogGrid>
   );
 }
