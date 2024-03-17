@@ -2,14 +2,14 @@ import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 
 type Tabs = "home" | "blog";
-type Categories = "all" | "featured" | "fitness" | "diet" | "invest";
+export type Categories = "all" | "featured" | "fitness" | "diet" | "invest";
 
-interface Post {
+export interface Post {
   title: string;
-  text: string;
+  detail: string;
   name: string;
   date: string;
-  category: string;
+  category: Categories;
 }
 
 interface DisplayState {
@@ -60,8 +60,9 @@ export const useDisplayStore = create<DisplayState & Action>()(
         return get().currentPostCategory;
       },
       setPostList: (post: Post) => {
-        const newPostList = { ...initData.postList, post };
-        return set({ postList: newPostList });
+        const prev = get().postList;
+        prev.push(post);
+        return set({ postList: prev });
       },
       getPostList: () => {
         return get().postList;

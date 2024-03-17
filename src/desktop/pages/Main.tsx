@@ -1,8 +1,9 @@
 import styled, { css, keyframes } from "styled-components";
 import Select from "react-select";
+import dayjs from "dayjs";
 
-import { useDisplayStore } from "../../stores/display.store";
-import { useEffect, useState } from "react";
+import { Categories, Post, useDisplayStore } from "../../stores/display.store";
+import { FormEvent, useEffect, useRef, useState } from "react";
 import Home from "../../components/Home";
 import Blog from "../../components/Blog";
 import Header from "../../components/Header";
@@ -149,14 +150,14 @@ const InputBorderStyle = css`
   }
 `;
 
-const SubmitBox = styled.div`
+const SubmitBox = styled.form`
   width: 70%;
   height: 45px;
   display: flex;
   justify-content: flex-end;
   align-items: center;
 
-  & > div {
+  & > button {
     cursor: pointer;
     color: #c3ff5b;
     border: 2px solid #c3ff5b;
@@ -167,6 +168,7 @@ const SubmitBox = styled.div`
     align-items: center;
     font-size: 18px;
     font-weight: 600;
+    background-color: transparent;
 
     &:hover {
       background-color: #c3ff5b;
@@ -243,7 +245,6 @@ const TextAreaBox = styled.div`
 `;
 
 const categories = [
-  { value: "all", label: "all" },
   { value: "featured", label: "featured" },
   { value: "fitness", label: "fitness" },
   { value: "diet", label: "diet" },
@@ -301,6 +302,28 @@ export default function Main() {
     };
   }, []);
 
+  const titleRef = useRef<HTMLInputElement>(null);
+  const detailRef = useRef<HTMLTextAreaElement>(null);
+  const currentDate = dayjs();
+  const formattedDate = currentDate.format("YYYY-MM-DD HH:mm:ss");
+
+  const handleSubmit = (e: FormEvent) => {
+    if (titleRef?.current && detailRef?.current) {
+      e.preventDefault();
+      const newPost: Post = {
+        title: titleRef.current.value,
+        detail: detailRef.current.value,
+        name: "gibeom",
+        date: formattedDate,
+        category: selectedCategory.value as Categories,
+      };
+      displayStore.setPostList(newPost);
+      titleRef.current.value = "";
+      detailRef.current.value = "";
+      setSelectedCategory(categories[0]);
+    }
+  };
+
   return (
     <PcBox>
       {displayStore.headerState && (
@@ -323,7 +346,7 @@ export default function Main() {
         </StyledElement>
       )}
 
-      <WriteBox>
+      <WriteBox onSubmit={handleSubmit}>
         <ModalTitle>
           <p>
             {/* 얘 클릭하면 위로 스크롤 */}
@@ -342,13 +365,13 @@ export default function Main() {
           <InputBox>
             <span>Title</span>
             <div>
-              <input placeholder="Title" />
+              <input ref={titleRef} placeholder="Title" />
             </div>
           </InputBox>
           <TextAreaBox>
             <span>Detail</span>
             <div>
-              <textarea placeholder="Detail" />
+              <textarea ref={detailRef} placeholder="Detail" />
             </div>
           </TextAreaBox>
           <InputBox>
@@ -369,9 +392,9 @@ export default function Main() {
             <span>이미지는 서버 구현 후 개발 예정입니다.</span>
           </InputBox>
           <SubmitBox>
-            <div>
+            <button>
               <span>Upload</span>
-            </div>
+            </button>
           </SubmitBox>
         </ModalText>
       </WriteBox>
