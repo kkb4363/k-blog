@@ -1,8 +1,12 @@
 import styled from "styled-components";
-import tmp from "../assets/tmp1.png";
+import dayjs from "dayjs";
+import duration from "dayjs/plugin/duration";
+dayjs.extend(duration);
+
 import moreIcon from "../assets/more.svg";
+import deleteIcon from "../assets/delete.png";
 import { Post, useDisplayStore } from "../stores/display.store";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 const BlogGrid = styled.div`
   width: 100%;
@@ -53,7 +57,7 @@ const PostTitleRow = styled.div`
   justify-content: space-between;
   align-items: center;
   padding-right: 10px;
-
+  position: relative;
   & > img {
     width: 20px;
     height: 20px;
@@ -69,6 +73,10 @@ const PostTitle = styled.div`
     font-size: 12px;
     line-height: 1.2;
     font-weight: 500;
+  }
+
+  & > span:nth-child(2) {
+    color: rgb(117, 119, 122);
   }
 `;
 
@@ -99,9 +107,44 @@ const PostBody = styled.div`
   }
 `;
 
+const DeleteModal = styled.div`
+  position: absolute;
+  width: 150px;
+  height: 50px;
+  background-color: white;
+  border-radius: 15px;
+  right: 0;
+  top: 30px;
+  box-shadow: 1px 1px 10px black, -1px -1px 10px black;
+  display: flex;
+  padding: 20px;
+  box-sizing: border-box;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  &:hover {
+    background-color: #d8d8d8;
+  }
+
+  & > div {
+    & > img {
+      width: 16px;
+      height: 16px;
+    }
+
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    font-size: 16px;
+    font-weight: 600;
+    color: #000000;
+  }
+`;
+
 export default function AllPost() {
   const displayStore = useDisplayStore();
   const currentCategory = displayStore.getPostCategory();
+  const [openDelete, setOpenDelete] = useState({} as any);
 
   const getPostList = () => {
     if (currentCategory === "all") {
@@ -113,29 +156,56 @@ export default function AllPost() {
     }
   };
 
-  console.log(getPostList());
+  const handleClick = (date: any) => {
+    setOpenDelete((prev: { [x: string]: any }) => ({
+      ...prev,
+      [date]: !prev[date],
+    }));
+  };
+
+  const handleDelete = (id: any) => {
+    const newPostList = displayStore.getPostList();
+
+    displayStore.setPostList(newPostList.filter((item: any) => item.id != id));
+  };
 
   return (
-    <BlogGrid>
-      {getPostList()?.map((item: Post) => (
-        <PostBox key={item.date}>
-          <PostText>
-            <PostTitleRow>
-              <PostTitle>
-                <span>{item.name}</span>
-                <span>{item.date} min</span>
-              </PostTitle>
-              <img src={moreIcon} />
-            </PostTitleRow>
-            <PostTitle2>
-              <h2>{item.title}</h2>
-            </PostTitle2>
-            <PostBody>
-              <span>{item.detail}</span>
-            </PostBody>
-          </PostText>
-        </PostBox>
-      ))}
-    </BlogGrid>
+    <>
+      <BlogGrid>
+        {getPostList()?.map((item: Post) => {
+          const time = dayjs.duration(dayjs().diff(item.date));
+          const hour = parseInt(time.format("m"));
+          return (
+            <PostBox key={item.id}>
+              <PostText>
+                <PostTitleRow>
+                  <PostTitle>
+                    <span>{item.name}</span>
+                    <span>{hour}분전</span>
+                  </PostTitle>
+                  <img src={moreIcon} onClick={() => handleClick(item.date)} />
+                  {openDelete[item.date] && (
+                    <DeleteModal
+                      onClick={() => displayStore.deletePostList(item.id)}
+                    >
+                      <div>
+                        <img src={deleteIcon} />
+                        삭제 하기
+                      </div>
+                    </DeleteModal>
+                  )}
+                </PostTitleRow>
+                <PostTitle2>
+                  <h2>{item.title}</h2>
+                </PostTitle2>
+                <PostBody>
+                  <span>{item.detail}</span>
+                </PostBody>
+              </PostText>
+            </PostBox>
+          );
+        })}
+      </BlogGrid>
+    </>
   );
 }

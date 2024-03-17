@@ -10,6 +10,7 @@ export interface Post {
   name: string;
   date: string;
   category: Categories;
+  id: any;
 }
 
 interface DisplayState {
@@ -28,6 +29,7 @@ interface Action {
   getPostCategory: () => any;
   setPostList: (post: Post) => void;
   getPostList: () => any;
+  deletePostList: (id: any) => void;
 }
 
 const initData: DisplayState = {
@@ -66,6 +68,10 @@ export const useDisplayStore = create<DisplayState & Action>()(
       },
       getPostList: () => {
         return get().postList;
+      },
+      deletePostList: (id: any) => {
+        const prev = get().postList.filter((item: any) => item.id != id);
+        return set({ postList: prev });
       },
       clear: () => {
         return set({ ...initData });

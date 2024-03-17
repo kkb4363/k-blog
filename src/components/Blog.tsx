@@ -6,7 +6,6 @@ import { StyledElement } from "../desktop/pages/Main";
 import circleIcon from "../assets/circle.svg";
 import checkIcon from "../assets/check.svg";
 import searchIcon from "../assets/search.svg";
-import { useEffect, useState } from "react";
 
 const Body = styled.div`
   width: 50%;
@@ -76,7 +75,7 @@ const CategoryRow = styled.div`
 `;
 
 const Categories = styled.div`
-  width: 45%;
+  width: 50%;
   height: 100%;
   display: flex;
   justify-content: space-between;
@@ -99,6 +98,7 @@ const SearchAndLoginBox = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding-left: 20px;
 `;
 
 const SearchInput = styled.div`
@@ -141,7 +141,16 @@ const LoginBox = styled.div`
 export default function Blog() {
   const displayStore = useDisplayStore();
   const handleCurrentCategory = (category: string) => {
-    return displayStore.currentPostCategory === category ? "rgb(75, 107, 19)" : "#000000";
+    return displayStore.currentPostCategory === category
+      ? "rgb(75, 107, 19)"
+      : "#000000";
+  };
+
+  const scrollToBottom = () => {
+    window.scrollTo({
+      top: window.innerHeight,
+      behavior: "smooth",
+    });
   };
 
   return (
@@ -200,7 +209,7 @@ export default function Blog() {
             <input placeholder="Search" />
           </SearchInput>
           <LoginBox>
-            <span>Write a blog</span>
+            <span onClick={scrollToBottom}>Write a blog</span>
           </LoginBox>
         </SearchAndLoginBox>
       </CategoryRow>

@@ -58,6 +58,7 @@ const Logo = styled.div`
     object-fit: cover;
     width: 50px;
     height: 50px;
+    cursor: pointer;
   }
 `;
 
@@ -82,13 +83,20 @@ export default function Header() {
     displayStore.setPostCategory("all");
   };
 
+  const scrollToBottom = () => {
+    window.scrollTo({
+      top: window.innerHeight,
+      behavior: "smooth",
+    });
+  };
+
   return (
     <HeaderContainer>
       <Col>
         <Row>
           <Left>
             <Logo>
-              <img src={logoIcon} />
+              <img src={logoIcon} onClick={scrollToBottom} />
             </Logo>
             <Text1>
               <p>K-Blog</p>

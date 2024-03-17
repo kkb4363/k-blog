@@ -2,7 +2,7 @@ import styled, { css, keyframes } from "styled-components";
 import Select from "react-select";
 import dayjs from "dayjs";
 
-import { Categories, Post, useDisplayStore } from "../../stores/display.store";
+import { Post, useDisplayStore } from "../../stores/display.store";
 import { FormEvent, useEffect, useRef, useState } from "react";
 import Home from "../../components/Home";
 import Blog from "../../components/Blog";
@@ -104,6 +104,8 @@ const Copy = styled.div`
 `;
 
 const WriteBox = styled.div`
+  margin-top: 100px;
+
   width: 90%;
   height: 500px;
   background-color: #000000;
@@ -283,7 +285,7 @@ const selectStyle = {
 
 export default function Main() {
   const displayStore = useDisplayStore();
-  const [selectedCategory, setSelectedCategory] = useState(categories[0]);
+  const [selectedCategory, setSelectedCategory] = useState("featured" as any);
   const handleSelectedCategory = (e: any) => {
     setSelectedCategory(e.value);
   };
@@ -315,13 +317,21 @@ export default function Main() {
         detail: detailRef.current.value,
         name: "gibeom",
         date: formattedDate,
-        category: selectedCategory.value as Categories,
+        category: selectedCategory as any,
+        id: Math.random(),
       };
       displayStore.setPostList(newPost);
       titleRef.current.value = "";
       detailRef.current.value = "";
       setSelectedCategory(categories[0]);
     }
+  };
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
   };
 
   return (
@@ -349,8 +359,8 @@ export default function Main() {
       <WriteBox onSubmit={handleSubmit}>
         <ModalTitle>
           <p>
-            {/* 얘 클릭하면 위로 스크롤 */}
             <img
+              onClick={scrollToTop}
               style={{ marginRight: "5px", cursor: "pointer" }}
               width={"40px"}
               height={"40px"}
@@ -378,6 +388,7 @@ export default function Main() {
             <span>Category</span>
             <div>
               <Select
+                placeholder={"Category"}
                 onChange={handleSelectedCategory}
                 defaultValue={selectedCategory}
                 isClearable={false}
