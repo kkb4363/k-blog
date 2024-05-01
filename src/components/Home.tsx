@@ -143,8 +143,15 @@ const BlogText = styled.div`
   height: 80%;
   box-sizing: border-box;
   padding: 10px;
-  font-size: 14px;
-  font-weight: 400;
+  overflow-y: hidden;
+
+  & > pre {
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.5;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+  }
 `;
 
 export default function Home() {
@@ -190,7 +197,7 @@ export default function Home() {
                   <span>{child.title}</span>
                 </BlogItemTitle>
                 <BlogText>
-                  <span>{child.detail}</span>
+                  <pre>{child.detail}</pre>
                 </BlogText>
               </BlogItemBox>
             ))}

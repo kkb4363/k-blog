@@ -94,8 +94,14 @@ export const useDisplayStore = create<DisplayState & Action>()(
         return get().postList;
       },
       deletePostList: (id: any) => {
-        const prev = get().postList.filter((item: any) => item.id != id);
-        return set({ postList: prev });
+        const prev = get().postList;
+        const deletedPostList = prev.map((item) => {
+          return {
+            ...item,
+            child: item.child.filter((c: any) => c.id !== id),
+          };
+        });
+        return set({ postList: deletedPostList });
       },
       clear: () => {
         return set({ ...initData });

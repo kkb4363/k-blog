@@ -35,16 +35,14 @@ const PostImg = styled.img`
 const PostText = styled.div`
   display: flex;
   width: 100%;
-  height: 50%;
   flex-direction: column;
   justify-content: center;
   gap: 20px;
   box-sizing: border-box;
-  padding: 0 30px 30px 30px;
+  padding: 30px;
 `;
 
 const PostTitleRow = styled.div`
-  margin-top: -50px;
   width: 100%;
   height: 30px;
   display: flex;
@@ -94,10 +92,14 @@ const PostTitle2 = styled.div`
 
 const PostBody = styled.div`
   width: 90%;
-  height: 50px;
+  height: 400px;
+  overflow: hidden;
   & > pre {
     font-size: 16px;
     line-height: 1.4;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+    overflow: hidden;
   }
 `;
 
