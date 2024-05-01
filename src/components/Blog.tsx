@@ -6,9 +6,10 @@ import { StyledElement } from "../desktop/pages/Main";
 import circleIcon from "../assets/circle.svg";
 import checkIcon from "../assets/check.svg";
 import searchIcon from "../assets/search.svg";
+import { useEffect } from "react";
 
 const Body = styled.div`
-  width: 50%;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -148,13 +149,19 @@ export default function Blog() {
 
   const scrollToBottom = () => {
     window.scrollTo({
-      top: window.innerHeight,
+      top: 100000,
       behavior: "smooth",
     });
   };
 
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+    });
+  }, []);
+
   return (
-    <Body>
+    <Body id="scrollBottom">
       <Title>
         <Line2 src={circleIcon} />
         <p>Keep a log</p>

@@ -13,21 +13,15 @@ import twiterIcon from "../../assets/twitter.svg";
 import instagramIcon from "../../assets/instagram.svg";
 
 const PcBox = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   width: 100vw;
+  height: 100vh;
 `;
 
-const BodyContainer = styled.div`
+const Body = styled.div`
   width: 100%;
-  height: 100%;
-  min-height: calc(100vh - 120px);
-  display: flex;
-  justify-content: center;
-  overflow-y: scroll;
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+  min-width: 1200px;
+  padding: 0 200px;
+  box-sizing: border-box;
 `;
 
 export const fadeInAnimation = keyframes`
@@ -41,16 +35,11 @@ export const fadeInAnimation = keyframes`
 
 export const StyledElement = styled.div`
   animation: ${fadeInAnimation} 0.5s ease-in;
-  width: 100%;
-  height: 100%;
-`;
-
-const HeaderStyledElement = styled(StyledElement)`
-  animation: ${fadeInAnimation} 0.2s ease-in;
 `;
 
 const Footer = styled.div`
-  width: 90%;
+  width: 100%;
+  min-width: 1200px;
   height: 120px;
   display: flex;
   justify-content: center;
@@ -68,7 +57,7 @@ const BottomBox = styled.div`
 `;
 
 const Bottom = styled.div`
-  width: 50%;
+  width: 80%;
   padding: 20px 0 30px 0;
   display: flex;
   justify-content: space-between;
@@ -82,7 +71,7 @@ const Bottom = styled.div`
 
 const SocialRow = styled.div`
   display: flex;
-  width: 8%;
+  width: 100px;
   justify-content: space-around;
 
   & > a {
@@ -95,154 +84,11 @@ const SocialRow = styled.div`
 `;
 
 const Copy = styled.div`
-  width: 50%;
-
+  width: 80%;
   padding: 10px 0;
   & > p {
+    white-space: nowrap;
     font-size: 14px;
-  }
-`;
-
-const WriteBox = styled.div`
-  margin-top: 100px;
-
-  width: 90%;
-  height: 500px;
-  background-color: #000000;
-  display: flex;
-`;
-
-const ModalTitle = styled.div`
-  width: 50%;
-  height: 100%;
-  box-sizing: border-box;
-  padding: 70px 40px 0 200px;
-  color: white;
-  & > p {
-    font-size: 60px;
-    font-weight: 800;
-    line-height: 1.1;
-  }
-  & > p:nth-child(2) {
-    padding-left: 45px;
-  }
-  & > span {
-    font-size: 25px;
-    line-height: 2;
-    padding-left: 45px;
-  }
-`;
-
-const ModalText = styled.div`
-  width: 50%;
-  height: 100%;
-  box-sizing: border-box;
-  padding: 70px 0 0 100px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-`;
-
-const InputBorderStyle = css`
-  border: 2px solid white;
-  height: 100%;
-  width: 350px;
-  &:hover {
-    border: 2px solid #c3ff5b;
-  }
-`;
-
-const SubmitBox = styled.form`
-  width: 70%;
-  height: 45px;
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-
-  & > button {
-    cursor: pointer;
-    color: #c3ff5b;
-    border: 2px solid #c3ff5b;
-    width: 200px;
-    height: 90%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 18px;
-    font-weight: 600;
-    background-color: transparent;
-
-    &:hover {
-      background-color: #c3ff5b;
-      color: #000000;
-    }
-  }
-`;
-
-const InputBox = styled.div`
-  width: 70%;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
-  & > span {
-    font-size: 20px;
-    font-weight: 500;
-    color: #ffffff;
-  }
-
-  & > div {
-    ${InputBorderStyle};
-
-    & > input {
-      height: 100%;
-      width: 100%;
-      border: none;
-      background-color: transparent;
-      color: white;
-      box-sizing: border-box;
-      padding: 0 10px;
-      font-size: 20px;
-      &:focus {
-        outline: none;
-      }
-    }
-  }
-`;
-
-const TextAreaBox = styled.div`
-  width: 70%;
-  height: 150px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
-  & > span {
-    font-size: 20px;
-    font-weight: 500;
-    color: #ffffff;
-  }
-
-  & > div {
-    ${InputBorderStyle}
-
-    & > textarea {
-      width: 100%;
-      height: 100%;
-      background-color: transparent;
-      color: white;
-      box-sizing: border-box;
-      padding: 10px;
-      font-size: 20px;
-      font-weight: 600;
-      resize: none;
-
-      &::placeholder {
-        font-size: 20px;
-        font-weight: 600;
-      }
-    }
   }
 `;
 
@@ -297,33 +143,45 @@ export default function Main() {
     }
   };
 
-  useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, [displayStore.headerState]);
+  // useEffect(() => {
+  //   window.addEventListener("scroll", handleScroll);
+  //   return () => {
+  //     window.removeEventListener("scroll", handleScroll);
+  //   };
+  // }, [displayStore.headerState]);
 
   const titleRef = useRef<HTMLInputElement>(null);
   const detailRef = useRef<HTMLTextAreaElement>(null);
   const currentDate = dayjs();
   const formattedDate = currentDate.format("YYYY-MM-DD HH:mm:ss");
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     if (titleRef?.current && detailRef?.current) {
       e.preventDefault();
+
+      const newPostId = Math.random() + "";
+      const category =
+        selectedCategory === undefined ? "featured" : selectedCategory;
+
       const newPost: Post = {
         title: titleRef.current.value,
         detail: detailRef.current.value,
         name: "gibeom",
         date: formattedDate,
-        category: selectedCategory as any,
-        id: Math.random(),
+        id: newPostId,
       };
-      displayStore.setPostList(newPost);
+
+      await displayStore.setPostList(newPost, category);
+      const newPostLocation = document.getElementById(newPostId)?.offsetTop;
+      if (newPostLocation) {
+        const editedNewPostLocation = newPostLocation - 20;
+        window.scrollTo({ top: editedNewPostLocation, behavior: "smooth" });
+      }
+
       titleRef.current.value = "";
       detailRef.current.value = "";
       setSelectedCategory(categories[0]);
+      displayStore.setSelectedTab("blog");
     }
   };
 
@@ -336,25 +194,20 @@ export default function Main() {
 
   return (
     <PcBox>
-      {displayStore.headerState && (
-        <HeaderStyledElement>
-          <Header />
-        </HeaderStyledElement>
-      )}
-      {displayStore.selectedTab === "home" && (
-        <StyledElement>
-          <BodyContainer>
+      {/* headerstate 없애 */}
+      <Header />
+      <Body>
+        {displayStore.selectedTab === "home" && (
+          <StyledElement>
             <Home />
-          </BodyContainer>
-        </StyledElement>
-      )}
-      {displayStore.selectedTab === "blog" && (
-        <StyledElement>
-          <BodyContainer>
+          </StyledElement>
+        )}
+        {displayStore.selectedTab === "blog" && (
+          <StyledElement>
             <Blog />
-          </BodyContainer>
-        </StyledElement>
-      )}
+          </StyledElement>
+        )}
+      </Body>
 
       <WriteBox onSubmit={handleSubmit}>
         <ModalTitle>
@@ -398,10 +251,7 @@ export default function Main() {
               />
             </div>
           </InputBox>
-          <InputBox>
-            <span>Image</span>
-            <span>이미지는 서버 구현 후 개발 예정입니다.</span>
-          </InputBox>
+
           <SubmitBox>
             <button>
               <span>Upload</span>
@@ -430,3 +280,142 @@ export default function Main() {
     </PcBox>
   );
 }
+
+const WriteBox = styled.div`
+  width: 100%;
+  min-width: 1200px;
+  height: 500px;
+  margin: 50px 0;
+  background-color: #000000;
+  display: flex;
+`;
+
+const ModalTitle = styled.div`
+  width: 50%;
+  height: 100%;
+  box-sizing: border-box;
+  padding: 70px 40px 0 60px;
+  color: white;
+  & > p {
+    font-size: 60px;
+    font-weight: 800;
+    line-height: 1.1;
+  }
+  & > p:nth-child(2) {
+    padding-left: 45px;
+  }
+  & > span {
+    font-size: 25px;
+    line-height: 2;
+    padding-left: 45px;
+  }
+`;
+
+const ModalText = styled.div`
+  width: 50%;
+  height: 100%;
+  box-sizing: border-box;
+  padding: 20px 150px 0 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+`;
+
+const InputBorderStyle = css`
+  border: 2px solid white;
+  height: 100%;
+  width: 470px;
+  &:hover {
+    border: 2px solid #c3ff5b;
+  }
+`;
+
+const SubmitBox = styled.form`
+  height: 45px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  & > button {
+    cursor: pointer;
+    color: #c3ff5b;
+    border: 2px solid #c3ff5b;
+    width: 200px;
+    height: 90%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px;
+    font-weight: 600;
+    background-color: transparent;
+
+    &:hover {
+      background-color: #c3ff5b;
+      color: #000000;
+    }
+  }
+`;
+
+const InputBox = styled.div`
+  height: 40px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+
+  & > span {
+    font-size: 20px;
+    font-weight: 500;
+    color: #ffffff;
+    width: 150px;
+  }
+
+  & > div {
+    ${InputBorderStyle};
+
+    & > input {
+      height: 100%;
+      width: 100%;
+      border: none;
+      background-color: transparent;
+      color: white;
+      box-sizing: border-box;
+      padding: 0 10px;
+      font-size: 20px;
+      &:focus {
+        outline: none;
+      }
+    }
+  }
+`;
+
+const TextAreaBox = styled.div`
+  height: 150px;
+  display: flex;
+  align-items: center;
+  & > span {
+    font-size: 20px;
+    font-weight: 500;
+    color: #ffffff;
+    width: 150px;
+  }
+
+  & > div {
+    ${InputBorderStyle}
+
+    & > textarea {
+      width: 100%;
+      height: 100%;
+      background-color: transparent;
+      color: white;
+      box-sizing: border-box;
+      padding: 10px;
+      font-size: 20px;
+      font-weight: 600;
+      resize: none;
+
+      &::placeholder {
+        font-size: 20px;
+        font-weight: 600;
+      }
+    }
+  }
+`;

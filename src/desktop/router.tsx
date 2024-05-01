@@ -3,6 +3,9 @@ import { CSSTransition, SwitchTransition } from "react-transition-group";
 import { createRef } from "react";
 import Main from "./pages/Main";
 
+import bgvideo from "../assets/bgvideo.mp4";
+import styled from "styled-components";
+
 const routes = [
   {
     path: "/",
@@ -27,7 +30,9 @@ export const router = createBrowserRouter([
 function Transition() {
   const location = useLocation();
   const currentOutlet = useOutlet();
-  const { nodeRef } = routes.find((route) => route.path === location.pathname);
+  const { nodeRef }: any = routes.find(
+    (route) => route.path === location.pathname
+  );
   return (
     <SwitchTransition>
       <CSSTransition
@@ -46,3 +51,17 @@ function Transition() {
     </SwitchTransition>
   );
 }
+
+const VideoBg = styled.video`
+  /* 
+  &::content {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  } */
+`;

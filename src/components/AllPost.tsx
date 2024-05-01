@@ -6,7 +6,7 @@ dayjs.extend(duration);
 import moreIcon from "../assets/more.svg";
 import deleteIcon from "../assets/delete.png";
 import { Post, useDisplayStore } from "../stores/display.store";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const BlogGrid = styled.div`
   width: 100%;
@@ -14,19 +14,13 @@ const BlogGrid = styled.div`
   padding-top: 20px;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  grid-row-gap: 20px;
+  gap: 20px;
   place-items: center;
   -ms-overflow-style: none;
   scrollbar-width: none;
-
-  /* grid-template-columns: repeat(auto-fill, 300px);
-grid-auto-rows: 20px;
-grid-row-gap: 10px;
-  grid-column-gap: 16px; */
 `;
 
 const PostBox = styled.div`
-  /* grid-row-end: span 10; */
   width: 454px;
   height: 604px;
   border: 2px solid #000000;
@@ -101,7 +95,7 @@ const PostTitle2 = styled.div`
 const PostBody = styled.div`
   width: 90%;
   height: 50px;
-  & > span {
+  & > pre {
     font-size: 16px;
     line-height: 1.4;
   }
@@ -144,50 +138,59 @@ const DeleteModal = styled.div`
 export default function AllPost() {
   const displayStore = useDisplayStore();
   const currentCategory = displayStore.getPostCategory();
-  const [openDelete, setOpenDelete] = useState({} as any);
+  const [open, setOpen] = useState({
+    delete: 0,
+  });
 
-  const getPostList = () => {
+  const filterPostLists = () => {
+    const allPosts = displayStore.getPostList();
+
     if (currentCategory === "all") {
-      return displayStore.getPostList();
+      return allPosts.reduce(
+        (acc: any, post: { child: any }) => [...acc, ...post.child],
+        []
+      );
     } else {
-      return displayStore
-        .getPostList()
-        .filter((item: Post) => item.category === currentCategory);
+      const categoryPosts = allPosts.find(
+        (post: { name: any }) => post.name === currentCategory
+      );
+      return categoryPosts ? categoryPosts.child : [];
     }
   };
 
-  const handleClick = (date: any) => {
-    setOpenDelete((prev: { [x: string]: any }) => ({
-      ...prev,
-      [date]: !prev[date],
-    }));
+  const handleDeleteOpen = (id: number) => {
+    if (!!open.delete) {
+      setOpen((o) => ({ ...o, delete: 0 }));
+    } else {
+      setOpen((o) => ({ ...o, delete: id }));
+    }
   };
 
-  const handleDelete = (id: any) => {
-    const newPostList = displayStore.getPostList();
-
-    displayStore.setPostList(newPostList.filter((item: any) => item.id != id));
+  const handleDelete = (id: number) => {
+    displayStore.deletePostList(id);
+    setOpen((o) => ({ ...o, delete: 0 }));
   };
 
   return (
     <>
       <BlogGrid>
-        {getPostList()?.map((item: Post) => {
+        {filterPostLists()?.map((item: Post) => {
           const time = dayjs.duration(dayjs().diff(item.date));
           const hour = parseInt(time.format("m"));
           return (
-            <PostBox key={item.id}>
+            <PostBox key={item.id} id={item.id}>
               <PostText>
                 <PostTitleRow>
                   <PostTitle>
                     <span>{item.name}</span>
                     <span>{hour}분전</span>
                   </PostTitle>
-                  <img src={moreIcon} onClick={() => handleClick(item.date)} />
-                  {openDelete[item.date] && (
-                    <DeleteModal
-                      onClick={() => displayStore.deletePostList(item.id)}
-                    >
+                  <img
+                    src={moreIcon}
+                    onClick={() => handleDeleteOpen(item.id)}
+                  />
+                  {!!open.delete && open.delete === item.id && (
+                    <DeleteModal onClick={() => handleDelete(item.id)}>
                       <div>
                         <img src={deleteIcon} />
                         삭제 하기
@@ -199,7 +202,7 @@ export default function AllPost() {
                   <h2>{item.title}</h2>
                 </PostTitle2>
                 <PostBody>
-                  <span>{item.detail}</span>
+                  <pre>{item.detail}</pre>
                 </PostBody>
               </PostText>
             </PostBox>

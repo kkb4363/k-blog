@@ -4,9 +4,11 @@ import lineIcon from "../assets/line.svg";
 import circleIcon from "../assets/circle.svg";
 import shopIcon from "../assets/shop.svg";
 import tempIcon from "../assets/tmp1.png";
+import { Post, useDisplayStore } from "../stores/display.store";
+import { Fragment } from "react/jsx-runtime";
 
 const Body = styled.div`
-  width: 50%;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -114,27 +116,40 @@ const BlogContentRow = styled.div`
   padding: 30px 0;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
+  overflow: auto;
   gap: 30px;
 `;
 
 const BlogItemBox = styled.div`
-  width: 298px;
-  height: 268px;
+  width: 300px;
+  height: 300px;
   display: flex;
   flex-direction: column;
-  background-color: rgb(195, 255, 91);
-  & > img {
-    height: 60%;
-    object-fit: cover;
-  }
+  border-radius: 5px;
+  box-sizing: border-box;
+  padding: 20px;
+  background-color: #f8f8f8;
+`;
 
-  & > div {
-    padding: 20px 10px 10px 10px;
-  }
+const BlogItemTitle = styled.div`
+  height: 20%;
+  font-size: 20px;
+  font-weight: 600;
+  text-align: center;
+`;
+
+const BlogText = styled.div`
+  height: 80%;
+  box-sizing: border-box;
+  padding: 10px;
+  font-size: 14px;
+  font-weight: 400;
 `;
 
 export default function Home() {
+  const displayStore = useDisplayStore();
+
   return (
     <Body>
       <Title>
@@ -143,75 +158,45 @@ export default function Home() {
         <p>Slow down</p>
         <p>and Enjoy life</p>
       </Title>
-      <BlogTitleBox>
-        <BlogTitleRow>
-          <ShopIcon src={shopIcon} />
-          <BlogTitleName>
-            <span>Fitness</span>
-          </BlogTitleName>
-        </BlogTitleRow>
-        <BlogTitleRow2>
-          <span>My secret workout plan</span>
-          <div>
-            <span>Read More</span>
-          </div>
-        </BlogTitleRow2>
-      </BlogTitleBox>
-      <BlogContentRow>
-        <BlogItemBox>
-          <img src={tempIcon} />
-          <div>
-            <span>six simple high intensity workouts test</span>
-          </div>
-        </BlogItemBox>
-        <BlogItemBox>
-          <img src={tempIcon} />
-          <div>
-            <span>six simple high intensity workouts test</span>
-          </div>
-        </BlogItemBox>
-        <BlogItemBox>
-          <img src={tempIcon} />
-          <div>
-            <span>six simple high intensity workouts test</span>
-          </div>
-        </BlogItemBox>{" "}
-      </BlogContentRow>
 
-      <BlogTitleBox>
-        <BlogTitleRow>
-          <ShopIcon src={shopIcon} />
-          <BlogTitleName>
-            <span>Fitness</span>
-          </BlogTitleName>
-        </BlogTitleRow>
-        <BlogTitleRow2>
-          <span>My secret workout plan</span>
-          <div>
-            <span>Read More</span>
-          </div>
-        </BlogTitleRow2>
-      </BlogTitleBox>
-      <BlogContentRow>
-        <BlogItemBox>
-          <img src={tempIcon} />
-          <div>
-            <span>six simple high intensity workouts test</span>
-          </div>
-        </BlogItemBox>
-        <BlogItemBox>
-          <img src={tempIcon} />
-          <div>
-            <span>six simple high intensity workouts test</span>
-          </div>
-        </BlogItemBox>
-        <BlogItemBox>
-          <img src={tempIcon} />
-          <div>
-            <span>six simple high intensity workouts test</span>
-          </div>
-        </BlogItemBox>{" "}
-      </BlogContentRow>
+      {displayStore.getPostList().map((item: any, idx: number) => (
+        <Fragment key={item.name}>
+          <BlogTitleBox>
+            <BlogTitleRow>
+              <ShopIcon src={shopIcon} />
+              <BlogTitleName>
+                <span>{item.name}</span>
+              </BlogTitleName>
+            </BlogTitleRow>
+            <BlogTitleRow2>
+              <span>My secret workout plan{idx + 1}</span>
+              <div>
+                <span
+                  onClick={() => {
+                    displayStore.setSelectedTab("blog");
+                    displayStore.setPostCategory(item.name);
+                  }}
+                >
+                  Read More
+                </span>
+              </div>
+            </BlogTitleRow2>
+          </BlogTitleBox>
+
+          <BlogContentRow>
+            {item.child.map((child: any) => (
+              <BlogItemBox key={child.id}>
+                <BlogItemTitle>
+                  <span>{child.title}</span>
+                </BlogItemTitle>
+                <BlogText>
+                  <span>{child.detail}</span>
+                </BlogText>
+              </BlogItemBox>
+            ))}
+          </BlogContentRow>
+        </Fragment>
+      ))}
     </Body>
   );
 }

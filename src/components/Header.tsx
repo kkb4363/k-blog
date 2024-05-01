@@ -4,22 +4,21 @@ import { useDisplayStore } from "../stores/display.store";
 import logoIcon from "../assets/logo.png";
 
 const HeaderContainer = styled.div`
-  box-sizing: border-box;
   width: 100%;
-  height: 120px;
-  padding: 50px 50px 0 50px;
+  min-width: 1200px;
+  height: 100px;
   display: flex;
   justify-content: center;
   align-items: center;
-  position: fixed;
-  top: -30px;
 `;
 
 const Col = styled.div`
-  width: calc(100% - 100px);
+  width: 100%;
   height: 100%;
   display: flex;
   flex-direction: column;
+  background-color: #000000;
+  padding: 0 100px;
 `;
 
 const Row = styled.div`
@@ -29,7 +28,6 @@ const Row = styled.div`
   height: 100%;
   width: 100%;
   padding: 10px;
-  background-color: #000000;
 `;
 
 const Left = styled.div`
@@ -80,12 +78,11 @@ export default function Header() {
 
   const goBlogPage = () => {
     displayStore.setSelectedTab("blog");
-    displayStore.setPostCategory("all");
   };
 
   const scrollToBottom = () => {
     window.scrollTo({
-      top: window.innerHeight,
+      top: 1000000,
       behavior: "smooth",
     });
   };

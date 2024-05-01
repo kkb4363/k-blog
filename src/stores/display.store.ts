@@ -3,13 +3,12 @@ import { createJSONStorage, persist } from "zustand/middleware";
 
 type Tabs = "home" | "blog";
 export type Categories = "all" | "featured" | "fitness" | "diet" | "invest";
-
+// number로 타입 바꾸기
 export interface Post {
   title: string;
   detail: string;
   name: string;
   date: string;
-  category: Categories;
   id: any;
 }
 
@@ -17,7 +16,7 @@ interface DisplayState {
   selectedTab: Tabs;
   headerState: boolean;
   currentPostCategory: Categories;
-  postList: Post[];
+  postList: any[];
 }
 
 interface Action {
@@ -27,7 +26,7 @@ interface Action {
   getHeaderState: () => any;
   setPostCategory: (category: Categories) => void;
   getPostCategory: () => any;
-  setPostList: (post: Post) => void;
+  setPostList: (post: Post, category: string) => void;
   getPostList: () => any;
   deletePostList: (id: any) => void;
 }
@@ -36,7 +35,24 @@ const initData: DisplayState = {
   selectedTab: "home",
   headerState: true,
   currentPostCategory: "all",
-  postList: [],
+  postList: [
+    {
+      name: "featured",
+      child: [],
+    },
+    {
+      name: "fitness",
+      child: [],
+    },
+    {
+      name: "diet",
+      child: [],
+    },
+    {
+      name: "invest",
+      child: [],
+    },
+  ],
 };
 
 export const useDisplayStore = create<DisplayState & Action>()(
@@ -61,10 +77,18 @@ export const useDisplayStore = create<DisplayState & Action>()(
       getPostCategory: () => {
         return get().currentPostCategory;
       },
-      setPostList: (post: Post) => {
+      setPostList: (post: Post, category: string) => {
         const prev = get().postList;
-        prev.push(post);
-        return set({ postList: prev });
+        const updatedPostList = prev.map((item) => {
+          if (item.name === category) {
+            return {
+              ...item,
+              child: [...item.child, post],
+            };
+          }
+          return item;
+        });
+        return set({ postList: updatedPostList });
       },
       getPostList: () => {
         return get().postList;
