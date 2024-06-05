@@ -14,6 +14,12 @@ export const light = {
     mainTxt: "rgb(99 102 241/1)",
     subTxt: "#525252",
     subTxt2: "#a3a3a3",
+    postTxt: "#171717",
+    allPostsTxt: "#6366f1",
+    tag: "#818cf8",
+    tagHover: "rgb(67 56 202/1)",
+    titleHover: "rgb(99 102 241/1)",
+    bgHover: "rgb(229 229 229/1)",
   },
 };
 
@@ -33,6 +39,12 @@ export const dark = {
     mainTxt: "white",
     subTxt: "#D4D4D4",
     subTxt2: "#737373",
+    postTxt: "#f5f5f5",
+    allPostsTxt: "#818cf8",
+    tag: "#818cf8",
+    tagHover: "rgb(165 180 252/1)",
+    titleHover: "rgb(99 102 241/1)",
+    bgHover: "rgb(38 38 38/1)",
   },
 };
 

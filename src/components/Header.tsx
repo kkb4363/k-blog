@@ -130,6 +130,10 @@ const HeaderLogo = styled.div`
     height: 38px;
   }
 
+  @media screen and (max-width: 780px) {
+    padding-left: 10px;
+  }
+
   & > span {
     @media screen and (max-width: 800px) {
       display: none;
