@@ -1,9 +1,5 @@
 import ReactDOM from "react-dom/client";
-import "./index.css";
 import "../src/assets/styles/font.css";
-import Pc from "./desktop/pages/Pc.tsx";
+import App from "./App";
 
-ReactDOM.createRoot(document.getElementById("root")!).render(
-  // <>{isDesktop ? <Pc /> : <Mobile />}</>
-  <Pc />
-);
+ReactDOM.createRoot(document.getElementById("root")!).render(<App />);

@@ -1,111 +1,32 @@
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
+import { HeaderTabs, Theme } from "./display";
 
-type Tabs = "home" | "blog";
-export type Categories = "all" | "featured" | "fitness" | "diet" | "invest";
-// number로 타입 바꾸기
-export interface Post {
-  title: string;
-  detail: string;
-  name: string;
-  date: string;
-  id: any;
-}
-
-interface DisplayState {
-  selectedTab: Tabs;
-  headerState: boolean;
-  currentPostCategory: Categories;
-  postList: any[];
+interface State {
+  theme: Theme;
+  currentHeaderTab: HeaderTabs;
 }
 
 interface Action {
-  setSelectedTab: (tab: Tabs) => void;
-  getSelectedTab: () => any;
-  setHeaderState: (state: boolean) => void;
-  getHeaderState: () => any;
-  setPostCategory: (category: Categories) => void;
-  getPostCategory: () => any;
-  setPostList: (post: Post, category: string) => void;
-  getPostList: () => any;
-  deletePostList: (id: any) => void;
+  setTheme: (t: Theme) => void;
+  getTheme: () => Theme;
+  setHeaderTab: (t: HeaderTabs) => void;
+  getHeaderTab: () => HeaderTabs;
 }
 
-const initData: DisplayState = {
-  selectedTab: "home",
-  headerState: true,
-  currentPostCategory: "all",
-  postList: [
-    {
-      name: "featured",
-      child: [],
-    },
-    {
-      name: "fitness",
-      child: [],
-    },
-    {
-      name: "diet",
-      child: [],
-    },
-    {
-      name: "invest",
-      child: [],
-    },
-  ],
+const initData: State = {
+  theme: "light",
+  currentHeaderTab: "home",
 };
 
-export const useDisplayStore = create<DisplayState & Action>()(
+export const useDisplayStore = create<State & Action>()(
   persist(
     (set, get) => ({
       ...initData,
-      setSelectedTab: (tab: Tabs) => {
-        return set({ selectedTab: tab });
-      },
-      getSelectedTab: () => {
-        return get().selectedTab;
-      },
-      setHeaderState: (state: boolean) => {
-        return set({ headerState: state });
-      },
-      getHeaderState: () => {
-        return get().headerState;
-      },
-      setPostCategory: (category: Categories) => {
-        return set({ currentPostCategory: category });
-      },
-      getPostCategory: () => {
-        return get().currentPostCategory;
-      },
-      setPostList: (post: Post, category: string) => {
-        const prev = get().postList;
-        const updatedPostList = prev.map((item) => {
-          if (item.name === category) {
-            return {
-              ...item,
-              child: [...item.child, post],
-            };
-          }
-          return item;
-        });
-        return set({ postList: updatedPostList });
-      },
-      getPostList: () => {
-        return get().postList;
-      },
-      deletePostList: (id: any) => {
-        const prev = get().postList;
-        const deletedPostList = prev.map((item) => {
-          return {
-            ...item,
-            child: item.child.filter((c: any) => c.id !== id),
-          };
-        });
-        return set({ postList: deletedPostList });
-      },
-      clear: () => {
-        return set({ ...initData });
-      },
+      setTheme: (t: Theme) => set({ theme: t }),
+      getTheme: () => get().theme,
+      setHeaderTab: (t: HeaderTabs) => set({ currentHeaderTab: t }),
+      getHeaderTab: () => get().currentHeaderTab,
     }),
     {
       name: "displayStore",
