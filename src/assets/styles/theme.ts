@@ -7,6 +7,13 @@ export const light = {
     txt: "rgb(82 82 82/1)",
     logoTxt: "rgb(79 70 229 / 1)",
     borderBottom: "gray",
+    moreBg: "rgb(229 229 229/1)",
+    moreTxtUnder: "#4f46e5",
+  },
+  body: {
+    mainTxt: "rgb(99 102 241/1)",
+    subTxt: "#525252",
+    subTxt2: "#a3a3a3",
   },
 };
 
@@ -19,6 +26,13 @@ export const dark = {
     txt: "rgb(212 212 212/1)",
     logoTxt: "#fff",
     borderBottom: "#fff",
+    moreBg: "rgb(38 38 38/1 )",
+    moreTxtUnder: "#818cf8",
+  },
+  body: {
+    mainTxt: "white",
+    subTxt: "#D4D4D4",
+    subTxt2: "#737373",
   },
 };
 

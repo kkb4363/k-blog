@@ -54,6 +54,12 @@ const GlobalStyles = createGlobalStyle`
     .modal-overlay-transparent {
 		background: transparent;
 	}
+    img{
+        -webkit-user-drag: none;
+        -khtml-user-drag: none;
+        -moz-user-drag: none;
+        -o-user-drag: none;
+    }
 `;
 
 export default GlobalStyles;

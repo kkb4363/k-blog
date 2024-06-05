@@ -1,112 +1,150 @@
-import styled, { ThemeContext } from "styled-components";
-import LogoIcon from "&/imgs/logo.png";
-import dark from "&/imgs/dark.svg";
-import light from "&/imgs/light.svg";
-
-import { useContext } from "react";
-import { useDisplayStore } from "stores/display.store";
-import { headerTabs } from "utils/staticDatas";
-import { HeaderTabs } from "stores/display";
+import Header from "components/Header";
+import styled, { css } from "styled-components";
+import logo from "&/imgs/logo.png";
 
 const HomeContainer = styled.div`
   width: 100vw;
   height: 100vh;
   padding: 0 22vw;
+  overflow: auto;
+  &::-webkit-scrollbar {
+    width: 10px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: rgb(64 64 64/1);
+    border-radius: 10px;
+  }
+  &::-webkit-scrollbar-track {
+    background-color: rgb(212 212 212/ 1);
+    border-radius: 10px;
+    box-shadow: inset 0px 0px 5px white;
+  }
+
   background-color: ${(props) => props.theme.bgColor};
+  @media screen and (max-width: 1280px) {
+    padding: 0 10vw;
+  }
+  @media screen and (max-width: 780px) {
+    padding: 0;
+  }
+  @media screen and (max-width: 640px) {
+    overflow: hidden;
+  }
 `;
 
 export default function Home() {
-  const theme = useContext(ThemeContext);
-  const { getHeaderTab, setHeaderTab } = useDisplayStore();
-
   return (
     <HomeContainer>
-      <Header>
-        <HeaderLogo onClick={() => setHeaderTab("home")}>
-          <img src={LogoIcon} alt="98_gb blog logo" />
-          <span>98_gb Blog</span>
-        </HeaderLogo>
-        <HeaderTabRow>
-          {headerTabs.map((tab) => {
-            const isActive = tab.id === getHeaderTab();
-            return (
-              <HeaderTab
-                $active={isActive}
-                key={tab.id}
-                onClick={() => setHeaderTab(tab.id as HeaderTabs)}
-              >
-                {tab.name}
-              </HeaderTab>
-            );
-          })}
+      <Header />
+      <Body>
+        <BodyBigScreen>
+          <BigScreenBox>
+            <p>98_gb Blog</p>
+            <span>흥미와 열정을 잃지 않기 위해 노력합니다.</span>
+            <span>사용자 경험을 향상시키고 싶은 프론트 엔드 개발자입니다</span>
+          </BigScreenBox>
+          <BigScreenBox2>
+            <img src={logo} alt="logo" />
+          </BigScreenBox2>
+        </BodyBigScreen>
 
-          <img
-            src={theme.currentTheme === "light" ? dark : light}
-            alt="theme mode change"
-            onClick={theme.setCurrentTheme}
-          />
-        </HeaderTabRow>
-      </Header>
+        <BodySmallScreen>
+          <img src={logo} alt="logo" />
+          <div>
+            <p>98_gb Blog</p>
+            <span>흥미와 열정을 잃지 않기 위해 노력합니다.</span>
+            <span>사용자 경험을 향상시키고 싶은 프론트 엔드 개발자입니다</span>
+          </div>
+        </BodySmallScreen>
+      </Body>
     </HomeContainer>
   );
 }
 
-const Header = styled.div`
+const Body = styled.div`
   width: 100%;
-  height: 50px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  color: ${(props) => props.theme.header.txt};
-  border-bottom: 2px solid ${(props) => props.theme.header.borderBottom};
-  background-color: inherit;
 `;
 
-const HeaderLogo = styled.div`
-  width: 40%;
-  height: 100%;
+const BodyBigScreen = styled.div`
+  width: 100%;
   display: flex;
   align-items: center;
-  gap: 10px;
-  cursor: pointer;
-  & > img {
-    width: 38px;
-    height: 38px;
+  @media screen and (max-width: 1070px) {
+    display: none;
   }
+`;
 
-  & > span {
-    color: ${(props) => props.theme.header.logoTxt};
-    font-size: 28px;
+const bodyImgStyle = css`
+  width: 120px;
+  height: 120px;
+`;
+
+const bodyTxtStyle = css`
+  & > p {
+    font-size: 40px;
     font-weight: 600;
+    color: ${(props) => props.theme.body.mainTxt};
+    white-space: nowrap;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+  & > span:nth-child(2) {
+    font-size: 18px;
+    color: ${(props) => props.theme.body.subTxt};
+    white-space: nowrap;
+  }
+  & > span:nth-child(3) {
+    font-size: 18px;
+    color: ${(props) => props.theme.body.subTxt2};
+    white-space: nowrap;
+    margin-top: 5px;
   }
 `;
 
-const HeaderTabRow = styled.div`
-  width: 60%;
-  height: 100%;
+const BigScreenBox = styled.div`
+  width: 50%;
+  min-height: 230px;
   display: flex;
-  justify-content: space-evenly;
+  flex-direction: column;
+  justify-content: center;
+
+  gap: 20px;
+
+  ${bodyTxtStyle};
+`;
+
+const BigScreenBox2 = styled(BigScreenBox)`
   align-items: center;
+  & > img {
+    ${bodyImgStyle};
+  }
+`;
+
+const BodySmallScreen = styled.div`
+  width: 100%;
+  padding-top: 30px;
+  min-height: 350px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  @media screen and (min-width: 1071px) {
+    display: none;
+  }
 
   & > img {
-    cursor: pointer;
-    width: 24px;
-    height: 24px;
+    ${bodyImgStyle};
   }
-`;
 
-const HeaderTab = styled.div<{ $active: boolean }>`
-  cursor: pointer;
-  font-size: 14px;
-  padding: 10px;
-  transition: transform 0.1s;
-  background-color: ${(props) => props.$active && props.theme.header.activeBg};
-  border-radius: 5px;
-
-  &:hover {
-    font-weight: 600;
-    transform: scale(1.15);
-    background-color: ${(props) =>
-      !props.$active && props.theme.header.hoverBg};
+  & > div {
+    gap: 15px;
+    flex-direction: column;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    ${bodyTxtStyle};
   }
 `;
