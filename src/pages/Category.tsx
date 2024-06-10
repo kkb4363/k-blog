@@ -11,7 +11,7 @@ export default function Category() {
     setHeaderTab("category");
   }, []);
   return (
-    <CategoryContainer>
+    <>
       <TabInfoCol
         title="Category"
         info="카테고리별 작성된 포스트 내용들입니다."
@@ -78,13 +78,9 @@ export default function Category() {
           </CategoryTxtCol>
         </CategoryBox>
       </CategoryGrid>
-    </CategoryContainer>
+    </>
   );
 }
-
-const CategoryContainer = styled.div`
-  width: 100%;
-`;
 
 const CategoryGrid = styled.div`
   border-top: 1px solid ${(props) => props.theme.category.borderTop};
