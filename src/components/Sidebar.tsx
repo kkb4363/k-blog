@@ -6,6 +6,7 @@ import styled, { ThemeContext, css } from "styled-components";
 import { headerTabs } from "utils/staticDatas";
 import exitLight from "&/imgs/exit_light.svg";
 import exitDark from "&/imgs/exit_dark.svg";
+import { useNavigate } from "react-router-dom";
 
 interface Props {
   handleSide: () => void;
@@ -13,8 +14,13 @@ interface Props {
 
 export default function Sidebar({ handleSide }: Props) {
   const theme = useContext(ThemeContext);
+  const navigate = useNavigate();
+  const { getHeaderTab } = useDisplayStore();
 
-  const { getHeaderTab, setHeaderTab } = useDisplayStore();
+  const handleTab = (id: HeaderTabs) => {
+    navigate(id);
+    handleSide();
+  };
 
   return (
     <SideBarContainer
@@ -37,7 +43,7 @@ export default function Sidebar({ handleSide }: Props) {
             <SideBarTab
               $active={isActive}
               key={tab.id}
-              onClick={() => setHeaderTab(tab.id as HeaderTabs)}
+              onClick={() => handleTab(tab.id as HeaderTabs)}
             >
               <span>{tab.name}</span>
             </SideBarTab>

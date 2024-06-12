@@ -6,3 +6,4 @@
 
 Github 아이콘 제작자: riajulislam - Flaticon
 인스타그램 아이콘 제작자: Pixel perfect - Flaticon
+js 아이콘 제작자 vectorjuice 출처 Freepik

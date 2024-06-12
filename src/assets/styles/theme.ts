@@ -29,6 +29,15 @@ export const light = {
       "0 4px 6px -1px rgba(0,0,0,.1), 0 2px 4px -2px rgba(0,0,0,.1)",
     borderTop: "rgb(229 229 229/1)",
   },
+  blog: {
+    bg: "rgb(255 255 255/1)",
+    border: "rgb(212 212 212/1)",
+    inputTxt: "rgb(23 23 23/1)",
+    titleTxt: "rgb(64 64 64/1)",
+    btnHover: "rgb(224 231 255/1)",
+    listTxt: "black",
+    boxBg: "rgb(245 245 245/1)",
+  },
 };
 
 export const dark = {
@@ -60,6 +69,15 @@ export const dark = {
     border: "rgb(82 82 82/1)",
     borderShadow: "",
     borderTop: "rgb(64 64 64/1)",
+  },
+  blog: {
+    bg: "rgb(38 38 38/1)",
+    border: "rgb(23 23 23/1)",
+    inputTxt: "rgb(245 245 245/1)",
+    titleTxt: "rgb(229 229 229/1)",
+    btnHover: "rgb(55 48 163/1)",
+    listTxt: "rgb(163 163 163/1)",
+    boxBg: "rgb(38 38 38/1)",
   },
 };
 

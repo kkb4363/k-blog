@@ -3,154 +3,53 @@ import heartIcon from "&/imgs/heart.svg";
 import heartDarkIcon from "&/imgs/heart_dark.svg";
 import styled, { css } from "styled-components";
 import HomeBodyMain from "components/HomeBodyMain";
+import { useNavigate } from "react-router-dom";
+import { posts } from "utils/staticDatas";
+import BlogPost from "components/BlogPost";
 
 export default function MainPage() {
+  const navigate = useNavigate();
+  console.log(posts);
   return (
     <MainPageContainer>
       <HomeBodyMain />
-      <BlogPost>
+      <BlogPostBox>
         <span>블로그 포스트</span>
-        <div>
+        <div onClick={() => navigate("/blog")}>
           <span>ALL POSTS</span>
         </div>
-      </BlogPost>
+      </BlogPostBox>
       <BlogBox>
         <p>최신 포스트</p>
-        <BlogItem>
-          <BlogImg>
-            <img src={testImg} />
-          </BlogImg>
-          <BlogTxtCol>
-            <p>[JavaScript] 배열 생성 방법 속도 비교</p>
-            <TagRow>
-              <Tag>Javascript</Tag>
-              <Tag>배열</Tag>
-            </TagRow>
-            <BlogDetail>
-              array 블로그내용아무거나 쓰는중입니다 어자피
-              테스트중이라상관없습니다
-            </BlogDetail>
-            <BlogDate>
-              <span>2024년 1월 27일</span>
-              <span> - </span>
-              <img src={heartIcon} />
-              <span>333</span>
-            </BlogDate>
-          </BlogTxtCol>
-        </BlogItem>
-        <BlogItem>
-          <BlogImg>
-            <img src={testImg} />
-          </BlogImg>
-          <BlogTxtCol>
-            <p>[JavaScript] 배열 생성 방법 속도 비교</p>
-            <TagRow>
-              <Tag>Javascript</Tag>
-              <Tag>배열</Tag>
-            </TagRow>
-            <BlogDetail>
-              array 블로그내용아무거나 쓰는중입니다 어자피
-              테스트중이라상관없습니다
-            </BlogDetail>
-            <BlogDate>
-              <span>2024년 1월 27일</span>
-              <span> - </span>
-              <img src={heartIcon} />
-              <span>333</span>
-            </BlogDate>
-          </BlogTxtCol>
-        </BlogItem>
-        <BlogItem>
-          <BlogImg>
-            <img src={testImg} />
-          </BlogImg>
-          <BlogTxtCol>
-            <p>[JavaScript] 배열 생성 방법 속도 비교</p>
-            <TagRow>
-              <Tag>Javascript</Tag>
-              <Tag>배열</Tag>
-            </TagRow>
-            <BlogDetail>
-              array 블로그내용아무거나 쓰는중입니다 어자피
-              테스트중이라상관없습니다
-            </BlogDetail>
-            <BlogDate>
-              <span>2024년 1월 27일</span>
-              <span> - </span>
-              <img src={heartIcon} />
-              <span>333</span>
-            </BlogDate>
-          </BlogTxtCol>
-        </BlogItem>
+        {posts.map((post) => (
+          <BlogPost
+            key={post.id}
+            title={post.title}
+            details={post.subTitle}
+            img={post.img}
+            createdDate={post.createdDate}
+            categoryId={post.categoryId}
+            blogId={post.id}
+            postIdx={post.postIndex}
+            tags={post.tags}
+          />
+        ))}
       </BlogBox>
       <BlogBox>
-        <p>인기 포스트</p>
-        <BlogItem>
-          <BlogImg>
-            <img src={testImg} />
-          </BlogImg>
-          <BlogTxtCol>
-            <p>[JavaScript] 배열 생성 방법 속도 비교</p>
-            <TagRow>
-              <Tag>Javascript</Tag>
-              <Tag>배열</Tag>
-            </TagRow>
-            <BlogDetail>
-              array 블로그내용아무거나 쓰는중입니다 어자피
-              테스트중이라상관없습니다
-            </BlogDetail>
-            <BlogDate>
-              <span>2024년 1월 27일</span>
-              <span> - </span>
-              <img src={heartIcon} />
-              <span>333</span>
-            </BlogDate>
-          </BlogTxtCol>
-        </BlogItem>
-        <BlogItem>
-          <BlogImg>
-            <img src={testImg} />
-          </BlogImg>
-          <BlogTxtCol>
-            <p>[JavaScript] 배열 생성 방법 속도 비교</p>
-            <TagRow>
-              <Tag>Javascript</Tag>
-              <Tag>배열</Tag>
-            </TagRow>
-            <BlogDetail>
-              array 블로그내용아무거나 쓰는중입니다 어자피
-              테스트중이라상관없습니다
-            </BlogDetail>
-            <BlogDate>
-              <span>2024년 1월 27일</span>
-              <span> - </span>
-              <img src={heartIcon} />
-              <span>333</span>
-            </BlogDate>
-          </BlogTxtCol>
-        </BlogItem>
-        <BlogItem>
-          <BlogImg>
-            <img src={testImg} />
-          </BlogImg>
-          <BlogTxtCol>
-            <p>[JavaScript] 배열 생성 방법 속도 비교</p>
-            <TagRow>
-              <Tag>Javascript</Tag>
-              <Tag>배열</Tag>
-            </TagRow>
-            <BlogDetail>
-              array 블로그내용아무거나 쓰는중입니다 어자피
-              테스트중이라상관없습니다
-            </BlogDetail>
-            <BlogDate>
-              <span>2024년 1월 27일</span>
-              <span> - </span>
-              <img src={heartIcon} />
-              <span>333</span>
-            </BlogDate>
-          </BlogTxtCol>
-        </BlogItem>
+        <p>인기 포스트 (좋아요 기능 추가하기)</p>
+        {posts.map((post) => (
+          <BlogPost
+            key={post.id}
+            title={post.title}
+            details={post.subTitle}
+            img={post.img}
+            createdDate={post.createdDate}
+            categoryId={post.categoryId}
+            blogId={post.id}
+            postIdx={post.postIndex}
+            tags={post.tags}
+          />
+        ))}
       </BlogBox>
     </MainPageContainer>
   );
@@ -163,7 +62,7 @@ const MainPageContainer = styled.div`
   gap: 20px;
 `;
 
-const BlogPost = styled.div`
+const BlogPostBox = styled.div`
   width: 100%;
   height: 50px;
   display: flex;
@@ -198,6 +97,7 @@ const BlogBox = styled.div`
   display: flex;
   flex-direction: column;
   gap: 25px;
+  padding: 20px 0;
 
   & > p {
     font-size: 20px;

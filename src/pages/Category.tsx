@@ -1,86 +1,121 @@
 import TabInfoCol from "components/TabInfoCol";
 import { useEffect } from "react";
 import { useDisplayStore } from "stores/display.store";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import testImg from "&/imgs/logo.png";
+import { categories, posts } from "utils/staticDatas";
+import { Outlet, useNavigate, useParams } from "react-router-dom";
+import SearchInput from "components/SearchInput";
+import { DateFormatComponent } from "utils/utils";
 
 export default function Category() {
-  const { setHeaderTab } = useDisplayStore();
+  const { setHeaderTab, setCategory, getCategory } = useDisplayStore();
+  const params = useParams();
+  const navigate = useNavigate();
+  const isParams = !!params.id;
 
   useEffect(() => {
     setHeaderTab("category");
   }, []);
+
+  useEffect(() => {
+    const newcategory = [];
+
+    categories.forEach((cate) => {
+      let postIdx = 1;
+      if (!newcategory.some((d) => d.id === cate.id)) {
+        newcategory.push({
+          id: cate.id,
+          posts: [],
+          title: cate.title,
+          updatedDate: cate.updatedDate,
+        });
+        postIdx = 1;
+      }
+      posts.forEach((post) => {
+        if (post.categoryId === cate.id) {
+          const prevCategory = newcategory.find(
+            (d) => d.id === post.categoryId
+          );
+          if (prevCategory) {
+            prevCategory.posts.push({ ...post, postIndex: postIdx++ });
+          }
+        }
+      });
+    });
+
+    setCategory(newcategory);
+  }, []);
+
   return (
     <>
-      <TabInfoCol
-        title="Category"
-        info="카테고리별 작성된 포스트 내용들입니다."
-      />
-      <CategoryGrid>
-        <CategoryBox>
-          <img src={testImg} alt="test" />
-          <CategoryTxtCol>
-            <p>자바스크립트와 맞짱</p>
-            <SecondTxt>
-              <span>3개의 포스트 </span>
-              <span>&nbsp; 마지막 업데이트 4개월 전</span>
-            </SecondTxt>
-          </CategoryTxtCol>
-        </CategoryBox>
-        <CategoryBox>
-          <img src={testImg} alt="test" />
-          <CategoryTxtCol>
-            <p>자바스크립트와 맞짱</p>
-            <SecondTxt>
-              <span>3개의 포스트 </span>
-              <span>&nbsp; 마지막 업데이트 4개월 전</span>
-            </SecondTxt>
-          </CategoryTxtCol>
-        </CategoryBox>{" "}
-        <CategoryBox>
-          <img src={testImg} alt="test" />
-          <CategoryTxtCol>
-            <p>자바스크립트와 맞짱</p>
-            <SecondTxt>
-              <span>3개의 포스트 </span>
-              <span>&nbsp; 마지막 업데이트 4개월 전</span>
-            </SecondTxt>
-          </CategoryTxtCol>
-        </CategoryBox>{" "}
-        <CategoryBox>
-          <img src={testImg} alt="test" />
-          <CategoryTxtCol>
-            <p>자바스크립트와 맞짱</p>
-            <SecondTxt>
-              <span>3개의 포스트 </span>
-              <span>&nbsp; 마지막 업데이트 4개월 전</span>
-            </SecondTxt>
-          </CategoryTxtCol>
-        </CategoryBox>{" "}
-        <CategoryBox>
-          <img src={testImg} alt="test" />
-          <CategoryTxtCol>
-            <p>자바스크립트와 맞짱</p>
-            <SecondTxt>
-              <span>3개의 포스트 </span>
-              <span>&nbsp; 마지막 업데이트 4개월 전</span>
-            </SecondTxt>
-          </CategoryTxtCol>
-        </CategoryBox>{" "}
-        <CategoryBox>
-          <img src={testImg} alt="test" />
-          <CategoryTxtCol>
-            <p>자바스크립트와 맞짱</p>
-            <SecondTxt>
-              <span>3개의 포스트 </span>
-              <span>&nbsp; 마지막 업데이트 4개월 전</span>
-            </SecondTxt>
-          </CategoryTxtCol>
-        </CategoryBox>
-      </CategoryGrid>
+      {isParams ? (
+        <>
+          <CurrentCategoryTitle>
+            <p>{getCategory().filter((c) => c.id === params.id)[0].title}</p>
+          </CurrentCategoryTitle>
+
+          <SearchInput placeHolder="어떤 포스트를 찾으시나요?" />
+        </>
+      ) : (
+        <TabInfoCol
+          title="Category"
+          info="카테고리별 작성된 포스트 내용들입니다."
+        />
+      )}
+
+      {isParams ? (
+        <Outlet />
+      ) : (
+        <CategoryGrid>
+          {categories.map((cate) => (
+            <CategoryBox key={cate.id} onClick={() => navigate(cate.id)}>
+              <img src={cate.img} alt="categoryIcon" />
+              <CategoryTxtCol>
+                <p>{cate.title}</p>
+                <SecondTxt>
+                  <span>
+                    {
+                      getCategory().filter((c) => c.id === cate.id)[0]?.posts
+                        ?.length
+                    }
+                    개의 포스트{" "}
+                  </span>
+                  <span>
+                    &nbsp;{" "}
+                    {DateFormatComponent(
+                      getCategory().filter((c) => c.id === cate.id)[0]
+                        ?.updatedDate
+                    )}
+                  </span>
+                </SecondTxt>
+              </CategoryTxtCol>
+            </CategoryBox>
+          ))}
+        </CategoryGrid>
+      )}
     </>
   );
 }
+
+export const CurrentCategoryTitle = styled.div`
+  width: 100%;
+  padding: 70px 0 30px 0;
+
+  @media screen and (max-width: 780px) {
+    padding: 70px 10px 20px 15px;
+  }
+
+  & > p {
+    font-size: 40px;
+    font-weight: 600;
+    color: ${(props) => props.theme.default};
+
+    @media screen and (max-width: 780px) {
+      font-size: 24px;
+    }
+  }
+`;
 
 const CategoryGrid = styled.div`
   border-top: 1px solid ${(props) => props.theme.category.borderTop};
@@ -103,6 +138,18 @@ const CategoryGrid = styled.div`
   }
 `;
 
+export const categoryAnimate = keyframes`
+  from{
+    transform: translateY(20px);
+    opacity: 0;
+  }
+
+  to{
+    transform: translateY(0);
+    opacity:1;
+  }
+`;
+
 const CategoryBox = styled.div`
   border: 2px solid ${(props) => props.theme.category.border};
   transition: transform 0.1s;
@@ -113,8 +160,10 @@ const CategoryBox = styled.div`
   & > img {
     width: 100%;
     height: 70%;
-    object-fit: contain;
+    object-fit: cover;
     aspect-ratio: 191 / 100;
+    border-top-left-radius: inherit;
+    border-top-right-radius: inherit;
   }
 
   &:hover {
@@ -122,6 +171,8 @@ const CategoryBox = styled.div`
     box-shadow: ${(props) => props.theme.category.borderShadow};
     transform: translateY(-5px);
   }
+
+  animation: ${categoryAnimate} 0.5s ease-in-out;
 `;
 
 const CategoryTxtCol = styled.div`

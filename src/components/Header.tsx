@@ -134,12 +134,12 @@ const HeaderTabRow = styled.div`
     gap: 10px;
   }
 
-  & > div:nth-child(4),
+  /* & > div:nth-child(4),
   & > div:nth-child(6) {
     @media screen and (max-width: 1540px) {
       display: none;
     }
-  }
+  } */
 `;
 
 const HeaderTab = styled.div<{ $active: boolean }>`

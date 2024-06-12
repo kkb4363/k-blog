@@ -4,6 +4,9 @@ import MainPage from "pages/MainPage";
 import Tag from "pages/Tag";
 import Category from "pages/Category";
 import Project from "pages/Project";
+import Blog from "pages/Blog";
+import BlogDetail from "pages/BlogDetail";
+import Search from "pages/Search";
 
 export const router = createBrowserRouter([
   {
@@ -15,12 +18,34 @@ export const router = createBrowserRouter([
         element: <MainPage />,
       },
       {
+        path: "blog",
+        element: <Blog />,
+        children: [
+          {
+            path: ":directoryId/:id",
+            element: <BlogDetail />,
+          },
+        ],
+      },
+      {
         path: "tags",
         element: <Tag />,
+        children: [
+          {
+            path: ":id",
+            element: <Search />,
+          },
+        ],
       },
       {
         path: "category",
         element: <Category />,
+        children: [
+          {
+            path: ":id",
+            element: <Search />,
+          },
+        ],
       },
       {
         path: "project",

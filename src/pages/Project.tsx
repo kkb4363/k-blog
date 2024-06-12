@@ -1,8 +1,16 @@
 import TabInfoCol from "components/TabInfoCol";
 import styled from "styled-components";
 import testImg from "&/imgs/logo.png";
+import { useDisplayStore } from "stores/display.store";
+import { useEffect } from "react";
+import { categoryAnimate } from "./Category";
 
 export default function Project() {
+  const { setHeaderTab } = useDisplayStore();
+  useEffect(() => {
+    setHeaderTab("project");
+  }, []);
+
   return (
     <>
       <TabInfoCol title="Projects" info="프로젝트 기록들 입니다." />
@@ -97,6 +105,8 @@ const ProjectBox = styled.div`
     object-fit: contain;
     aspect-ratio: 16/9;
   }
+
+  animation: ${categoryAnimate} 0.5s ease-in-out;
 `;
 
 const ProjectTxtCol = styled.div`
