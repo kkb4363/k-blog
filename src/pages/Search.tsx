@@ -33,19 +33,21 @@ export default function Search() {
       return <h1>검색 결과가 없습니다 😯</h1>;
     }
 
-    return filteredPosts.map((post) => (
-      <BlogPost
-        key={post.id}
-        title={post.title}
-        details={post.subTitle}
-        img={post.img}
-        createdDate={post.createdDate}
-        blogId={post.id}
-        categoryId={post.categoryId}
-        postIdx={post.postIndex}
-        tags={post.tags}
-      />
-    ));
+    return filteredPosts
+      .sort((a, b) => (a.postIndex > b.postIndex ? -1 : 1))
+      .map((post) => (
+        <BlogPost
+          key={post.id}
+          title={post.title}
+          details={post.subTitle}
+          img={post.img}
+          createdDate={post.createdDate}
+          blogId={post.id}
+          categoryId={post.categoryId}
+          postIdx={post.postIndex}
+          tags={post.tags}
+        />
+      ));
   };
 
   const getTagPosts = () => {
@@ -72,19 +74,21 @@ export default function Search() {
       return <h1>검색 결과가 없습니다 😯</h1>;
     }
 
-    return filteredPosts.map((post) => (
-      <BlogPost
-        key={post.id}
-        title={post.title}
-        details={post.subTitle}
-        img={post.img}
-        createdDate={post.createdDate}
-        blogId={post.id}
-        categoryId={post.categoryId}
-        postIdx={post.postIndex}
-        tags={post.tags}
-      />
-    ));
+    return filteredPosts
+      .sort((a, b) => (a.postIndex > b.postIndex ? -1 : 1))
+      .map((post) => (
+        <BlogPost
+          key={post.id}
+          title={post.title}
+          details={post.subTitle}
+          img={post.img}
+          createdDate={post.createdDate}
+          blogId={post.id}
+          categoryId={post.categoryId}
+          postIdx={post.postIndex}
+          tags={post.tags}
+        />
+      ));
   };
 
   return (

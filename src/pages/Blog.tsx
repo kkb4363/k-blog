@@ -24,17 +24,19 @@ export default function Blog() {
   const getBlogPosts = () => {
     const searchQuery = getSearch();
 
-    const filteredPosts = posts.filter((post) => {
-      if (searchQuery === "") {
-        return true;
-      }
-      const { title, subTitle, tags } = post;
-      return (
-        (title && title.includes(searchQuery)) ||
-        (subTitle && subTitle.includes(searchQuery)) ||
-        (tags && tags.includes(searchQuery))
-      );
-    });
+    const filteredPosts = [...posts]
+      .sort((a, b) => (a.createdDate > b.createdDate ? -1 : 1))
+      .filter((post) => {
+        if (searchQuery === "") {
+          return true;
+        }
+        const { title, subTitle, tags } = post;
+        return (
+          (title && title.includes(searchQuery)) ||
+          (subTitle && subTitle.includes(searchQuery)) ||
+          (tags && tags.includes(searchQuery))
+        );
+      });
 
     if (filteredPosts.length === 0) {
       return <h1>검색 결과가 없습니다 😯</h1>;

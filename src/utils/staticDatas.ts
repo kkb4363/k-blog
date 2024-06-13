@@ -40,21 +40,21 @@ export const headerTabs = [
 export const categories = [
   {
     img: codingTest,
-    title: "Coding Test(BackJoon)",
+    title: "코딩테스트(프로그래머스)",
     posts: [],
     updatedDate: "2024-01-29",
     id: "coding",
   },
   {
     img: js,
-    title: "JavaScript",
+    title: "자바스크립트",
     posts: [],
     updatedDate: "2024-06-12",
     id: "js",
   },
   {
     img: pr,
-    title: "Project",
+    title: "프로젝트",
     posts: [],
     updatedDate: "2024-06-13",
     id: "project",
@@ -63,6 +63,7 @@ export const categories = [
 
 // 블로그 포스트
 export const posts = [
+  // coding-test
   {
     img: c1,
     title: "대충 만든 자판",
@@ -74,6 +75,47 @@ export const posts = [
     postIndex: 1,
   },
   {
+    img: c1,
+    title: "기능개발",
+    tags: ["javascript", "프로그래머스 level 2", "스택", "큐"],
+    subTitle: "프로그래머스 코딩테스트 연습 - 문제 유형:스택/큐",
+    createdDate: "2024-06-13",
+    categoryId: "coding",
+    id: "기능개발",
+    postIndex: 2,
+  },
+  {
+    img: c1,
+    title: "올바른 괄호",
+    tags: ["javascript", "프로그래머스 level 2", "스택", "큐"],
+    subTitle: "프로그래머스 코딩테스트 연습 - 문제 유형:스택/큐",
+    createdDate: "2024-06-13",
+    categoryId: "coding",
+    id: "올바른괄호",
+    postIndex: 3,
+  },
+  {
+    img: c1,
+    title: "프로세스",
+    tags: ["javascript", "프로그래머스 level 2", "스택", "큐"],
+    subTitle: "프로그래머스 코딩테스트 연습 - 문제 유형:스택/큐",
+    createdDate: "2024-06-13",
+    categoryId: "coding",
+    id: "프로세스",
+    postIndex: 4,
+  },
+  {
+    img: c1,
+    title: "다리를지나는트럭",
+    tags: ["javascript", "프로그래머스 level 2", "스택", "큐"],
+    subTitle: "프로그래머스 코딩테스트 연습 - 문제 유형:스택/큐",
+    createdDate: "2024-06-13",
+    categoryId: "coding",
+    id: "다리를지나는트럭",
+    postIndex: 5,
+  },
+  // js
+  {
     img: js,
     title: "자바스크립트 정리",
     tags: ["javascript"],
@@ -83,6 +125,7 @@ export const posts = [
     id: "javascript-study",
     postIndex: 1,
   },
+  // project
   {
     img: gabook,
     title: "간단하게 사용하는 가게부",

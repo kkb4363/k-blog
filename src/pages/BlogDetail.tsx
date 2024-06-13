@@ -104,16 +104,18 @@ export default function BlogDetail() {
           <p>{getCategoryDetail().title}</p>
 
           <ListCol $show={showList}>
-            {getCategoryDetail().posts.map((p, idx) => (
-              <List
-                key={idx}
-                $isCurrent={p.postIndex === getCurrentBlog().postIndex}
-                onClick={() => handlePost(p.postIndex)}
-              >
-                <span>{p.postIndex}.</span>
-                <span>{p.title}</span>
-              </List>
-            ))}
+            {getCategoryDetail()
+              .posts.sort((a, b) => (a.postIndex > b.postIndex ? 1 : -1))
+              .map((p, idx) => (
+                <List
+                  key={idx}
+                  $isCurrent={p.postIndex === getCurrentBlog().postIndex}
+                  onClick={() => handlePost(p.postIndex)}
+                >
+                  <span>{p.postIndex}.</span>
+                  <span>{p.title}</span>
+                </List>
+              ))}
           </ListCol>
 
           <ShowList>

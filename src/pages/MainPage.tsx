@@ -7,11 +7,14 @@ import BlogPost from "components/BlogPost";
 export default function MainPage() {
   const navigate = useNavigate();
 
-  const newPosts = posts.sort((a, b) =>
-    a.createdDate > b.createdDate ? 1 : -1
-  );
-  const oldPosts = posts.sort((a, b) =>
+  // 최신글 정렬
+  const newPosts = [...posts].sort((a, b) =>
     a.createdDate > b.createdDate ? -1 : 1
+  );
+
+  // 오래된글 정렬
+  const oldPosts = [...posts].sort((a, b) =>
+    a.createdDate > b.createdDate ? 1 : -1
   );
 
   return (
@@ -41,22 +44,19 @@ export default function MainPage() {
       </BlogBox>
       <BlogBox>
         <p>오래된 포스트</p>
-        {oldPosts
-          .slice(0, 3)
-          .reverse()
-          .map((post) => (
-            <BlogPost
-              key={post.id}
-              title={post.title}
-              details={post.subTitle}
-              img={post.img}
-              createdDate={post.createdDate}
-              categoryId={post.categoryId}
-              blogId={post.id}
-              postIdx={post.postIndex}
-              tags={post.tags}
-            />
-          ))}
+        {oldPosts.slice(0, 3).map((post) => (
+          <BlogPost
+            key={post.id}
+            title={post.title}
+            details={post.subTitle}
+            img={post.img}
+            createdDate={post.createdDate}
+            categoryId={post.categoryId}
+            blogId={post.id}
+            postIdx={post.postIndex}
+            tags={post.tags}
+          />
+        ))}
       </BlogBox>
     </MainPageContainer>
   );

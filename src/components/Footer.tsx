@@ -9,7 +9,7 @@ export default function Footer() {
         <span>98_gb의 블로그</span>
       </FooterTxt>
       <FooterImg>
-        <a target="_blank" href="https://www.instagram.com/gibeom__0/">
+        <a target="_blank" href="https://www.instagram.com/98_gibeom/">
           <img src={instaIcon} alt="insta" />
         </a>
         <a target="_blank" href="https://github.com/kkb4363">

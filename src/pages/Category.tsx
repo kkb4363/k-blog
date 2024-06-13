@@ -22,7 +22,6 @@ export default function Category() {
     const newcategory = [];
 
     categories.forEach((cate) => {
-      let postIdx = 1;
       if (!newcategory.some((d) => d.id === cate.id)) {
         newcategory.push({
           id: cate.id,
@@ -30,7 +29,6 @@ export default function Category() {
           title: cate.title,
           updatedDate: cate.updatedDate,
         });
-        postIdx = 1;
       }
       posts.forEach((post) => {
         if (post.categoryId === cate.id) {
@@ -38,7 +36,7 @@ export default function Category() {
             (d) => d.id === post.categoryId
           );
           if (prevCategory) {
-            prevCategory.posts.push({ ...post, postIndex: postIdx++ });
+            prevCategory.posts.push(post);
           }
         }
       });

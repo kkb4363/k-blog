@@ -45,7 +45,6 @@ export default function Home() {
     const newcategory = [];
 
     categories.forEach((cate) => {
-      let postIdx = 1;
       if (!newcategory.some((d) => d.id === cate.id)) {
         newcategory.push({
           id: cate.id,
@@ -53,7 +52,6 @@ export default function Home() {
           title: cate.title,
           updatedDate: cate.updatedDate,
         });
-        postIdx = 1;
       }
       posts.forEach((post) => {
         if (post.categoryId === cate.id) {
@@ -61,7 +59,7 @@ export default function Home() {
             (d) => d.id === post.categoryId
           );
           if (prevCategory) {
-            prevCategory.posts.push({ ...post, postIndex: postIdx++ });
+            prevCategory.posts.push(post);
           }
         }
       });
