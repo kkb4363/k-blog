@@ -14,8 +14,6 @@ export default function MainPage() {
     a.createdDate > b.createdDate ? -1 : 1
   );
 
-  console.log(newPosts);
-
   return (
     <MainPageContainer>
       <HomeBodyMain />

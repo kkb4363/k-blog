@@ -20,6 +20,7 @@ export default function BlogPost(props: Props) {
   const { setCurrentPostIdx } = useDisplayStore();
 
   const handleBlogDetail = () => {
+    console.log(props.postIdx);
     setCurrentPostIdx(Number(props.postIdx));
     navigate(`/blog/${props.categoryId}/${props.blogId}`);
   };

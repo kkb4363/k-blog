@@ -35,7 +35,7 @@ export default function BlogDetail() {
   };
 
   const handlePrev = () => {
-    const currentIndex = getCurrentPostIdx();
+    const currentIndex = getCurrentBlog().postIndex;
     if (currentIndex > 1) {
       setCurrentPostIdx(currentIndex - 1);
       const newCategoryId = getCategory()
@@ -50,7 +50,7 @@ export default function BlogDetail() {
   };
 
   const handleNext = () => {
-    const currentIndex = getCurrentPostIdx();
+    const currentIndex = getCurrentBlog().postIndex;
     if (currentIndex < getCategoryDetail().posts.length) {
       setCurrentPostIdx(currentIndex + 1);
       const newCategoryId = getCategory()
@@ -107,7 +107,7 @@ export default function BlogDetail() {
             {getCategoryDetail().posts.map((p, idx) => (
               <List
                 key={idx}
-                $isCurrent={p.postIndex === getCurrentPostIdx()}
+                $isCurrent={p.postIndex === getCurrentBlog().postIndex}
                 onClick={() => handlePost(p.postIndex)}
               >
                 <span>{p.postIndex}.</span>
@@ -143,7 +143,8 @@ export default function BlogDetail() {
 
             <Right>
               <span>
-                {getCurrentPostIdx()} / {getCategoryDetail().posts.length}
+                {getCurrentBlog().postIndex} /{" "}
+                {getCategoryDetail().posts.length}
               </span>
               <PageBtn
                 onClick={handlePrev}
