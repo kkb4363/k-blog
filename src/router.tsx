@@ -7,14 +7,17 @@ import Project from "pages/Project";
 import Blog from "pages/Blog";
 import BlogDetail from "pages/BlogDetail";
 import Search from "pages/Search";
+import ErrorPage from "pages/ErrorPage";
+import WritePost from "pages/WritePost";
 
 export const router = createBrowserRouter([
   {
-    path: "/",
+    path: "",
     element: <Home />,
+    errorElement: <ErrorPage />,
     children: [
       {
-        path: "",
+        path: "/",
         element: <MainPage />,
       },
       {
@@ -51,6 +54,11 @@ export const router = createBrowserRouter([
         path: "project",
         element: <Project />,
       },
+      // for developer
+      // {
+      //   path: "writePost",
+      //   element: <WritePost />,
+      // },
     ],
   },
 ]);

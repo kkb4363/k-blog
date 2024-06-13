@@ -37,6 +37,13 @@ export const light = {
     btnHover: "rgb(224 231 255/1)",
     listTxt: "black",
     boxBg: "rgb(245 245 245/1)",
+    tagHover: "rgb(82 82 82 /1)",
+    tagBg: "rgb(229 229 229/ 1)",
+    tagTxt: "rgb(82 82 82 /1)",
+    tagTxtHover: "rgb(229 229 229/ 1)",
+    submitBtnBg: "rgb(199 210 254/1)",
+    submitBtnHover: "rgb(199 210 254/1)",
+    submitBtn: "rgb(79 70 229/1)",
   },
 };
 
@@ -78,6 +85,13 @@ export const dark = {
     btnHover: "rgb(55 48 163/1)",
     listTxt: "rgb(163 163 163/1)",
     boxBg: "rgb(38 38 38/1)",
+    tagHover: "rgb(64 64 64 /1)",
+    tagBg: "rgb(38 38 38 / 1)",
+    tagTxt: "rgb(212 212 212/1)",
+    tagTxtHover: "rgb(212 212 212/1)",
+    submitBtnBg: "rgb(49 46 129/1)",
+    submitBtnHover: "rgb(67 56 202/1)",
+    submitBtn: "rgb(199 210 254/1)",
   },
 };
 

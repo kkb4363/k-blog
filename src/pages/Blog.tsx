@@ -8,9 +8,11 @@ import SearchInput from "components/SearchInput";
 import { useDisplayStore } from "stores/display.store";
 import BlogDetail from "./BlogDetail";
 import { posts } from "utils/staticDatas";
+import { useSearchStore } from "stores/search.store";
 
 export default function Blog() {
   const { setHeaderTab } = useDisplayStore();
+  const { getSearch } = useSearchStore();
   const params = useParams();
 
   useEffect(() => {
@@ -18,6 +20,40 @@ export default function Blog() {
   }, []);
 
   const isBlogDetail = !!params.directoryId && !!params.id;
+
+  const getBlogPosts = () => {
+    const searchQuery = getSearch();
+
+    const filteredPosts = posts.filter((post) => {
+      if (searchQuery === "") {
+        return true;
+      }
+      const { title, subTitle, tags } = post;
+      return (
+        (title && title.includes(searchQuery)) ||
+        (subTitle && subTitle.includes(searchQuery)) ||
+        (tags && tags.includes(searchQuery))
+      );
+    });
+
+    if (filteredPosts.length === 0) {
+      return <h1>검색 결과가 없습니다 😯</h1>;
+    }
+
+    return filteredPosts.map((post) => (
+      <BlogPost
+        key={post.id}
+        title={post.title}
+        details={post.subTitle}
+        img={post.img}
+        createdDate={post.createdDate}
+        categoryId={post.categoryId}
+        blogId={post.id}
+        postIdx={post.postIndex}
+        tags={post.tags}
+      />
+    ));
+  };
 
   return (
     <>
@@ -29,23 +65,9 @@ export default function Blog() {
             title={`Blog (${posts.length})`}
             info="학습한 내용과 지식들을 공유 및 정리합니다."
           />
-          {/* Throttling */}
+
           <SearchInput placeHolder="블로그 내용 및 제목 검색하기" />
-          <BlogPostsCol>
-            {posts.map((post) => (
-              <BlogPost
-                key={post.id}
-                title={post.title}
-                details={post.subTitle}
-                img={post.img}
-                createdDate={post.createdDate}
-                categoryId={post.categoryId}
-                blogId={post.id}
-                postIdx={post.postIndex}
-                tags={post.tags}
-              />
-            ))}
-          </BlogPostsCol>
+          <BlogPostsCol>{getBlogPosts()}</BlogPostsCol>
         </>
       )}
     </>

@@ -1,7 +1,4 @@
-import testImg from "&/imgs/logo.png";
-import heartIcon from "&/imgs/heart.svg";
-import heartDarkIcon from "&/imgs/heart_dark.svg";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import HomeBodyMain from "components/HomeBodyMain";
 import { useNavigate } from "react-router-dom";
 import { posts } from "utils/staticDatas";
@@ -9,7 +6,16 @@ import BlogPost from "components/BlogPost";
 
 export default function MainPage() {
   const navigate = useNavigate();
-  console.log(posts);
+
+  const newPosts = posts.sort((a, b) =>
+    a.createdDate > b.createdDate ? 1 : -1
+  );
+  const oldPosts = posts.sort((a, b) =>
+    a.createdDate > b.createdDate ? -1 : 1
+  );
+
+  console.log(newPosts);
+
   return (
     <MainPageContainer>
       <HomeBodyMain />
@@ -21,7 +27,7 @@ export default function MainPage() {
       </BlogPostBox>
       <BlogBox>
         <p>최신 포스트</p>
-        {posts.map((post) => (
+        {newPosts.slice(0, 3).map((post) => (
           <BlogPost
             key={post.id}
             title={post.title}
@@ -36,20 +42,23 @@ export default function MainPage() {
         ))}
       </BlogBox>
       <BlogBox>
-        <p>인기 포스트 (좋아요 기능 추가하기)</p>
-        {posts.map((post) => (
-          <BlogPost
-            key={post.id}
-            title={post.title}
-            details={post.subTitle}
-            img={post.img}
-            createdDate={post.createdDate}
-            categoryId={post.categoryId}
-            blogId={post.id}
-            postIdx={post.postIndex}
-            tags={post.tags}
-          />
-        ))}
+        <p>오래된 포스트</p>
+        {oldPosts
+          .slice(0, 3)
+          .reverse()
+          .map((post) => (
+            <BlogPost
+              key={post.id}
+              title={post.title}
+              details={post.subTitle}
+              img={post.img}
+              createdDate={post.createdDate}
+              categoryId={post.categoryId}
+              blogId={post.id}
+              postIdx={post.postIndex}
+              tags={post.tags}
+            />
+          ))}
       </BlogBox>
     </MainPageContainer>
   );

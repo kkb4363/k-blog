@@ -52,7 +52,10 @@ export default function Category() {
       {isParams ? (
         <>
           <CurrentCategoryTitle>
-            <p>{getCategory().filter((c) => c.id === params.id)[0].title}</p>
+            <p>
+              {getCategory().filter((c) => c.id === params.id)[0].title} (
+              {getCategory().filter((c) => c.id === params.id)[0].posts.length})
+            </p>
           </CurrentCategoryTitle>
 
           <SearchInput placeHolder="어떤 포스트를 찾으시나요?" />

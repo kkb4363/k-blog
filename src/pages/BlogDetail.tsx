@@ -6,7 +6,8 @@ import "highlight.js/styles/a11y-dark.css";
 import flagIcon from "&/imgs/flag.svg";
 import arrowDownIcon from "&/imgs/arrowDown.svg";
 import arrowDownDarkIcon from "&/imgs/arrowDown_dark.svg";
-
+import tagIcon from "&/imgs/tag.svg";
+import tagDarkIcon from "&/imgs/tag_dark.svg";
 import arrowLeftIcon from "&/imgs/arrowLeft.svg";
 import arrowRightIcon from "&/imgs/arrowRight.svg";
 import { useContext, useEffect, useState } from "react";
@@ -23,16 +24,10 @@ export default function BlogDetail() {
   const { getCategory, getCurrentPostIdx, setCurrentPostIdx } =
     useDisplayStore();
 
-  const getBlogName = () => {
+  const getCurrentBlog = () => {
     return getCategory()
       .filter((c) => c.id === directoryId)[0]
-      .posts.filter((p) => p.id === id)[0].title;
-  };
-
-  const getBlogDate = () => {
-    return getCategory()
-      .filter((c) => c.id === directoryId)[0]
-      .posts.filter((p) => p.id === id)[0].createdDate;
+      ?.posts.filter((p) => p.id === id)[0];
   };
 
   const getCategoryDetail = () => {
@@ -79,9 +74,8 @@ export default function BlogDetail() {
     navigate(`/blog/${newCategoryId}/${newBlogId}`);
     setCurrentPostIdx(id);
   };
-
   useEffect(() => {
-    const filePath = `/src/blog/${directoryId}/${id}.md`;
+    const filePath = `/blog/${directoryId}/${id}.md`;
 
     fetch(filePath)
       .then((res) => {
@@ -100,8 +94,8 @@ export default function BlogDetail() {
   return (
     <div>
       <BlogDetailHeader>
-        <p>{DateFormatComponent(getBlogDate())}</p>
-        <span>{getBlogName()}</span>
+        <p>{DateFormatComponent(getCurrentBlog()?.createdDate)}</p>
+        <span>{getCurrentBlog().title}</span>
       </BlogDetailHeader>
 
       <BlogDetailBody>
@@ -170,17 +164,60 @@ export default function BlogDetail() {
         </BlogDetailCategoryBox>
 
         <BlogMarkdown>
-          <ReactMarkdown rehypePlugins={[rehypeHighlight]}>
+          <ReactMarkdown
+            components={{
+              img: ({ node, ...props }) => (
+                <img style={{ maxWidth: "100%" }} {...props} alt="" />
+              ),
+            }}
+            rehypePlugins={[rehypeHighlight]}
+          >
             {markdown}
           </ReactMarkdown>
         </BlogMarkdown>
+
+        <BlogTag>
+          {getCurrentBlog().tags.map((tag, idx) => (
+            <Tag href={`/tags/${tag}`} key={idx}>
+              <img src={tagDarkIcon} alt="tag" />
+              <span>{tag}</span>
+            </Tag>
+          ))}
+        </BlogTag>
       </BlogDetailBody>
     </div>
   );
 }
 
-const BlogMarkdown = styled.div`
+const BlogTag = styled.div`
+  width: 100%;
+  display: flex;
+  padding: 20px 0;
+  gap: 20px;
+`;
+
+const Tag = styled.a`
+  display: flex;
+  padding: 10px;
+  gap: 3px;
+  border-radius: 5px;
+  background-color: ${(props) => props.theme.blog.tagBg};
+
+  & > span {
+    color: ${(props) => props.theme.blog.tagTxt};
+  }
+
+  &:hover {
+    background-color: ${(props) => props.theme.blog.tagHover};
+    & > span {
+      color: ${(props) => props.theme.blog.tagTxtHover};
+    }
+  }
+`;
+
+const BlogMarkdown = styled.pre`
   padding: 30px 0;
+  white-space: pre-wrap;
 
   & > h1 {
     color: ${(props) => props.theme.default};

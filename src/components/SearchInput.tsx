@@ -1,15 +1,34 @@
 import styled from "styled-components";
 import searchIcon from "&/imgs/search.svg";
+import { useSearchStore } from "stores/search.store";
+import { ChangeEvent, useEffect, useState } from "react";
 
 interface Props {
   placeHolder: string;
 }
 
 export default function SearchInput(props: Props) {
+  const searchStore = useSearchStore();
+  const [tmpQuery, setTmpQuery] = useState(searchStore.getSearch());
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) =>
+    setTmpQuery(e.target.value);
+
+  useEffect(() => {
+    const debounce = setTimeout(() => {
+      return searchStore.setSearch(tmpQuery);
+    }, 200);
+    return () => clearTimeout(debounce);
+  }, [tmpQuery]);
+
   return (
     <SearchInputContainer>
       <div>
-        <input placeholder={props.placeHolder} />
+        <input
+          placeholder={props.placeHolder}
+          value={tmpQuery}
+          onChange={handleChange}
+        />
         <img src={searchIcon} alt="search" />
       </div>
     </SearchInputContainer>

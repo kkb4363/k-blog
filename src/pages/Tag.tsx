@@ -5,6 +5,7 @@ import styled from "styled-components";
 import { CurrentCategoryTitle } from "./Category";
 import SearchInput from "components/SearchInput";
 import { posts } from "utils/staticDatas";
+import { useSearchStore } from "stores/search.store";
 
 export default function Tag() {
   const { setHeaderTab, setTag, getTag } = useDisplayStore();
