@@ -148,14 +148,15 @@ export default function BlogDetail() {
               </span>
               <PageBtn
                 onClick={handlePrev}
-                $isDisabled={getCurrentPostIdx() === 1}
+                $isDisabled={getCurrentBlog().postIndex === 1}
               >
                 <img src={arrowLeftIcon} alt="arrow_left" />
               </PageBtn>
               <PageBtn
                 onClick={handleNext}
                 $isDisabled={
-                  getCurrentPostIdx() === getCategoryDetail().posts.length
+                  getCurrentBlog().postIndex ===
+                  getCategoryDetail().posts.length
                 }
               >
                 <img src={arrowRightIcon} alt="arrow_right" />
