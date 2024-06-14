@@ -11,7 +11,7 @@ export default function WritePost() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = "sample.md";
+    a.download = "new_post.md";
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);

@@ -1,9 +1,9 @@
-import BlogPost from "components/BlogPost";
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
+
+import BlogPost from "components/BlogPost";
 import { useDisplayStore } from "stores/display.store";
-import { useNavigate, useParams } from "react-router-dom";
 import { useSearchStore } from "stores/search.store";
-import { useEffect } from "react";
 
 export default function Search() {
   const { getCategory, getHeaderTab, getTag } = useDisplayStore();

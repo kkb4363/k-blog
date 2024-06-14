@@ -1,7 +1,7 @@
 import styled, { css } from "styled-components";
 import logo from "&/imgs/logo.png";
 
-export default function HomeBodyMain() {
+export default function BlogPostMain() {
   return (
     <>
       <BodyBigScreen>

@@ -1,48 +1,21 @@
-import TabInfoCol from "components/TabInfoCol";
 import { useEffect } from "react";
-import { useDisplayStore } from "stores/display.store";
 import styled, { keyframes } from "styled-components";
-import testImg from "&/imgs/logo.png";
-import { categories, posts } from "utils/staticDatas";
 import { Outlet, useNavigate, useParams } from "react-router-dom";
+
+import { useDisplayStore } from "stores/display.store";
+import TabInfoCol from "components/TabInfoCol";
+import { categories, posts } from "utils/staticDatas";
 import SearchInput from "components/SearchInput";
-import { DateFormatComponent } from "utils/utils";
+import { formatDate } from "utils/utils";
 
 export default function Category() {
-  const { setHeaderTab, setCategory, getCategory } = useDisplayStore();
   const params = useParams();
   const navigate = useNavigate();
   const isParams = !!params.id;
+  const { setHeaderTab, getCategory } = useDisplayStore();
 
   useEffect(() => {
     setHeaderTab("category");
-  }, []);
-
-  useEffect(() => {
-    const newcategory = [];
-
-    categories.forEach((cate) => {
-      if (!newcategory.some((d) => d.id === cate.id)) {
-        newcategory.push({
-          id: cate.id,
-          posts: [],
-          title: cate.title,
-          updatedDate: cate.updatedDate,
-        });
-      }
-      posts.forEach((post) => {
-        if (post.categoryId === cate.id) {
-          const prevCategory = newcategory.find(
-            (d) => d.id === post.categoryId
-          );
-          if (prevCategory) {
-            prevCategory.posts.push(post);
-          }
-        }
-      });
-    });
-
-    setCategory(newcategory);
   }, []);
 
   return (
@@ -84,7 +57,7 @@ export default function Category() {
                   </span>
                   <span>
                     &nbsp;{" "}
-                    {DateFormatComponent(
+                    {formatDate(
                       getCategory().filter((c) => c.id === cate.id)[0]
                         ?.updatedDate
                     )}

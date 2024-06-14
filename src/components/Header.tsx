@@ -1,15 +1,15 @@
 import styled, { ThemeContext } from "styled-components";
 import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
+
 import { useDisplayStore } from "stores/display.store";
 import LogoIcon from "&/imgs/logo.png";
 import dark from "&/imgs/dark.svg";
 import light from "&/imgs/light.svg";
 import more from "&/imgs/more.svg";
 import moreDark from "&/imgs/more_dark.svg";
-
 import { headerTabs } from "utils/staticDatas";
 import { HeaderTabs } from "stores/display";
-import { useNavigate } from "react-router-dom";
 
 interface Props {
   handleSide: () => void;
@@ -105,7 +105,7 @@ const HeaderLogo = styled.div`
 `;
 
 const HeaderTabRow = styled.div`
-  width: 50%;
+  width: 35%;
   height: 100%;
   display: flex;
   justify-content: space-between;
@@ -133,13 +133,6 @@ const HeaderTabRow = styled.div`
     justify-content: flex-end;
     gap: 10px;
   }
-
-  /* & > div:nth-child(4),
-  & > div:nth-child(6) {
-    @media screen and (max-width: 1540px) {
-      display: none;
-    }
-  } */
 `;
 
 const HeaderTab = styled.div<{ $active: boolean }>`

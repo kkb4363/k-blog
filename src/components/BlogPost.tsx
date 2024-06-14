@@ -1,8 +1,7 @@
 import styled from "styled-components";
-import heartIcon from "&/imgs/heart.svg";
 import { useNavigate } from "react-router-dom";
-import { useDisplayStore } from "stores/display.store";
-import { DateFormatComponent } from "utils/utils";
+
+import { formatDate } from "utils/utils";
 
 interface Props {
   img: string;
@@ -17,11 +16,8 @@ interface Props {
 
 export default function BlogPost(props: Props) {
   const navigate = useNavigate();
-  const { setCurrentPostIdx } = useDisplayStore();
 
   const handleBlogDetail = () => {
-    console.log(props.postIdx);
-    setCurrentPostIdx(Number(props.postIdx));
     navigate(`/blog/${props.categoryId}/${props.blogId}`);
   };
 
@@ -41,7 +37,7 @@ export default function BlogPost(props: Props) {
         </TagRow>
         <BlogDetail>{props.details}</BlogDetail>
         <BlogDate>
-          <span>{DateFormatComponent(props.createdDate)}</span>
+          <span>{formatDate(props.createdDate)}</span>
         </BlogDate>
       </BlogTxtCol>
     </BlogPostContainer>

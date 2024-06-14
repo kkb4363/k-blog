@@ -1,12 +1,13 @@
 import { motion } from "framer-motion";
 import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import styled, { ThemeContext, css } from "styled-components";
+
 import { HeaderTabs } from "stores/display";
 import { useDisplayStore } from "stores/display.store";
-import styled, { ThemeContext, css } from "styled-components";
 import { headerTabs } from "utils/staticDatas";
 import exitLight from "&/imgs/exit_light.svg";
 import exitDark from "&/imgs/exit_dark.svg";
-import { useNavigate } from "react-router-dom";
 
 interface Props {
   handleSide: () => void;

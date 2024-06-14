@@ -1,11 +1,11 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { Outlet, useNavigate, useParams } from "react-router-dom";
-import { useDisplayStore } from "stores/display.store";
 import styled from "styled-components";
+
+import { useDisplayStore } from "stores/display.store";
 import { CurrentCategoryTitle } from "./Category";
 import SearchInput from "components/SearchInput";
 import { posts } from "utils/staticDatas";
-import { useSearchStore } from "stores/search.store";
 
 export default function Tag() {
   const { setHeaderTab, setTag, getTag } = useDisplayStore();
@@ -17,32 +17,10 @@ export default function Tag() {
     setHeaderTab("tags");
   }, []);
 
-  useEffect(() => {
-    const newTag = [];
-
-    posts.forEach((post) => {
-      post.tags.forEach((tag) => {
-        const existingTag = newTag.find((p) => p.id === tag);
-        if (!existingTag) {
-          newTag.push({
-            id: tag,
-            title: tag,
-            posts: [post],
-          });
-        } else {
-          existingTag.posts.push(post);
-        }
-      });
-    });
-
-    setTag(newTag);
-  }, []);
-
   return (
     <TagContainer $isParams={!!params.id}>
       {isParams ? (
         <>
-          {" "}
           <CurrentCategoryTitle>
             <p>
               {params.id} (

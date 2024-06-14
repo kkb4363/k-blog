@@ -2,6 +2,8 @@ import styled, { ThemeContext } from "styled-components";
 import ReactMarkdown from "react-markdown";
 import rehypeHighlight from "rehype-highlight";
 import "highlight.js/styles/a11y-dark.css";
+import { useContext, useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 
 import flagIcon from "&/imgs/flag.svg";
 import arrowDownIcon from "&/imgs/arrowDown.svg";
@@ -10,19 +12,16 @@ import tagIcon from "&/imgs/tag.svg";
 import tagDarkIcon from "&/imgs/tag_dark.svg";
 import arrowLeftIcon from "&/imgs/arrowLeft.svg";
 import arrowRightIcon from "&/imgs/arrowRight.svg";
-import { useContext, useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
 import { useDisplayStore } from "stores/display.store";
-import { DateFormatComponent } from "utils/utils";
+import { formatDate } from "utils/utils";
 
 export default function BlogDetail() {
-  const theme = useContext(ThemeContext);
   const navigate = useNavigate();
-  const [showList, setShowList] = useState(false);
+  const theme = useContext(ThemeContext);
+  const [showBlogList, setShowBlogList] = useState(false);
   const [markdown, setMarkdown] = useState("");
   const { directoryId, id } = useParams();
-  const { getCategory, getCurrentPostIdx, setCurrentPostIdx } =
-    useDisplayStore();
+  const { getCategory } = useDisplayStore();
 
   const getCurrentBlog = () => {
     return getCategory()
@@ -30,35 +29,25 @@ export default function BlogDetail() {
       ?.posts.filter((p) => p.id === id)[0];
   };
 
-  const getCategoryDetail = () => {
+  const getCurrentCategory = () => {
     return getCategory().filter((c) => c.id === directoryId)[0];
   };
 
-  const handlePrev = () => {
+  const handlePrevNext = (isNext: boolean) => {
     const currentIndex = getCurrentBlog().postIndex;
-    if (currentIndex > 1) {
-      setCurrentPostIdx(currentIndex - 1);
+    const prevCondition = currentIndex > 1;
+    const nextCondition = currentIndex < getCurrentCategory().posts.length;
+
+    if (isNext ? nextCondition : prevCondition) {
+      const adjustment = isNext ? 1 : -1;
       const newCategoryId = getCategory()
         .filter((c) => c.id === directoryId)[0]
-        .posts.find((d) => d.postIndex === currentIndex - 1).categoryId;
+        .posts.find(
+          (d) => d.postIndex === currentIndex + adjustment
+        ).categoryId;
       const newBlogId = getCategory()
         .filter((c) => c.id === directoryId)[0]
-        .posts.find((d) => d.postIndex === currentIndex - 1).id;
-
-      navigate(`/blog/${newCategoryId}/${newBlogId}`);
-    }
-  };
-
-  const handleNext = () => {
-    const currentIndex = getCurrentBlog().postIndex;
-    if (currentIndex < getCategoryDetail().posts.length) {
-      setCurrentPostIdx(currentIndex + 1);
-      const newCategoryId = getCategory()
-        .filter((c) => c.id === directoryId)[0]
-        .posts.find((d) => d.postIndex === currentIndex + 1).categoryId;
-      const newBlogId = getCategory()
-        .filter((c) => c.id === directoryId)[0]
-        .posts.find((d) => d.postIndex === currentIndex + 1).id;
+        .posts.find((d) => d.postIndex === currentIndex + adjustment).id;
 
       navigate(`/blog/${newCategoryId}/${newBlogId}`);
     }
@@ -72,8 +61,8 @@ export default function BlogDetail() {
       .filter((c) => c.id === directoryId)[0]
       .posts.find((p) => p.postIndex === id).id;
     navigate(`/blog/${newCategoryId}/${newBlogId}`);
-    setCurrentPostIdx(id);
   };
+
   useEffect(() => {
     const filePath = `/blog/${directoryId}/${id}.md`;
 
@@ -92,35 +81,35 @@ export default function BlogDetail() {
   }, [directoryId, id]);
 
   return (
-    <div>
+    <>
       <BlogDetailHeader>
-        <p>{DateFormatComponent(getCurrentBlog()?.createdDate)}</p>
+        <p>{formatDate(getCurrentBlog()?.createdDate)}</p>
         <span>{getCurrentBlog().title}</span>
       </BlogDetailHeader>
 
       <BlogDetailBody>
         <BlogDetailCategoryBox>
           <img src={flagIcon} alt="flag" width={35} height={40} />
-          <p>{getCategoryDetail().title}</p>
+          <p>{getCurrentCategory().title}</p>
 
-          <ListCol $show={showList}>
-            {getCategoryDetail()
+          <BlogListCol $show={showBlogList}>
+            {getCurrentCategory()
               .posts.sort((a, b) => (a.postIndex > b.postIndex ? 1 : -1))
               .map((p, idx) => (
-                <List
+                <BlogList
                   key={idx}
                   $isCurrent={p.postIndex === getCurrentBlog().postIndex}
                   onClick={() => handlePost(p.postIndex)}
                 >
                   <span>{p.postIndex}.</span>
                   <span>{p.title}</span>
-                </List>
+                </BlogList>
               ))}
-          </ListCol>
+          </BlogListCol>
 
-          <ShowList>
-            <Left onClick={() => setShowList((p) => !p)}>
-              {showList ? (
+          <BlogManagement>
+            <BlogShowList onClick={() => setShowBlogList((p) => !p)}>
+              {showBlogList ? (
                 <img
                   style={{ rotate: "180deg" }}
                   src={
@@ -140,34 +129,34 @@ export default function BlogDetail() {
                   alt="arrow_down"
                 />
               )}
-              <span>{showList ? "숨기기" : "목록 보기"}</span>
-            </Left>
+              <span>{showBlogList ? "숨기기" : "목록 보기"}</span>
+            </BlogShowList>
 
-            <Right>
+            <BlogPrevNext>
               <span>
                 {getCurrentBlog().postIndex} /{" "}
-                {getCategoryDetail().posts.length}
+                {getCurrentCategory().posts.length}
               </span>
-              <PageBtn
-                onClick={handlePrev}
+              <BlogPageBtn
+                onClick={() => handlePrevNext(false)}
                 $isDisabled={getCurrentBlog().postIndex === 1}
               >
                 <img src={arrowLeftIcon} alt="arrow_left" />
-              </PageBtn>
-              <PageBtn
-                onClick={handleNext}
+              </BlogPageBtn>
+              <BlogPageBtn
+                onClick={() => handlePrevNext(true)}
                 $isDisabled={
                   getCurrentBlog().postIndex ===
-                  getCategoryDetail().posts.length
+                  getCurrentCategory().posts.length
                 }
               >
                 <img src={arrowRightIcon} alt="arrow_right" />
-              </PageBtn>
-            </Right>
-          </ShowList>
+              </BlogPageBtn>
+            </BlogPrevNext>
+          </BlogManagement>
         </BlogDetailCategoryBox>
 
-        <BlogMarkdown>
+        <BlogMarkdownContainer>
           <ReactMarkdown
             components={{
               img: ({ node, ...props }) => (
@@ -178,48 +167,25 @@ export default function BlogDetail() {
           >
             {markdown}
           </ReactMarkdown>
-        </BlogMarkdown>
+        </BlogMarkdownContainer>
 
-        <BlogTag>
+        <BlogTagRow>
           {getCurrentBlog().tags.map((tag, idx) => (
-            <Tag href={`/tags/${tag}`} key={idx}>
-              <img src={tagDarkIcon} alt="tag" />
+            <BlogTag href={`/tags/${tag}`} key={idx}>
+              <img
+                src={theme.currentTheme === "dark" ? tagDarkIcon : tagIcon}
+                alt="tag"
+              />
               <span>{tag}</span>
-            </Tag>
+            </BlogTag>
           ))}
-        </BlogTag>
+        </BlogTagRow>
       </BlogDetailBody>
-    </div>
+    </>
   );
 }
 
-const BlogTag = styled.div`
-  width: 100%;
-  display: flex;
-  padding: 20px 0;
-  gap: 20px;
-`;
-
-const Tag = styled.a`
-  display: flex;
-  padding: 10px;
-  gap: 3px;
-  border-radius: 5px;
-  background-color: ${(props) => props.theme.blog.tagBg};
-
-  & > span {
-    color: ${(props) => props.theme.blog.tagTxt};
-  }
-
-  &:hover {
-    background-color: ${(props) => props.theme.blog.tagHover};
-    & > span {
-      color: ${(props) => props.theme.blog.tagTxtHover};
-    }
-  }
-`;
-
-const BlogMarkdown = styled.pre`
+const BlogMarkdownContainer = styled.pre`
   padding: 30px 0;
   white-space: pre-wrap;
 
@@ -263,6 +229,7 @@ const BlogDetailHeader = styled.div`
 
 const BlogDetailBody = styled.div`
   width: 100%;
+  position: relative;
 
   padding: 20px 0;
   border-top: 1px solid ${(props) => props.theme.category.borderTop};
@@ -292,7 +259,30 @@ const BlogDetailCategoryBox = styled.div`
   }
 `;
 
-const ShowList = styled.div`
+const BlogListCol = styled.div<{ $show: boolean }>`
+  gap: 10px;
+
+  display: ${({ $show }) => ($show ? "flex" : "none")};
+  flex-direction: column;
+`;
+
+const BlogList = styled.div<{ $isCurrent: boolean }>`
+  display: flex;
+  gap: 3px;
+  cursor: ${({ $isCurrent }) => ($isCurrent ? "auto" : "pointer")};
+
+  & > span:first-child {
+    font-style: italic;
+    color: ${(props) => props.theme.body.subTxt2};
+  }
+
+  & > span:last-child {
+    color: ${({ $isCurrent, theme }) =>
+      $isCurrent ? theme.body.tag : theme.body.subTxt};
+  }
+`;
+
+const BlogManagement = styled.div`
   width: 100%;
   height: 20px;
   display: flex;
@@ -300,7 +290,7 @@ const ShowList = styled.div`
   justify-content: space-between;
 `;
 
-const Left = styled.div`
+const BlogShowList = styled.div`
   display: flex;
   align-items: center;
   gap: 10px;
@@ -311,7 +301,7 @@ const Left = styled.div`
   }
 `;
 
-const Right = styled.div`
+const BlogPrevNext = styled.div`
   display: flex;
   align-items: center;
   gap: 10px;
@@ -321,7 +311,7 @@ const Right = styled.div`
   }
 `;
 
-const PageBtn = styled.button<{ $isDisabled: boolean }>`
+const BlogPageBtn = styled.button<{ $isDisabled: boolean }>`
   opacity: ${({ $isDisabled }) => $isDisabled && 0.3};
   cursor: ${({ $isDisabled }) => ($isDisabled ? "auto" : "pointer")};
   width: 24px;
@@ -342,25 +332,28 @@ const PageBtn = styled.button<{ $isDisabled: boolean }>`
   }
 `;
 
-const ListCol = styled.div<{ $show: boolean }>`
-  gap: 10px;
-
-  display: ${({ $show }) => ($show ? "flex" : "none")};
-  flex-direction: column;
+const BlogTagRow = styled.div`
+  width: 100%;
+  display: flex;
+  padding: 20px 0;
+  gap: 20px;
 `;
 
-const List = styled.div<{ $isCurrent: boolean }>`
+const BlogTag = styled.a`
   display: flex;
+  padding: 10px;
   gap: 3px;
-  cursor: ${({ $isCurrent }) => ($isCurrent ? "auto" : "pointer")};
+  border-radius: 5px;
+  background-color: ${(props) => props.theme.blog.tagBg};
 
-  & > span:first-child {
-    font-style: italic;
-    color: ${(props) => props.theme.body.subTxt2};
+  & > span {
+    color: ${(props) => props.theme.blog.tagTxt};
   }
 
-  & > span:last-child {
-    color: ${({ $isCurrent, theme }) =>
-      $isCurrent ? theme.body.tag : theme.body.subTxt};
+  &:hover {
+    background-color: ${(props) => props.theme.blog.tagHover};
+    & > span {
+      color: ${(props) => props.theme.blog.tagTxtHover};
+    }
   }
 `;

@@ -1,8 +1,9 @@
-import TabInfoCol from "components/TabInfoCol";
 import styled from "styled-components";
+import { useEffect } from "react";
+
+import TabInfoCol from "components/TabInfoCol";
 import testImg from "&/imgs/logo.png";
 import { useDisplayStore } from "stores/display.store";
-import { useEffect } from "react";
 import { categoryAnimate } from "./Category";
 
 export default function Project() {

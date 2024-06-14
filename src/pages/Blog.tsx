@@ -23,7 +23,6 @@ export default function Blog() {
 
   const getBlogPosts = () => {
     const searchQuery = getSearch();
-
     const filteredPosts = [...posts]
       .sort((a, b) => (a.createdDate > b.createdDate ? -1 : 1))
       .filter((post) => {
