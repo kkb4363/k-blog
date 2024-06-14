@@ -83,4 +83,11 @@ const BlogPostsCol = styled.div`
   border-bottom: 2px solid ${(props) => props.theme.category.borderTop};
   padding: 50px 0;
   width: 100%;
+
+  & > h1 {
+    min-height: 300px;
+    display: flex;
+    justify-content: center;
+    color: ${(props) => props.theme.blog.inputTxt};
+  }
 `;

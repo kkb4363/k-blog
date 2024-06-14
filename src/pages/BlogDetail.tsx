@@ -204,6 +204,16 @@ const BlogMarkdownContainer = styled.pre`
     background-color: #e9ecef;
     color: black;
   }
+
+  blockquote {
+    margin: 2rem 0px;
+    border-left: 4px solid ${(props) => props.theme.blog.blockquoteColor};
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+    background: ${(props) => props.theme.blog.blockquoteBg};
+    padding: 1rem 1rem 1rem 2rem;
+    color: ${(props) => props.theme.blog.blockquoteTxt};
+  }
 `;
 
 const BlogDetailHeader = styled.div`

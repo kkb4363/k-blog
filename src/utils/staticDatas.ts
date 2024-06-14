@@ -3,7 +3,9 @@ import c1 from "&/imgs/posts/c1.jpg";
 import js from "&/imgs/posts/js.jpg";
 import pr from "&/imgs/posts/pr.jpg";
 import air from "&/imgs/posts/air.jpg";
+import hc from "&/imgs/posts/hc.jpg";
 import gabook from "&/imgs/posts/ga.jpg";
+import flutter from "&/imgs/posts/flutter.jpg";
 
 export const headerTabs = [
   {
@@ -42,7 +44,7 @@ export const categories = [
     img: codingTest,
     title: "코딩테스트(프로그래머스)",
     posts: [],
-    updatedDate: "2024-01-29",
+    updatedDate: "2024-06-14",
     id: "coding",
   },
   {
@@ -51,6 +53,20 @@ export const categories = [
     posts: [],
     updatedDate: "2024-06-12",
     id: "js",
+  },
+  {
+    img: hc,
+    title: "HTML&CSS",
+    posts: [],
+    updatedDate: "2024-06-14",
+    id: "html-css",
+  },
+  {
+    img: flutter,
+    title: "Flutter",
+    posts: [],
+    updatedDate: "2024-06-14",
+    id: "flutter",
   },
   {
     img: pr,
@@ -66,23 +82,13 @@ export const posts = [
   // coding-test
   {
     img: c1,
-    title: "대충 만든 자판",
-    tags: ["javascript", "프로그래머스 level 1"],
-    subTitle: "프로그래머스 코딩테스트 level 1 - 대충만든자판 문제 후기입니다.",
-    createdDate: "2024-01-16",
-    categoryId: "coding",
-    id: "roughly-made-keyboard",
-    postIndex: 1,
-  },
-  {
-    img: c1,
     title: "기능개발",
     tags: ["javascript", "프로그래머스 level 2", "스택", "큐"],
     subTitle: "프로그래머스 코딩테스트 연습 - 문제 유형:스택/큐",
     createdDate: "2024-06-13",
     categoryId: "coding",
     id: "기능개발",
-    postIndex: 2,
+    postIndex: 1,
   },
   {
     img: c1,
@@ -92,7 +98,7 @@ export const posts = [
     createdDate: "2024-06-13",
     categoryId: "coding",
     id: "올바른괄호",
-    postIndex: 3,
+    postIndex: 2,
   },
   {
     img: c1,
@@ -102,7 +108,7 @@ export const posts = [
     createdDate: "2024-06-13",
     categoryId: "coding",
     id: "프로세스",
-    postIndex: 4,
+    postIndex: 3,
   },
   {
     img: c1,
@@ -112,19 +118,85 @@ export const posts = [
     createdDate: "2024-06-13",
     categoryId: "coding",
     id: "다리를지나는트럭",
+    postIndex: 4,
+  },
+  {
+    img: c1,
+    title: "폰켓몬",
+    tags: ["javascript", "프로그래머스 level 2", "해시"],
+    subTitle: "프로그래머스 코딩테스트 연습 - 문제 유형:해시",
+    createdDate: "2024-06-14",
+    categoryId: "coding",
+    id: "폰켓몬",
     postIndex: 5,
   },
+  {
+    img: c1,
+    title: "완주하지못한선수",
+    tags: ["javascript", "프로그래머스 level 2", "해시"],
+    subTitle: "프로그래머스 코딩테스트 연습 - 문제 유형:해시",
+    createdDate: "2024-06-14",
+    categoryId: "coding",
+    id: "완주하지못한선수",
+    postIndex: 6,
+  },
+  {
+    img: c1,
+    title: "전화번호목록",
+    tags: ["javascript", "프로그래머스 level 2", "해시"],
+    subTitle: "프로그래머스 코딩테스트 연습 - 문제 유형:해시",
+    createdDate: "2024-06-14",
+    categoryId: "coding",
+    id: "전화번호목록",
+    postIndex: 7,
+  },
+  {
+    img: c1,
+    title: "의상",
+    tags: ["javascript", "프로그래머스 level 2", "해시"],
+    subTitle: "프로그래머스 코딩테스트 연습 - 문제 유형:해시",
+    createdDate: "2024-06-14",
+    categoryId: "coding",
+    id: "의상",
+    postIndex: 8,
+  },
+
   // js
   {
     img: js,
-    title: "자바스크립트 정리",
+    title: "자바스크립트",
     tags: ["javascript"],
     subTitle: "몰랐던 내용 및 복습 겸 정리한 내용입니다.",
-    createdDate: "2024-06-12",
+    createdDate: "2024-06-14",
     categoryId: "js",
     id: "javascript-study",
     postIndex: 1,
   },
+
+  // html , css
+  {
+    img: js,
+    title: "HTML&CSS",
+    tags: ["HTML", "CSS"],
+    subTitle: "몰랐던 내용 및 복습 겸 정리한 내용입니다.",
+    createdDate: "2024-06-14",
+    categoryId: "html-css",
+    id: "html-css",
+    postIndex: 1,
+  },
+
+  // flutter
+  {
+    img: flutter,
+    title: "Flutter",
+    tags: ["flutter"],
+    subTitle: "몰랐던 내용 및 복습 겸 정리한 내용입니다.",
+    createdDate: "2024-06-14",
+    categoryId: "flutter",
+    id: "flutter",
+    postIndex: 1,
+  },
+
   // project
   {
     img: gabook,

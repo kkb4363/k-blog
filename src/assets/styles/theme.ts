@@ -44,6 +44,9 @@ export const light = {
     submitBtnBg: "rgb(199 210 254/1)",
     submitBtnHover: "rgb(199 210 254/1)",
     submitBtn: "rgb(79 70 229/1)",
+    blockquoteBg: "#F8F9FA",
+    blockquoteTxt: "#212529",
+    blockquoteColor: "rgb(99 102 241/1)",
   },
 };
 
@@ -92,6 +95,9 @@ export const dark = {
     submitBtnBg: "rgb(49 46 129/1)",
     submitBtnHover: "rgb(67 56 202/1)",
     submitBtn: "rgb(199 210 254/1)",
+    blockquoteBg: "#1e1e1e",
+    blockquoteTxt: "#ececec",
+    blockquoteColor: "rgb(99 102 241/1)",
   },
 };
 
