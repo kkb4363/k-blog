@@ -3,13 +3,23 @@ import styled from "styled-components";
 interface Props {
   title: string;
   info: string;
+  btnTxt?: string;
+  btnCallback?: () => void;
 }
 
-export default function TabInfoCol({ title, info }: Props) {
+export default function TabInfoCol({
+  title,
+  info,
+  btnTxt,
+  btnCallback,
+}: Props) {
   return (
     <TabInfoColContainer>
       <p>{title}</p>
       <span>{info}</span>
+      <WriteBtn onClick={btnCallback}>
+        <span>{btnTxt}</span>
+      </WriteBtn>
     </TabInfoColContainer>
   );
 }
@@ -20,6 +30,7 @@ const TabInfoColContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 30px;
+  position: relative;
 
   padding: 70px 0 20px 0;
 
@@ -36,5 +47,23 @@ const TabInfoColContainer = styled.div`
   & > span {
     color: ${(props) => props.theme.body.infoTxt};
     font-size: 18px;
+  }
+`;
+
+const WriteBtn = styled.button`
+  position: absolute;
+  right: 10px;
+  top: 100px;
+
+  padding: 20px;
+  border-radius: 8px;
+  background-color: inherit;
+  &:hover {
+    background-color: ${(props) => props.theme.body.bgHover};
+  }
+
+  & > span {
+    color: ${(props) => props.theme.default};
+    font-size: 20px;
   }
 `;

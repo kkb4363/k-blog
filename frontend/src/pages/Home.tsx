@@ -1,12 +1,17 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
 
 import { categories, posts } from "utils/staticDatas";
 import { useDisplayStore } from "stores/display.store";
 import HomeLayout from "components/HomeLayout";
+import CreateCategory from "components/CreateCategory";
+import axios from "axios";
+import { useModalStore } from "stores/modal.store";
+import { AnimatePresence } from "framer-motion";
 
 export default function Home() {
   const { setTag, setCategory } = useDisplayStore();
+  const { getOpenModal } = useModalStore();
 
   useEffect(() => {
     const newTag = [];
@@ -57,6 +62,10 @@ export default function Home() {
   return (
     <HomeLayout>
       <Outlet />
+
+      <AnimatePresence>
+        {getOpenModal() === "Category" && <CreateCategory />}
+      </AnimatePresence>
     </HomeLayout>
   );
 }

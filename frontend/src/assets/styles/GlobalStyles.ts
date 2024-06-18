@@ -46,20 +46,33 @@ const GlobalStyles = createGlobalStyle`
     #root {
         width:100%;
     }
-    .modal-modal {
-		background: transparent;
-		padding: 0;
-		margin: 0;
-	}
-    .modal-overlay-transparent {
-		background: transparent;
-	}
+ 
     img{
         -webkit-user-drag: none;
         -khtml-user-drag: none;
         -moz-user-drag: none;
         -o-user-drag: none;
     }
+
+    .react-modal{
+        position: absolute;
+        inset: 0;
+        background-color: tomato;
+        padding:20px;
+        display:flex;
+        flex-direction: column;
+
+        
+    }
+
+    .react-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.3);
+  }
 `;
 
 export default GlobalStyles;

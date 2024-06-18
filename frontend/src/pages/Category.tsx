@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import styled, { keyframes } from "styled-components";
 import { Outlet, useNavigate, useParams } from "react-router-dom";
 
@@ -7,12 +7,23 @@ import TabInfoCol from "components/TabInfoCol";
 import { categories, posts } from "utils/staticDatas";
 import SearchInput from "components/SearchInput";
 import { formatDate } from "utils/utils";
+import CreateCategory from "components/CreateCategory";
+import axios from "axios";
+import { useModalStore } from "stores/modal.store";
 
 export default function Category() {
   const params = useParams();
   const navigate = useNavigate();
   const isParams = !!params.id;
   const { setHeaderTab, getCategory } = useDisplayStore();
+  const [categories2, setCategories] = useState(null);
+  const { setOpenModal, getOpenModal } = useModalStore();
+
+  useEffect(() => {
+    axios.get("/api/categories").then((res) => setCategories(res.data));
+  }, [getOpenModal()]);
+
+  console.log(categories2);
 
   useEffect(() => {
     setHeaderTab("category");
@@ -35,6 +46,8 @@ export default function Category() {
         <TabInfoCol
           title="Category"
           info="카테고리별 작성된 포스트 내용들입니다."
+          btnTxt="카테고리 추가"
+          btnCallback={() => setOpenModal("Category")}
         />
       )}
 
@@ -66,6 +79,24 @@ export default function Category() {
               </CategoryTxtCol>
             </CategoryBox>
           ))}
+          {/* {categories2?.map((cate, idx) => {
+            console.log(cate.imgSrc);
+            return (
+              <CategoryBox key={idx}>
+                <img
+                  src={"http://localhost:3000" + cate?.imgSrc}
+                  alt="categoryIcon"
+                />
+                <CategoryTxtCol>
+                  <p>{cate.title}</p>
+                  <SecondTxt>
+                    <span>{cate.posts.length}개의 포스트 </span>
+                    <span>&nbsp; {cate.updatedDate}</span>
+                  </SecondTxt>
+                </CategoryTxtCol>
+              </CategoryBox>
+            );
+          })} */}
         </CategoryGrid>
       )}
     </>

@@ -160,6 +160,16 @@ export const posts = [
     id: "의상",
     postIndex: 8,
   },
+  {
+    img: c1,
+    title: "베스트앨범",
+    tags: ["javascript", "프로그래머스 level 3", "해시"],
+    subTitle: "프로그래머스 코딩테스트 연습 - 문제 유형:해시",
+    createdDate: "2024-06-17",
+    categoryId: "coding",
+    id: "베스트앨범",
+    postIndex: 9,
+  },
 
   // js
   {
