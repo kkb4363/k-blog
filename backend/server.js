@@ -5,6 +5,15 @@ const port = 8080;
 const cors = require("cors");
 const multer = require("multer");
 const path = require("path");
+const fs = require("fs");
+const https = require("https");
+
+const options = {
+  key: fs.readFileSync(path.resolve(__dirname, "keys/ca.key")),
+  cert: fs.readFileSync(path.resolve(__dirname, "keys/ca.crt")),
+};
+
+const server = https.createServer(options, app);
 
 let storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -22,7 +31,11 @@ app.use("/public", express.static(path.join(__dirname, "public")));
 app.use(express.json());
 
 app.listen(port, () => {
-  console.log(`오른쪽 포트로 back-end 실행중 ${port}`);
+  console.log(`server started on port ${port}`);
+});
+
+server.listen(443, () => {
+  console.log(`HTTPS server started on port 443`);
 });
 
 var mongoose = require("mongoose");
