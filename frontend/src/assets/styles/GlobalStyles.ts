@@ -27,7 +27,7 @@ const GlobalStyles = createGlobalStyle`
         color: inherit;
     }
     ol, ul{
-        line-height: 1;
+        list-style: none;
     }
     button {
         border: 0;
