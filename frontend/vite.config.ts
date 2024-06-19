@@ -6,12 +6,12 @@ import path from "path";
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react(), tsconfigPaths()],
-  base: "/",
   server: {
+    port: 8080,
     proxy: {
       "/api": {
         target:
-          "http://k-blog-env.eba-r5k4kdec.ap-northeast-2.elasticbeanstalk.com",
+          "http://k-blog-env.eba-r5k4kdec.ap-northeast-2.elasticbeanstalk.com/",
         changeOrigin: true,
       },
     },

@@ -1,10 +1,10 @@
-import React, { useRef, useState } from "react";
-import styled, { keyframes } from "styled-components";
+import { useRef, useState } from "react";
+import styled from "styled-components";
 import categoryIcon from "&/imgs/category.png";
 import dayjs from "dayjs";
-import axios from "axios";
 import { useModalStore } from "stores/modal.store";
 import { motion } from "framer-motion";
+import { axiosInstance } from "utils/axios";
 
 export default function CreateCategory() {
   const { setOpenModal } = useModalStore();
@@ -41,7 +41,7 @@ export default function CreateCategory() {
       formData.append("updatedDate", dayjs(new Date()).format("YYYY-MM-DD"));
     }
 
-    axios
+    axiosInstance
       .post("/api/category", formData, {
         headers: {
           "Content-Type": "multipart/form-data",

@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import dayjs from "dayjs";
-import axios from "axios";
 import { useModalStore } from "stores/modal.store";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+import { axiosInstance } from "utils/axios";
 
 interface Props {
   title: string;
@@ -26,7 +26,7 @@ export default function SelectCategory(props: Props) {
       categoryId: categories.find((c) => c.title === selectCategory).categoryId,
       createdDate: dayjs(new Date()).format("YYYY-MM-DD"),
     };
-    axios
+    axiosInstance
       .post("/api/post", body, {
         headers: {
           "Content-Type": "application/json",
@@ -39,7 +39,7 @@ export default function SelectCategory(props: Props) {
   };
 
   useEffect(() => {
-    axios.get("/api/categories").then((res) => setCategories(res.data));
+    axiosInstance.get("/api/categories").then((res) => setCategories(res.data));
   }, []);
 
   const getCategoryImg = () => {

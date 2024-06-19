@@ -5,7 +5,7 @@ import BlogPost from "components/BlogPost";
 import { useDisplayStore } from "stores/display.store";
 import { useSearchStore } from "stores/search.store";
 import { useEffect, useState } from "react";
-import axios from "axios";
+import { axiosInstance } from "utils/axios";
 
 export default function Search() {
   const { getHeaderTab } = useDisplayStore();
@@ -15,7 +15,7 @@ export default function Search() {
 
   const getPosts = async (url) => {
     try {
-      const res = await axios.get(url);
+      const res = await axiosInstance.get(url);
       setBlogs(res.data);
     } catch (err) {
       console.error("포스트 조회 에러:", err);

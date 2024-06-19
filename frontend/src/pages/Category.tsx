@@ -5,8 +5,8 @@ import { Outlet, useNavigate, useParams } from "react-router-dom";
 import { useDisplayStore } from "stores/display.store";
 import TabInfoCol from "components/TabInfoCol";
 import SearchInput from "components/SearchInput";
-import axios from "axios";
 import { useModalStore } from "stores/modal.store";
+import { axiosInstance } from "utils/axios";
 
 export default function Category() {
   const params = useParams();
@@ -17,14 +17,12 @@ export default function Category() {
   const { setOpenModal, getOpenModal } = useModalStore();
 
   useEffect(() => {
-    axios.get("/api/categories").then((res) => setCategories(res.data));
+    axiosInstance.get("/api/categories").then((res) => setCategories(res.data));
   }, [getOpenModal()]);
 
   useEffect(() => {
     setHeaderTab("category");
   }, []);
-
-  console.log(categories2);
 
   return (
     <>

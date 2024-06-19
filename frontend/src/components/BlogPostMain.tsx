@@ -1,6 +1,5 @@
 import styled, { css } from "styled-components";
 import logo from "&/imgs/logo.png";
-import axios from "axios";
 
 export default function BlogPostMain() {
   return (

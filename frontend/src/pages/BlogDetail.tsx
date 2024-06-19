@@ -13,7 +13,7 @@ import tagDarkIcon from "&/imgs/tag_dark.svg";
 import arrowLeftIcon from "&/imgs/arrowLeft.svg";
 import arrowRightIcon from "&/imgs/arrowRight.svg";
 import { formatDate } from "utils/utils";
-import axios from "axios";
+import { axiosInstance } from "utils/axios";
 
 interface BlogProps {
   categoryId: string;
@@ -52,19 +52,19 @@ export default function BlogDetail() {
   };
 
   useEffect(() => {
-    axios
+    axiosInstance
       .get(`/api/post/${id}`)
       .then((res) => setBlog(res.data as BlogProps[]));
   }, [id]);
 
   useEffect(() => {
-    axios
+    axiosInstance
       .get(`/api/posts/${blog.categoryId}`)
       .then((res) => setBlogs(res.data));
   }, [blog]);
 
   useEffect(() => {
-    axios.get("/api/categories").then((res) => setCategory(res.data));
+    axiosInstance.get("/api/categories").then((res) => setCategory(res.data));
   }, []);
 
   return (

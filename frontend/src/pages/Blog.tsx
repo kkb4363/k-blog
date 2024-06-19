@@ -8,7 +8,7 @@ import SearchInput from "components/SearchInput";
 import { useDisplayStore } from "stores/display.store";
 import BlogDetail from "./BlogDetail";
 import { useSearchStore } from "stores/search.store";
-import axios from "axios";
+import { axiosInstance } from "utils/axios";
 
 export default function Blog() {
   const { setHeaderTab } = useDisplayStore();
@@ -56,7 +56,7 @@ export default function Blog() {
   }, []);
 
   useEffect(() => {
-    axios.get("/api/posts").then((res) => setBlogs(res.data));
+    axiosInstance.get("/api/posts").then((res) => setBlogs(res.data));
   }, []);
 
   return (

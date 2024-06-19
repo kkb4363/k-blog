@@ -4,7 +4,7 @@ import styled from "styled-components";
 import BlogPost from "components/BlogPost";
 import BlogPostMain from "components/BlogPostMain";
 import { useEffect, useState } from "react";
-import axios from "axios";
+import { axiosInstance } from "utils/axios";
 
 export default function MainPage() {
   const navigate = useNavigate();
@@ -12,7 +12,7 @@ export default function MainPage() {
   const [blogs, setBlogs] = useState([]);
 
   useEffect(() => {
-    axios.get("/api/posts").then((res) => setBlogs(res.data));
+    axiosInstance.get("/api/posts").then((res) => setBlogs(res.data));
   }, []);
 
   // 최신글 정렬

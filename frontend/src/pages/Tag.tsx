@@ -5,7 +5,7 @@ import styled from "styled-components";
 import { useDisplayStore } from "stores/display.store";
 import { CurrentCategoryTitle } from "./Category";
 import SearchInput from "components/SearchInput";
-import axios from "axios";
+import { axiosInstance } from "utils/axios";
 
 export default function Tag() {
   const { setHeaderTab } = useDisplayStore();
@@ -21,7 +21,7 @@ export default function Tag() {
   useEffect(() => {
     const getTags = async () => {
       try {
-        const res = await axios.get("/api/posts");
+        const res = await axiosInstance.get("/api/posts");
         const blogs = res.data;
 
         const tagMap = new Map();
