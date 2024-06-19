@@ -9,8 +9,13 @@ import BlogDetail from "pages/BlogDetail";
 import Search from "pages/Search";
 import ErrorPage from "pages/ErrorPage";
 import WritePost from "pages/WritePost";
+import Write from "pages/Write";
 
 export const router = createBrowserRouter([
+  {
+    path: "write",
+    element: <Write />,
+  },
   {
     path: "",
     element: <Home />,
@@ -25,11 +30,12 @@ export const router = createBrowserRouter([
         element: <Blog />,
         children: [
           {
-            path: ":directoryId/:id",
+            path: ":id",
             element: <BlogDetail />,
           },
         ],
       },
+
       {
         path: "tags",
         element: <Tag />,

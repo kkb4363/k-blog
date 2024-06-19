@@ -2,6 +2,8 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 
 import { formatDate } from "utils/utils";
+import { useEffect } from "react";
+import axios from "axios";
 
 interface Props {
   img: string;
@@ -18,13 +20,13 @@ export default function BlogPost(props: Props) {
   const navigate = useNavigate();
 
   const handleBlogDetail = () => {
-    navigate(`/blog/${props.categoryId}/${props.blogId}`);
+    navigate(`/blog/${props.blogId}`);
   };
 
   return (
     <BlogPostContainer>
       <BlogImg onClick={handleBlogDetail}>
-        <img src={props.img} />
+        <img src={"http://localhost:3000" + props.img} />
       </BlogImg>
       <BlogTxtCol>
         <p onClick={handleBlogDetail}>{props.title}</p>
@@ -35,7 +37,7 @@ export default function BlogPost(props: Props) {
             </Tag>
           ))}
         </TagRow>
-        <BlogDetail>{props.details}</BlogDetail>
+        <BlogDetail>{props.details.slice(0, 100) + "..."}</BlogDetail>
         <BlogDate>
           <span>{formatDate(props.createdDate)}</span>
         </BlogDate>

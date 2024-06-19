@@ -12,99 +12,87 @@ import tagIcon from "&/imgs/tag.svg";
 import tagDarkIcon from "&/imgs/tag_dark.svg";
 import arrowLeftIcon from "&/imgs/arrowLeft.svg";
 import arrowRightIcon from "&/imgs/arrowRight.svg";
-import { useDisplayStore } from "stores/display.store";
 import { formatDate } from "utils/utils";
+import axios from "axios";
+
+interface BlogProps {
+  categoryId: string;
+  createdDate: string;
+  tags: string[];
+  text: string;
+  title: string;
+}
 
 export default function BlogDetail() {
   const navigate = useNavigate();
   const theme = useContext(ThemeContext);
   const [showBlogList, setShowBlogList] = useState(false);
-  const [markdown, setMarkdown] = useState("");
-  const { directoryId, id } = useParams();
-  const { getCategory } = useDisplayStore();
+  const { id } = useParams();
+  const [blog, setBlog] = useState<any>([]);
+  const [blogs, setBlogs] = useState<any>([]);
+  const [category, setCategory] = useState<any>([]);
 
-  const getCurrentBlog = () => {
-    return getCategory()
-      .filter((c) => c.id === directoryId)[0]
-      ?.posts.filter((p) => p.id === id)[0];
-  };
+  const currentBlogIndex = blogs.findIndex((b) => b._id === id) + 1;
 
-  const getCurrentCategory = () => {
-    return getCategory().filter((c) => c.id === directoryId)[0];
-  };
+  const handlePrev = (isNext: boolean) => {
+    const currentIndex = blogs.findIndex((b) => b._id === id);
 
-  const handlePrevNext = (isNext: boolean) => {
-    const currentIndex = getCurrentBlog().postIndex;
-    const prevCondition = currentIndex > 1;
-    const nextCondition = currentIndex < getCurrentCategory().posts.length;
+    if (currentIndex === -1) {
+      console.error("현재 포스트를 찾을 수 없습니다.");
+      return;
+    }
+    const nextIndex = currentIndex + (isNext ? 1 : -1);
 
-    if (isNext ? nextCondition : prevCondition) {
-      const adjustment = isNext ? 1 : -1;
-      const newCategoryId = getCategory()
-        .filter((c) => c.id === directoryId)[0]
-        .posts.find(
-          (d) => d.postIndex === currentIndex + adjustment
-        ).categoryId;
-      const newBlogId = getCategory()
-        .filter((c) => c.id === directoryId)[0]
-        .posts.find((d) => d.postIndex === currentIndex + adjustment).id;
-
-      navigate(`/blog/${newCategoryId}/${newBlogId}`);
+    if (nextIndex >= 0 && nextIndex < blogs.length) {
+      const newBlogId = blogs[nextIndex]._id;
+      navigate(`/blog/${newBlogId}`);
+    } else {
+      console.log("더 이상 포스트가 없습니다.");
     }
   };
 
-  const handlePost = (id: number) => {
-    const newCategoryId = getCategory()
-      .filter((c) => c.id === directoryId)[0]
-      .posts.find((p) => p.postIndex === id).categoryId;
-    const newBlogId = getCategory()
-      .filter((c) => c.id === directoryId)[0]
-      .posts.find((p) => p.postIndex === id).id;
-    navigate(`/blog/${newCategoryId}/${newBlogId}`);
-  };
+  useEffect(() => {
+    axios
+      .get(`/api/post/${id}`)
+      .then((res) => setBlog(res.data as BlogProps[]));
+  }, [id]);
 
   useEffect(() => {
-    const filePath = `/blog/${directoryId}/${id}.md`;
+    axios
+      .get(`/api/posts/${blog.categoryId}`)
+      .then((res) => setBlogs(res.data));
+  }, [blog]);
 
-    fetch(filePath)
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error(`Failed to fetch file: ${filePath}`);
-        }
-        return res.text();
-      })
-      .then((text) => setMarkdown(text))
-      .catch((error) => {
-        console.error(error);
-        setMarkdown("파일을 불러오는 데 실패했습니다.");
-      });
-  }, [directoryId, id]);
+  useEffect(() => {
+    axios.get("/api/categories").then((res) => setCategory(res.data));
+  }, []);
 
   return (
     <>
       <BlogDetailHeader>
-        <p>{formatDate(getCurrentBlog()?.createdDate)}</p>
-        <span>{getCurrentBlog().title}</span>
+        <p>{formatDate(blog?.createdDate)}</p>
+        <span>{blog?.title}</span>
       </BlogDetailHeader>
 
       <BlogDetailBody>
         <BlogDetailCategoryBox>
           <img src={flagIcon} alt="flag" width={35} height={40} />
-          <p>{getCurrentCategory().title}</p>
+          <p>{category.find((c) => c.categoryId === blog.categoryId)?.title}</p>
 
           <BlogListCol $show={showBlogList}>
-            {getCurrentCategory()
-              .posts.sort((a, b) => (a.postIndex > b.postIndex ? 1 : -1))
-              .map((p, idx) => (
+            {blogs?.map((b, idx) => {
+              const isActive = blog._id === b._id;
+              return (
                 <BlogList
+                  onClick={() => navigate(b._id)}
                   key={idx}
-                  $isCurrent={p.postIndex === getCurrentBlog().postIndex}
-                  onClick={() => handlePost(p.postIndex)}
+                  $isCurrent={isActive}
                 >
-                  <span>{p.postIndex}.</span>
-                  <span>{p.title}</span>
+                  <span>{idx + 1}.</span>
+                  <span>{b.title}</span>
                 </BlogList>
-              ))}
+              );
+            })}
           </BlogListCol>
 
           <BlogManagement>
@@ -134,21 +122,17 @@ export default function BlogDetail() {
 
             <BlogPrevNext>
               <span>
-                {getCurrentBlog().postIndex} /{" "}
-                {getCurrentCategory().posts.length}
+                {currentBlogIndex} / {blogs.length}
               </span>
               <BlogPageBtn
-                onClick={() => handlePrevNext(false)}
-                $isDisabled={getCurrentBlog().postIndex === 1}
+                onClick={() => handlePrev(false)}
+                $isDisabled={currentBlogIndex === 1}
               >
                 <img src={arrowLeftIcon} alt="arrow_left" />
               </BlogPageBtn>
               <BlogPageBtn
-                onClick={() => handlePrevNext(true)}
-                $isDisabled={
-                  getCurrentBlog().postIndex ===
-                  getCurrentCategory().posts.length
-                }
+                onClick={() => handlePrev(true)}
+                $isDisabled={currentBlogIndex === blogs.length}
               >
                 <img src={arrowRightIcon} alt="arrow_right" />
               </BlogPageBtn>
@@ -165,12 +149,12 @@ export default function BlogDetail() {
             }}
             rehypePlugins={[rehypeHighlight]}
           >
-            {markdown}
+            {blog?.text}
           </ReactMarkdown>
         </BlogMarkdownContainer>
 
         <BlogTagRow>
-          {getCurrentBlog().tags.map((tag, idx) => (
+          {blog?.tags?.map((tag, idx) => (
             <BlogTag href={`/tags/${tag}`} key={idx}>
               <img
                 src={theme.currentTheme === "dark" ? tagDarkIcon : tagIcon}

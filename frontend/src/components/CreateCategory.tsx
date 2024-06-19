@@ -42,13 +42,12 @@ export default function CreateCategory() {
     }
 
     axios
-      .post("/api/posts", formData, {
+      .post("/api/category", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       })
       .then((res) => {
-        console.log(res);
         setOpenModal("");
       });
   };
@@ -132,9 +131,10 @@ const CreateCategoryContainer = styled(motion.div)`
   justify-content: center;
   align-items: center;
 `;
-/* animation: ${createCategoryAnimate} 0.5s ease-in-out; */
+
 const Row = styled.div`
   width: 770px;
+  min-width: 770px;
   display: flex;
   padding: 0 20px;
 `;
@@ -146,7 +146,7 @@ const Col = styled.div`
   gap: 10px;
   & > p {
     font-size: 20px;
-    color: white;
+    color: ${(props) => props.theme.default};
   }
 
   & > input {
@@ -164,7 +164,7 @@ const DeleteImg = styled.p`
   position: absolute;
   top: -28px;
   right: 0;
-  color: gray;
+  color: ${(props) => props.theme.body.subTxt};
   text-decoration: underline;
   cursor: pointer;
 `;
@@ -172,7 +172,7 @@ const DeleteImg = styled.p`
 const ImgBoxContainer = styled.div`
   width: 320px;
   height: 200px;
-  background-color: gray;
+  background-color: ${(props) => props.theme.blog.bg};
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -187,11 +187,15 @@ const ImgBoxContainer = styled.div`
 
   & > span {
     font-size: 18px;
-    color: white;
+    color: ${(props) => props.theme.default};
     padding: 10px 30px;
-    background-color: green;
+    background-color: ${(props) => props.theme.body.tag};
     border-radius: 5px;
     cursor: pointer;
+
+    &:hover {
+      background-color: ${(props) => props.theme.body.tagHover};
+    }
   }
 `;
 
@@ -216,6 +220,9 @@ const BtnRow = styled.div`
     padding: 10px;
     font-size: 18px;
     font-weight: 600;
-    color: green;
+    color: ${(props) => props.theme.blog.submitBtn};
+    &:hover {
+      color: ${(props) => props.theme.blog.submitBtnHover};
+    }
   }
 `;

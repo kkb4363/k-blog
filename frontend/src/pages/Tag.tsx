@@ -1,30 +1,77 @@
-import { useEffect } from "react";
-import { Outlet, useNavigate, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Outlet, useLocation, useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 
 import { useDisplayStore } from "stores/display.store";
 import { CurrentCategoryTitle } from "./Category";
 import SearchInput from "components/SearchInput";
-import { posts } from "utils/staticDatas";
+import axios from "axios";
 
 export default function Tag() {
-  const { setHeaderTab, setTag, getTag } = useDisplayStore();
+  const { setHeaderTab } = useDisplayStore();
   const params = useParams();
   const navigate = useNavigate();
-  const isParams = !!params.id;
+  const [tags, setTags] = useState([]);
+  const location = useLocation();
 
   useEffect(() => {
     setHeaderTab("tags");
   }, []);
 
+  useEffect(() => {
+    const getTags = async () => {
+      try {
+        const res = await axios.get("/api/posts");
+        const blogs = res.data;
+
+        const tagMap = new Map();
+        blogs.forEach((blog) => {
+          if (blog.tags.length !== 0) {
+            for (let i = 0; i < blog.tags.length; i++) {
+              if (!tagMap.has(blog.tags[i])) {
+                tagMap.set(blog.tags[i], 1);
+              } else {
+                tagMap.set(blog.tags[i], tagMap.get(blog.tags[i]) + 1);
+              }
+            }
+          }
+        });
+
+        const tagComponents = [];
+        for (const [key, value] of tagMap) {
+          tagComponents.push(
+            <Tagg
+              key={key}
+              $count={value}
+              onClick={() =>
+                navigate(key, {
+                  state: {
+                    length: value,
+                  },
+                })
+              }
+            >
+              <span>{key}</span>
+            </Tagg>
+          );
+        }
+
+        setTags(tagComponents);
+      } catch (error) {
+        console.error("태그 데이터를 불러오는 중 에러:", error);
+      }
+    };
+
+    getTags();
+  }, []);
+
   return (
     <TagContainer $isParams={!!params.id}>
-      {isParams ? (
+      {!!params.id ? (
         <>
           <CurrentCategoryTitle>
             <p>
-              {params.id} (
-              {getTag().find((t) => t.id === params.id).posts.length})
+              {params.id}({location?.state?.length})
             </p>
           </CurrentCategoryTitle>
           <SearchInput placeHolder="어떤 포스트를 찾으시나요?" />
@@ -35,17 +82,7 @@ export default function Tag() {
           <TagTxt>
             <span>Tags</span>
           </TagTxt>
-          <TagBox>
-            {getTag().map((tag, idx) => (
-              <Tagg
-                key={idx}
-                $count={tag.posts.length}
-                onClick={() => navigate(tag.id)}
-              >
-                <span>{tag.title}</span>
-              </Tagg>
-            ))}
-          </TagBox>
+          <TagBox>{tags}</TagBox>
         </TagRow>
       )}
     </TagContainer>

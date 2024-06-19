@@ -1,38 +1,34 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import TabInfoCol from "components/TabInfoCol";
 import BlogPost from "components/BlogPost";
 import SearchInput from "components/SearchInput";
 import { useDisplayStore } from "stores/display.store";
 import BlogDetail from "./BlogDetail";
-import { posts } from "utils/staticDatas";
 import { useSearchStore } from "stores/search.store";
+import axios from "axios";
 
 export default function Blog() {
   const { setHeaderTab } = useDisplayStore();
   const { getSearch } = useSearchStore();
+  const [blogs, setBlogs] = useState([]);
   const params = useParams();
-
-  useEffect(() => {
-    setHeaderTab("blog");
-  }, []);
-
-  const isBlogDetail = !!params.directoryId && !!params.id;
+  const navigate = useNavigate();
 
   const getBlogPosts = () => {
     const searchQuery = getSearch();
-    const filteredPosts = [...posts]
+    const filteredPosts = [...blogs]
       .sort((a, b) => (a.createdDate > b.createdDate ? -1 : 1))
       .filter((post) => {
         if (searchQuery === "") {
           return true;
         }
-        const { title, subTitle, tags } = post;
+        const { title, text, tags } = post;
         return (
           (title && title.includes(searchQuery)) ||
-          (subTitle && subTitle.includes(searchQuery)) ||
+          (text && text.includes(searchQuery)) ||
           (tags && tags.includes(searchQuery))
         );
       });
@@ -41,30 +37,39 @@ export default function Blog() {
       return <h1>검색 결과가 없습니다 😯</h1>;
     }
 
-    return filteredPosts.map((post) => (
+    return filteredPosts.map((blog, idx) => (
       <BlogPost
-        key={post.id}
-        title={post.title}
-        details={post.subTitle}
-        img={post.img}
-        createdDate={post.createdDate}
-        categoryId={post.categoryId}
-        blogId={post.id}
-        postIdx={post.postIndex}
-        tags={post.tags}
+        key={idx}
+        title={blog.title}
+        details={blog.text}
+        tags={blog.tags}
+        img={blog.imgSrc}
+        categoryId={blog.categoryId}
+        createdDate={blog.createdDate}
+        blogId={blog.postId}
       />
     ));
   };
 
+  useEffect(() => {
+    setHeaderTab("blog");
+  }, []);
+
+  useEffect(() => {
+    axios.get("/api/posts").then((res) => setBlogs(res.data));
+  }, []);
+
   return (
     <>
-      {isBlogDetail ? (
+      {!!params.id ? (
         <BlogDetail />
       ) : (
         <>
           <TabInfoCol
-            title={`Blog (${posts.length})`}
+            title={`Blog (${blogs.length})`}
             info="학습한 내용과 지식들을 공유 및 정리합니다."
+            btnCallback={() => navigate("/write")}
+            btnTxt="포스트 작성"
           />
 
           <SearchInput placeHolder="블로그 내용 및 제목 검색하기" />

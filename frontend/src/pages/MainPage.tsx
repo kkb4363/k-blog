@@ -1,20 +1,27 @@
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
-import { posts } from "utils/staticDatas";
 import BlogPost from "components/BlogPost";
 import BlogPostMain from "components/BlogPostMain";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 export default function MainPage() {
   const navigate = useNavigate();
 
+  const [blogs, setBlogs] = useState([]);
+
+  useEffect(() => {
+    axios.get("/api/posts").then((res) => setBlogs(res.data));
+  }, []);
+
   // 최신글 정렬
-  const newPosts = [...posts].sort((a, b) =>
+  const newPosts = [...blogs].sort((a, b) =>
     a.createdDate > b.createdDate ? -1 : 1
   );
 
   // 오래된글 정렬
-  const oldPosts = [...posts].sort((a, b) =>
+  const oldPosts = [...blogs].sort((a, b) =>
     a.createdDate > b.createdDate ? 1 : -1
   );
 
@@ -31,16 +38,15 @@ export default function MainPage() {
 
       <BlogPostCol>
         <p>최신 포스트</p>
-        {newPosts.slice(0, 3).map((post) => (
+        {newPosts.slice(0, 3).map((post, idx) => (
           <BlogPost
-            key={post.id}
+            key={idx}
             title={post.title}
-            details={post.subTitle}
-            img={post.img}
+            details={post.text}
+            img={post.imgSrc}
             createdDate={post.createdDate}
             categoryId={post.categoryId}
-            blogId={post.id}
-            postIdx={post.postIndex}
+            blogId={post.postId}
             tags={post.tags}
           />
         ))}
@@ -48,16 +54,15 @@ export default function MainPage() {
 
       <BlogPostCol>
         <p>오래된 포스트</p>
-        {oldPosts.slice(0, 3).map((post) => (
+        {oldPosts.slice(0, 3).map((post, idx) => (
           <BlogPost
-            key={post.id}
+            key={idx}
             title={post.title}
-            details={post.subTitle}
-            img={post.img}
+            details={post.text}
+            img={post.imgSrc}
             createdDate={post.createdDate}
             categoryId={post.categoryId}
-            blogId={post.id}
-            postIdx={post.postIndex}
+            blogId={post.postId}
             tags={post.tags}
           />
         ))}

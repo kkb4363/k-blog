@@ -4,10 +4,7 @@ import { Outlet, useNavigate, useParams } from "react-router-dom";
 
 import { useDisplayStore } from "stores/display.store";
 import TabInfoCol from "components/TabInfoCol";
-import { categories, posts } from "utils/staticDatas";
 import SearchInput from "components/SearchInput";
-import { formatDate } from "utils/utils";
-import CreateCategory from "components/CreateCategory";
 import axios from "axios";
 import { useModalStore } from "stores/modal.store";
 
@@ -15,15 +12,13 @@ export default function Category() {
   const params = useParams();
   const navigate = useNavigate();
   const isParams = !!params.id;
-  const { setHeaderTab, getCategory } = useDisplayStore();
+  const { setHeaderTab } = useDisplayStore();
   const [categories2, setCategories] = useState(null);
   const { setOpenModal, getOpenModal } = useModalStore();
 
   useEffect(() => {
     axios.get("/api/categories").then((res) => setCategories(res.data));
   }, [getOpenModal()]);
-
-  console.log(categories2);
 
   useEffect(() => {
     setHeaderTab("category");
@@ -35,8 +30,12 @@ export default function Category() {
         <>
           <CurrentCategoryTitle>
             <p>
-              {getCategory().filter((c) => c.id === params.id)[0].title} (
-              {getCategory().filter((c) => c.id === params.id)[0].posts.length})
+              {categories2?.find((c) => c.categoryId === params.id).title} (
+              {
+                categories2?.find((c) => c.categoryId === params.id).posts
+                  .length
+              }
+              )
             </p>
           </CurrentCategoryTitle>
 
@@ -55,34 +54,12 @@ export default function Category() {
         <Outlet />
       ) : (
         <CategoryGrid>
-          {categories.map((cate) => (
-            <CategoryBox key={cate.id} onClick={() => navigate(cate.id)}>
-              <img src={cate.img} alt="categoryIcon" />
-              <CategoryTxtCol>
-                <p>{cate.title}</p>
-                <SecondTxt>
-                  <span>
-                    {
-                      getCategory().filter((c) => c.id === cate.id)[0]?.posts
-                        ?.length
-                    }
-                    개의 포스트{" "}
-                  </span>
-                  <span>
-                    &nbsp;{" "}
-                    {formatDate(
-                      getCategory().filter((c) => c.id === cate.id)[0]
-                        ?.updatedDate
-                    )}
-                  </span>
-                </SecondTxt>
-              </CategoryTxtCol>
-            </CategoryBox>
-          ))}
-          {/* {categories2?.map((cate, idx) => {
-            console.log(cate.imgSrc);
+          {categories2?.map((cate, idx) => {
             return (
-              <CategoryBox key={idx}>
+              <CategoryBox
+                key={cate.categoryId}
+                onClick={() => navigate(cate.categoryId)}
+              >
                 <img
                   src={"http://localhost:3000" + cate?.imgSrc}
                   alt="categoryIcon"
@@ -96,7 +73,7 @@ export default function Category() {
                 </CategoryTxtCol>
               </CategoryBox>
             );
-          })} */}
+          })}
         </CategoryGrid>
       )}
     </>

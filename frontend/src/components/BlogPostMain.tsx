@@ -1,38 +1,13 @@
 import styled, { css } from "styled-components";
 import logo from "&/imgs/logo.png";
 import axios from "axios";
-import { useState } from "react";
 
 export default function BlogPostMain() {
-  const mongoTest = () => {
-    axios
-      .get("/api/categories")
-      .then((res) => console.log(res))
-      .catch((err) => console.log(err));
-  };
-
-  const imgUpload = (e) => {
-    const file = e.target.files[0];
-    // setPreview(URL.createObjectURL(file));
-
-    const formData = new FormData();
-    formData.append("image", file);
-
-    axios
-      .post("/api/posts", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      })
-      .then((res) => console.log(res));
-  };
-
   return (
     <>
       <BodyBigScreen>
         <BigScreenBox>
-          <input type="file" onChange={imgUpload} />
-          <p onClick={mongoTest}>98_gb Blog</p>
+          <p>98_gb Blog</p>
           <span>흥미와 열정을 잃지 않기 위해 노력합니다.</span>
           <span>사용자 경험을 향상시키고 싶은 프론트 엔드 개발자입니다</span>
         </BigScreenBox>
@@ -43,8 +18,7 @@ export default function BlogPostMain() {
       <BodySmallScreen>
         <img src={logo} alt="logo" />
         <div>
-          <input type="file" onChange={imgUpload} />
-          <p onClick={mongoTest}>98_gb Blog</p>
+          <p>98_gb Blog</p>
           <span>흥미와 열정을 잃지 않기 위해 노력합니다.</span>
           <span>사용자 경험을 향상시키고 싶은 프론트 엔드 개발자입니다</span>
         </div>

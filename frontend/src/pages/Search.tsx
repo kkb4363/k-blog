@@ -4,28 +4,42 @@ import styled from "styled-components";
 import BlogPost from "components/BlogPost";
 import { useDisplayStore } from "stores/display.store";
 import { useSearchStore } from "stores/search.store";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 export default function Search() {
-  const { getCategory, getHeaderTab, getTag } = useDisplayStore();
+  const { getHeaderTab } = useDisplayStore();
   const { getSearch } = useSearchStore();
   const params = useParams();
+  const [blogs, setBlogs] = useState<any[]>([]);
 
-  const getCategoryPosts = () => {
-    const category = getCategory().filter((c) => c.id === params.id)[0];
-
-    if (!category) {
-      return null;
+  const getPosts = async (url) => {
+    try {
+      const res = await axios.get(url);
+      setBlogs(res.data);
+    } catch (err) {
+      console.error("포스트 조회 에러:", err);
     }
+  };
 
+  useEffect(() => {
+    const url =
+      getHeaderTab() === "category"
+        ? `/api/posts/${params.id}`
+        : `/api/tag/${params.id}`;
+    getPosts(url);
+  }, [getHeaderTab(), params.id]);
+
+  const renderPosts = () => {
     const searchQuery = getSearch();
-    const filteredPosts = category.posts.filter((post) => {
+    const filteredPosts = blogs.filter((post) => {
       if (searchQuery === "") {
         return true;
       }
-      const { title, subTitle } = post;
+      const { title, text } = post;
       return (
         (title && title.includes(searchQuery)) ||
-        (subTitle && subTitle.includes(searchQuery))
+        (text && text.includes(searchQuery))
       );
     });
 
@@ -33,69 +47,21 @@ export default function Search() {
       return <h1>검색 결과가 없습니다 😯</h1>;
     }
 
-    return filteredPosts
-      .sort((a, b) => (a.postIndex > b.postIndex ? -1 : 1))
-      .map((post) => (
-        <BlogPost
-          key={post.id}
-          title={post.title}
-          details={post.subTitle}
-          img={post.img}
-          createdDate={post.createdDate}
-          blogId={post.id}
-          categoryId={post.categoryId}
-          postIdx={post.postIndex}
-          tags={post.tags}
-        />
-      ));
+    return filteredPosts.map((post) => (
+      <BlogPost
+        key={post._id}
+        title={post.title}
+        details={post.text}
+        img={post.imgSrc}
+        createdDate={post.createdDate}
+        blogId={post._id}
+        categoryId={post.categoryId}
+        tags={post.tags}
+      />
+    ));
   };
 
-  const getTagPosts = () => {
-    const tag = getTag().filter((p) => p.id === params.id)[0];
-
-    if (!tag) {
-      return null;
-    }
-
-    const searchQuery = getSearch();
-    const filteredPosts = tag.posts.filter((post) => {
-      if (searchQuery === "") {
-        return true;
-      }
-      const { title, subTitle, tags } = post;
-      return (
-        (title && title.includes(searchQuery)) ||
-        (subTitle && subTitle.includes(searchQuery)) ||
-        (tags && tags.includes(searchQuery))
-      );
-    });
-
-    if (filteredPosts.length === 0) {
-      return <h1>검색 결과가 없습니다 😯</h1>;
-    }
-
-    return filteredPosts
-      .sort((a, b) => (a.postIndex > b.postIndex ? -1 : 1))
-      .map((post) => (
-        <BlogPost
-          key={post.id}
-          title={post.title}
-          details={post.subTitle}
-          img={post.img}
-          createdDate={post.createdDate}
-          blogId={post.id}
-          categoryId={post.categoryId}
-          postIdx={post.postIndex}
-          tags={post.tags}
-        />
-      ));
-  };
-
-  return (
-    <SearchContainer>
-      {getHeaderTab() === "category" ? getCategoryPosts() : getTagPosts()}
-    </SearchContainer>
-  );
+  return <SearchContainer>{renderPosts()}</SearchContainer>;
 }
 
 const SearchContainer = styled.div`
