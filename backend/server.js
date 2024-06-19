@@ -1,7 +1,7 @@
 // express 설치
 const express = require("express");
 const app = express();
-const port = 3000;
+const port = 8080;
 const cors = require("cors");
 const multer = require("multer");
 const path = require("path");

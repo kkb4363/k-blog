@@ -24,6 +24,8 @@ export default function Category() {
     setHeaderTab("category");
   }, []);
 
+  console.log(categories2);
+
   return (
     <>
       {isParams ? (
@@ -61,7 +63,10 @@ export default function Category() {
                 onClick={() => navigate(cate.categoryId)}
               >
                 <img
-                  src={"http://localhost:3000" + cate?.imgSrc}
+                  src={
+                    "http://k-blog-env.eba-r5k4kdec.ap-northeast-2.elasticbeanstalk.com" +
+                    cate?.imgSrc
+                  }
                   alt="categoryIcon"
                 />
                 <CategoryTxtCol>

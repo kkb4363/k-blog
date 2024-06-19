@@ -9,7 +9,8 @@ export default defineConfig({
   server: {
     proxy: {
       "/api": {
-        target: "https://k-blog-snowy.vercel.app",
+        target:
+          "http://k-blog-env.eba-r5k4kdec.ap-northeast-2.elasticbeanstalk.com",
         changeOrigin: true,
       },
     },

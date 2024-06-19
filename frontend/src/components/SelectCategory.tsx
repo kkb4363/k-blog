@@ -44,7 +44,7 @@ export default function SelectCategory(props: Props) {
 
   const getCategoryImg = () => {
     return !!selectCategory
-      ? "http://localhost:3000" +
+      ? "http://k-blog-env.eba-r5k4kdec.ap-northeast-2.elasticbeanstalk.com" +
           categories.find((c) => c.title === selectCategory)?.imgSrc
       : "";
   };
