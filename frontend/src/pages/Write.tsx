@@ -194,7 +194,7 @@ const TagBox = styled.div`
 `;
 
 const Tag = styled.div`
-  background-color: gray;
+  background-color: ${(props) => props.theme.blog.tagBg};
   padding: 3px 20px;
   display: flex;
   justify-content: center;
@@ -204,7 +204,7 @@ const Tag = styled.div`
   cursor: pointer;
 
   & > span {
-    color: green;
+    color: ${(props) => props.theme.blog.tagTxt};
     font-size: 16px;
   }
 `;

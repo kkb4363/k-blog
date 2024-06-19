@@ -34,6 +34,7 @@ export default function SelectCategory(props: Props) {
       })
       .then((res) => {
         console.log(res);
+        clear();
         navigate("/");
       });
   };
