@@ -1,3 +1,4 @@
+import { useUserStore } from "stores/user.store";
 import styled from "styled-components";
 
 interface Props {
@@ -13,13 +14,17 @@ export default function TabInfoCol({
   btnTxt,
   btnCallback,
 }: Props) {
+  const { getUser } = useUserStore();
+
   return (
     <TabInfoColContainer>
       <p>{title}</p>
       <span>{info}</span>
-      <WriteBtn onClick={btnCallback}>
-        <span>{btnTxt}</span>
-      </WriteBtn>
+      {getUser().id === Number(import.meta.env.VITE_KAKAO_MY_ID) && (
+        <WriteBtn onClick={btnCallback}>
+          <span>{btnTxt}</span>
+        </WriteBtn>
+      )}
     </TabInfoColContainer>
   );
 }

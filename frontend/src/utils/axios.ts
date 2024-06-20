@@ -1,5 +1,5 @@
 import axios from "axios";
 
 export const axiosInstance = axios.create({
-  baseURL: "https://k-blog.blog/",
+  baseURL: import.meta.env.VITE_API_SERVER,
 });

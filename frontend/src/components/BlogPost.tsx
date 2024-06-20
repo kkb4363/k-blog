@@ -24,12 +24,7 @@ export default function BlogPost(props: Props) {
   return (
     <BlogPostContainer>
       <BlogImg onClick={handleBlogDetail}>
-        <img
-          src={
-            "http://k-blog-env.eba-r5k4kdec.ap-northeast-2.elasticbeanstalk.com" +
-            props.img
-          }
-        />
+        <img src={import.meta.env.VITE_API_SERVER + props.img} />
       </BlogImg>
       <BlogTxtCol>
         <p onClick={handleBlogDetail}>{props.title}</p>

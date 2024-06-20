@@ -1,14 +1,12 @@
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-
+import { useEffect, useState } from "react";
 import BlogPost from "components/BlogPost";
 import BlogPostMain from "components/BlogPostMain";
-import { useEffect, useState } from "react";
 import { axiosInstance } from "utils/axios";
 
 export default function MainPage() {
   const navigate = useNavigate();
-
   const [blogs, setBlogs] = useState([]);
 
   useEffect(() => {

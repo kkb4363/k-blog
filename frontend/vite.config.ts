@@ -2,16 +2,16 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import tsconfigPaths from "vite-tsconfig-paths";
 import path from "path";
+import { env } from "process";
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react(), tsconfigPaths()],
   server: {
-    port: 8080,
+    port: 5173,
     proxy: {
       "/api": {
-        target:
-          "http://k-blog-env.eba-r5k4kdec.ap-northeast-2.elasticbeanstalk.com/",
+        target: env.VITE_API_SERVER,
         changeOrigin: true,
       },
     },

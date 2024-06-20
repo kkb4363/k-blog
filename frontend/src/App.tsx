@@ -4,6 +4,7 @@ import themes from "assets/styles/theme";
 import GlobalStyles from "assets/styles/GlobalStyles";
 import { router } from "router";
 import { useDisplayStore } from "stores/display.store";
+import { CookiesProvider } from "react-cookie";
 
 export default function App() {
   const { setTheme, getTheme } = useDisplayStore();
@@ -20,7 +21,9 @@ export default function App() {
     >
       <ThemeProvider theme={themes[getTheme()]}>
         <GlobalStyles />
-        <RouterProvider router={router} />
+        <CookiesProvider>
+          <RouterProvider router={router} />
+        </CookiesProvider>
       </ThemeProvider>
     </ThemeContext.Provider>
   );
