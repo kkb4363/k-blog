@@ -61,10 +61,7 @@ export default function Category() {
                 onClick={() => navigate(cate.categoryId)}
               >
                 <img
-                  src={
-                    "http://k-blog-env.eba-r5k4kdec.ap-northeast-2.elasticbeanstalk.com" +
-                    cate?.imgSrc
-                  }
+                  src={import.meta.env.VITE_API_SERVER + cate?.imgSrc}
                   alt="categoryIcon"
                 />
                 <CategoryTxtCol>
