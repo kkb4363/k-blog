@@ -7,6 +7,7 @@ import TabInfoCol from "components/TabInfoCol";
 import SearchInput from "components/SearchInput";
 import { useModalStore } from "stores/modal.store";
 import { axiosInstance } from "utils/axios";
+import { formatDate } from "utils/utils";
 
 export default function Category() {
   const params = useParams();
@@ -68,7 +69,7 @@ export default function Category() {
                   <p>{cate.title}</p>
                   <SecondTxt>
                     <span>{cate.posts.length}개의 포스트 </span>
-                    <span>&nbsp; {cate.updatedDate}</span>
+                    <span>&nbsp; {formatDate(cate.updatedDate)}</span>
                   </SecondTxt>
                 </CategoryTxtCol>
               </CategoryBox>
