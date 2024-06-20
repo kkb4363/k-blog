@@ -11,7 +11,8 @@ import { getCookie, setCookie } from "utils/cookie";
 export default function Footer() {
   const params = useLocation();
   const urlParams = new URLSearchParams(params.search);
-  const redirectUrl = "http://localhost:5173/";
+  // const redirectUrl = "http://localhost:5173/";
+  const redirectUrl = "https://k-blog-snowy.vercel.app/";
   const { setUser, getUser, clear } = useUserStore();
 
   useEffect(() => {
