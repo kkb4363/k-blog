@@ -18,9 +18,9 @@ export default function MainPage() {
     a.createdDate > b.createdDate ? -1 : 1
   );
 
-  // 오래된글 정렬
-  const oldPosts = [...blogs].sort((a, b) =>
-    a.createdDate > b.createdDate ? 1 : -1
+  // 인기 글 정렬
+  const likesPosts = [...blogs].sort((a, b) =>
+    a.likes.length > b.likes.length ? -1 : 1
   );
 
   return (
@@ -51,8 +51,8 @@ export default function MainPage() {
       </BlogPostCol>
 
       <BlogPostCol>
-        <p>오래된 포스트</p>
-        {oldPosts.slice(0, 3).map((post, idx) => (
+        <p>인기 포스트</p>
+        {likesPosts.slice(0, 3).map((post, idx) => (
           <BlogPost
             key={idx}
             title={post.title}

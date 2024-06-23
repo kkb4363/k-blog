@@ -5,6 +5,8 @@ import "highlight.js/styles/a11y-dark.css";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
+import heartIcon from "&/imgs/heart.svg";
+import heartIcon2 from "&/imgs/heart_click.svg";
 import flagIcon from "&/imgs/flag.svg";
 import arrowDownIcon from "&/imgs/arrowDown.svg";
 import arrowDownDarkIcon from "&/imgs/arrowDown_dark.svg";
@@ -14,6 +16,7 @@ import arrowLeftIcon from "&/imgs/arrowLeft.svg";
 import arrowRightIcon from "&/imgs/arrowRight.svg";
 import { formatDate } from "utils/utils";
 import { axiosInstance } from "utils/axios";
+import { useUserStore } from "stores/user.store";
 
 interface BlogProps {
   categoryId: string;
@@ -27,10 +30,12 @@ export default function BlogDetail() {
   const navigate = useNavigate();
   const theme = useContext(ThemeContext);
   const [showBlogList, setShowBlogList] = useState(false);
+  const { getUser } = useUserStore();
   const { id } = useParams();
   const [blog, setBlog] = useState<any>([]);
   const [blogs, setBlogs] = useState<any>([]);
   const [category, setCategory] = useState<any>([]);
+  const [like, setLike] = useState(false);
 
   const currentBlogIndex = blogs.findIndex((b) => b._id === id) + 1;
 
@@ -55,7 +60,7 @@ export default function BlogDetail() {
     axiosInstance
       .get(`/api/post/${id}`)
       .then((res) => setBlog(res.data as BlogProps[]));
-  }, [id]);
+  }, [id, like]);
 
   useEffect(() => {
     axiosInstance
@@ -66,6 +71,17 @@ export default function BlogDetail() {
   useEffect(() => {
     axiosInstance.get("/api/categories").then((res) => setCategory(res.data));
   }, []);
+
+  const handleLike = async () => {
+    try {
+      const res = await axiosInstance.post(`/api/post/like/${id}`, {
+        kakaoId: getUser().id + "",
+      });
+      setLike((p) => !p);
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
 
   return (
     <>
@@ -153,6 +169,17 @@ export default function BlogDetail() {
           </ReactMarkdown>
         </BlogMarkdownContainer>
 
+        <LikeBox>
+          <img
+            src={
+              blog?.likes?.includes(getUser().id + "") ? heartIcon2 : heartIcon
+            }
+            alt="like"
+            onClick={handleLike}
+          />
+          <span>{blog?.likes?.length}</span>
+        </LikeBox>
+
         <BlogTagRow>
           {blog?.tags?.map((tag, idx) => (
             <BlogTag href={`/tags/${tag}`} key={idx}>
@@ -168,6 +195,26 @@ export default function BlogDetail() {
     </>
   );
 }
+
+const LikeBox = styled.div`
+  width: 100%;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+
+  & > img {
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+  }
+
+  & > span {
+    font-size: 25px;
+    color: ${(props) => props.theme.default};
+  }
+`;
 
 const BlogMarkdownContainer = styled.pre`
   padding: 30px 0;
