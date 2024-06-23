@@ -73,6 +73,7 @@ export default function BlogDetail() {
   }, []);
 
   const handleLike = async () => {
+    if (getUser().id === null) return alert("로그인 후 이용해주세요😊");
     try {
       const res = await axiosInstance.post(`/api/post/like/${id}`, {
         kakaoId: getUser().id + "",
