@@ -45,7 +45,7 @@ export default function SelectCategory(props: Props) {
 
   const getCategoryImg = () => {
     return !!selectCategory
-      ? "http://k-blog-env.eba-r5k4kdec.ap-northeast-2.elasticbeanstalk.com" +
+      ? import.meta.env.VITE_API_SERVER +
           categories.find((c) => c.title === selectCategory)?.imgSrc
       : "";
   };

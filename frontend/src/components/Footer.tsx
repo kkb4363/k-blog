@@ -69,6 +69,12 @@ export default function Footer() {
       });
   };
 
+  useEffect(() => {
+    if (getCookie("accessToken") === "") {
+      clear();
+    }
+  }, []);
+
   return (
     <FooterContainer>
       <KakaoLoginBtn>

@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import rehypeHighlight from "rehype-highlight";
 import "highlight.js/styles/a11y-dark.css";
@@ -46,6 +46,14 @@ export default function Write() {
     setTags(updatedTag);
   };
 
+  const preRef = useRef(null);
+
+  useEffect(() => {
+    if (preRef.current) {
+      preRef.current.scrollTop = preRef.current.scrollHeight;
+    }
+  }, [preRef, text]);
+
   return (
     <WriteContainer>
       {getOpenModal() === "SelectCategory" && (
@@ -89,7 +97,7 @@ export default function Write() {
       </WriteHalf>
 
       <WriteHalf>
-        <BlogMarkdownContainer>
+        <BlogMarkdownContainer ref={preRef}>
           <ReactMarkdown
             components={{
               img: ({ node, ...props }) => (
@@ -116,8 +124,15 @@ const WriteContainer = styled.div`
 
 const BlogMarkdownContainer = styled.pre`
   padding-top: calc(50px + 58px + 36px);
-
+  height: calc(100% - 50px);
   white-space: pre-wrap;
+  overflow-y: scroll;
+  &::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera*/
+  }
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+
   & > h1 {
     color: ${(props) => props.theme.default};
     padding-bottom: 20px;
