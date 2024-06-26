@@ -112,20 +112,22 @@ export default function BlogDetail() {
           <img src={flagIcon} alt="flag" width={35} height={40} />
           <p>
             {category.find((c) => c.categoryId === blog.categoryId)?.title}
-            <BlogEditRow>
-              <span
-                onClick={() =>
-                  navigate("/write", {
-                    state: {
-                      blogId: id,
-                    },
-                  })
-                }
-              >
-                수정
-              </span>
-              <span onClick={deleteBlog}>삭제</span>
-            </BlogEditRow>
+            {getUser().id === Number(import.meta.env.VITE_KAKAO_MY_ID) && (
+              <BlogEditRow>
+                <span
+                  onClick={() =>
+                    navigate("/write", {
+                      state: {
+                        blogId: id,
+                      },
+                    })
+                  }
+                >
+                  수정
+                </span>
+                <span onClick={deleteBlog}>삭제</span>
+              </BlogEditRow>
+            )}
           </p>
 
           <BlogListCol $show={showBlogList}>
