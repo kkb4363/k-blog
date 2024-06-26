@@ -7,13 +7,13 @@ import { useNavigate } from "react-router-dom";
 import { useModalStore } from "stores/modal.store";
 import SelectCategory from "components/SelectCategory";
 import { Tooltip } from "react-tooltip";
+import { axiosInstance } from "utils/axios";
 
 export default function Write() {
   const navigate = useNavigate();
   const { getOpenModal, setOpenModal } = useModalStore();
-  const [text, setText] = useState(null);
+  const [text, setText] = useState("");
   const [tags, setTags] = useState([]);
-
   const titleRef = useRef(null);
   const tagRef = useRef(null);
 
@@ -54,6 +54,39 @@ export default function Write() {
     }
   }, [preRef, text]);
 
+  useEffect(() => {
+    if (history?.state.usr?.blogId) {
+      axiosInstance.get(`/api/post/${history.state.usr.blogId}`).then((res) => {
+        setText(res.data.text);
+        setTags(res.data.tags);
+        titleRef.current.value = res.data.title;
+      });
+    }
+  }, []);
+
+  const isBlogEditting = history?.state.usr?.blogId !== undefined;
+
+  const editPost = () => {
+    if (history?.state?.usr?.blogId) {
+      const blogId = history.state.usr.blogId;
+
+      const updatedData = {
+        title: titleRef?.current.value,
+        text: text,
+        tags: tags,
+      };
+
+      axiosInstance
+        .patch(`/api/edit/${blogId}`, updatedData)
+        .then((res) => {
+          navigate(`/blog/${res.data._id}`);
+        })
+        .catch((error) => {
+          console.error("블로그 수정 실패:", error);
+        });
+    }
+  };
+
   return (
     <WriteContainer>
       {getOpenModal() === "SelectCategory" && (
@@ -87,12 +120,17 @@ export default function Write() {
         </TagBox>
 
         <TextArea
+          value={text}
           onChange={(e) => setText(e.target.value)}
           placeholder="내용을 입력하세요"
         />
         <SubmitBtns>
           <Btn onClick={() => navigate(-1)}>나가기</Btn>
-          <Btn onClick={() => setOpenModal("SelectCategory")}>출간하기</Btn>
+          {isBlogEditting ? (
+            <Btn onClick={editPost}>수정하기</Btn>
+          ) : (
+            <Btn onClick={() => setOpenModal("SelectCategory")}>출간하기</Btn>
+          )}
         </SubmitBtns>
       </WriteHalf>
 

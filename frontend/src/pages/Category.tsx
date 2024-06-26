@@ -21,6 +21,8 @@ export default function Category() {
     axiosInstance.get("/api/categories").then((res) => setCategories(res.data));
   }, [getOpenModal()]);
 
+  console.log(categories2);
+
   useEffect(() => {
     setHeaderTab("category");
   }, []);

@@ -84,6 +84,22 @@ export default function BlogDetail() {
     }
   };
 
+  const deleteBlog = () => {
+    if (confirm("정말 삭제하시겠습니까?")) {
+      axiosInstance.delete(`/api/delete/${id}`).then((res) => {
+        if (res.status === 200) {
+          navigate("/blog", {
+            state: {
+              reload: true,
+            },
+          });
+        }
+      });
+    } else {
+      console.log("no");
+    }
+  };
+
   return (
     <>
       <BlogDetailHeader>
@@ -94,7 +110,23 @@ export default function BlogDetail() {
       <BlogDetailBody>
         <BlogDetailCategoryBox>
           <img src={flagIcon} alt="flag" width={35} height={40} />
-          <p>{category.find((c) => c.categoryId === blog.categoryId)?.title}</p>
+          <p>
+            {category.find((c) => c.categoryId === blog.categoryId)?.title}
+            <BlogEditRow>
+              <span
+                onClick={() =>
+                  navigate("/write", {
+                    state: {
+                      blogId: id,
+                    },
+                  })
+                }
+              >
+                수정
+              </span>
+              <span onClick={deleteBlog}>삭제</span>
+            </BlogEditRow>
+          </p>
 
           <BlogListCol $show={showBlogList}>
             {blogs?.map((b, idx) => {
@@ -292,12 +324,27 @@ const BlogDetailCategoryBox = styled.div`
     padding-bottom: 10px;
     font-size: 30px;
     color: ${(props) => props.theme.blog.titleTxt};
+    position: relative;
   }
 
   & > img {
     position: absolute;
     top: -1px;
     right: 10px;
+  }
+`;
+
+const BlogEditRow = styled.div`
+  position: absolute;
+  right: 0;
+  top: 20px;
+  display: flex;
+  gap: 5px;
+
+  & > span {
+    color: gray;
+    font-size: 12px;
+    cursor: pointer;
   }
 `;
 

@@ -57,7 +57,7 @@ export default function Blog() {
 
   useEffect(() => {
     axiosInstance.get("/api/posts").then((res) => setBlogs(res.data));
-  }, []);
+  }, [history.state.usr?.reload]);
 
   return (
     <>

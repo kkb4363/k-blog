@@ -197,6 +197,51 @@ app.post("/api/category", upload.single("image"), async (req, res) => {
   }
 });
 
+app.patch("/api/edit/:Id", async (req, res) => {
+  const { Id } = req.params;
+  const { title, text, tags } = req.body;
+
+  try {
+    const blog = await Posts.findById(Id);
+
+    if (!blog) {
+      return res.status(404).json({ error: "블로그를 찾을 수 없습니다." });
+    }
+
+    if (title) blog.title = title;
+    if (text) blog.text = text;
+    if (tags) blog.tags = tags;
+
+    await blog.save();
+
+    res.json(blog);
+  } catch (error) {
+    console.error("블로그 수정 중 오류:", error);
+    res.status(500).json({ error: "블로그를 수정할 수 없습니다." });
+  }
+});
+
+app.delete("/api/delete/:Id", async (req, res) => {
+  const { Id } = req.params;
+
+  try {
+    const deletedBlog = await Posts.findByIdAndDelete(Id);
+
+    if (!deletedBlog) {
+      return res
+        .status(404)
+        .json({ error: "삭제할 블로그를 찾을 수 없습니다." });
+    }
+
+    await Category.updateMany({}, { $pull: { posts: deletedBlog._id } });
+
+    res.json({ message: "블로그가 성공적으로 삭제되었습니다." });
+  } catch (error) {
+    console.error("블로그 삭제 중 오류:", error);
+    res.status(500).json({ error: "블로그를 삭제할 수 없습니다." });
+  }
+});
+
 app.post("/api/post", async (req, res) => {
   try {
     const newPost = new Posts({
