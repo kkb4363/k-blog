@@ -14,14 +14,12 @@ export default function Category() {
   const navigate = useNavigate();
   const isParams = !!params.id;
   const { setHeaderTab } = useDisplayStore();
-  const [categories2, setCategories] = useState(null);
+  const [categories, setCategories] = useState(null);
   const { setOpenModal, getOpenModal } = useModalStore();
 
   useEffect(() => {
     axiosInstance.get("/api/categories").then((res) => setCategories(res.data));
   }, [getOpenModal()]);
-
-  console.log(categories2);
 
   useEffect(() => {
     setHeaderTab("category");
@@ -33,11 +31,8 @@ export default function Category() {
         <>
           <CurrentCategoryTitle>
             <p>
-              {categories2?.find((c) => c.categoryId === params.id).title} (
-              {
-                categories2?.find((c) => c.categoryId === params.id).posts
-                  .length
-              }
+              {categories?.find((c) => c.categoryId === params.id).title} (
+              {categories?.find((c) => c.categoryId === params.id).posts.length}
               )
             </p>
           </CurrentCategoryTitle>
@@ -57,7 +52,7 @@ export default function Category() {
         <Outlet />
       ) : (
         <CategoryGrid>
-          {categories2?.map((cate, idx) => {
+          {categories?.map((cate, idx) => {
             return (
               <CategoryBox
                 key={cate.categoryId}
