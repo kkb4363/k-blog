@@ -87,6 +87,23 @@ export default function Write() {
     }
   };
 
+  const handleKeyDown = (e) => {
+    if (e.key === "Tab") {
+      e.preventDefault();
+      const textarea = e.target;
+      const start = textarea.selectionStart;
+      const end = textarea.selectionEnd;
+
+      const updatedText =
+        text.substring(0, start) + "    " + text.substring(end);
+      setText(updatedText);
+
+      setTimeout(() => {
+        textarea.selectionStart = textarea.selectionEnd = start + 4;
+      }, 0);
+    }
+  };
+
   return (
     <WriteContainer>
       {getOpenModal() === "SelectCategory" && (
@@ -122,6 +139,7 @@ export default function Write() {
         <TextArea
           value={text}
           onChange={(e) => setText(e.target.value)}
+          onKeyDown={handleKeyDown}
           placeholder="내용을 입력하세요"
         />
         <SubmitBtns>
