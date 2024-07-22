@@ -183,8 +183,8 @@ const BlogMarkdownContainer = styled.pre`
     padding: 3px 6px;
     border: none;
     border-radius: 3px;
-    background-color: #e9ecef;
-    color: black;
+    background-color: ${(props) => props.theme.blog.codeBg};
+    color: ${(props) => props.theme.blog.codeTxt};
   }
 
   blockquote {

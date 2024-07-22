@@ -47,6 +47,8 @@ export const light = {
     blockquoteBg: "#F8F9FA",
     blockquoteTxt: "#212529",
     blockquoteColor: "rgb(99 102 241/1)",
+    codeBg: "#fbfcfd",
+    codeTxt: "#24292e",
   },
 };
 
@@ -98,6 +100,8 @@ export const dark = {
     blockquoteBg: "#1e1e1e",
     blockquoteTxt: "#ececec",
     blockquoteColor: "rgb(99 102 241/1)",
+    codeBg: "#1e1e1e",
+    codeTxt: "#e0e6f1",
   },
 };
 
