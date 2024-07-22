@@ -75,8 +75,6 @@ export default function Tag() {
     }
   };
 
-  console.log(tagPosts);
-
   useEffect(() => {
     const url = `/api/tag/${params.id}`;
     getPosts(url);
