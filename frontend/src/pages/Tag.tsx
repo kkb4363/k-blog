@@ -12,6 +12,7 @@ export default function Tag() {
   const params = useParams();
   const navigate = useNavigate();
   const [tags, setTags] = useState([]);
+  const [tagPosts, setTagPosts] = useState([]);
   const location = useLocation();
 
   useEffect(() => {
@@ -65,13 +66,29 @@ export default function Tag() {
     getTags();
   }, []);
 
+  const getPosts = async (url) => {
+    try {
+      const res = await axiosInstance.get(url);
+      setTagPosts(res.data);
+    } catch (err) {
+      console.error("포스트 조회 에러:", err);
+    }
+  };
+
+  console.log(tagPosts);
+
+  useEffect(() => {
+    const url = `/api/tag/${params.id}`;
+    getPosts(url);
+  }, []);
+
   return (
     <TagContainer $isParams={!!params.id}>
       {!!params.id ? (
         <>
           <CurrentCategoryTitle>
             <p>
-              {params.id}({location?.state?.length})
+              {params.id}({tagPosts?.length})
             </p>
           </CurrentCategoryTitle>
           <SearchInput placeHolder="어떤 포스트를 찾으시나요?" />
