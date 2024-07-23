@@ -63,8 +63,9 @@ const BlogImg = styled.div`
   cursor: pointer;
   & > img {
     width: 100%;
-    height: 140px;
+    height: 160px;
     object-fit: cover;
+    border-radius: 5px;
   }
 `;
 
