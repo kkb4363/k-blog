@@ -33,7 +33,7 @@ export default function Blog() {
         );
       });
 
-    if (filteredPosts.length === 0) {
+    if (filteredPosts.length === 0 && !!searchQuery) {
       return <h1>검색 결과가 없습니다 😯</h1>;
     }
 
