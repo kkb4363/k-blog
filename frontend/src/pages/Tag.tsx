@@ -13,7 +13,6 @@ export default function Tag() {
   const navigate = useNavigate();
   const [tags, setTags] = useState([]);
   const [tagPosts, setTagPosts] = useState([]);
-  const location = useLocation();
 
   useEffect(() => {
     setHeaderTab("tags");
@@ -24,7 +23,6 @@ export default function Tag() {
       try {
         const res = await axiosInstance.get("/api/posts");
         const blogs = res.data;
-
         const tagMap = new Map();
         blogs.forEach((blog) => {
           if (blog.tags.length !== 0) {
@@ -78,7 +76,7 @@ export default function Tag() {
   useEffect(() => {
     const url = `/api/tag/${params.id}`;
     getPosts(url);
-  }, []);
+  }, [params.id]);
 
   return (
     <TagContainer $isParams={!!params.id}>
